@@ -1,32 +1,37 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TextInputProps,
+  TouchableOpacity,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-type InputProps = {
-  iconName: keyof typeof Feather.glyphMap;
-  placeholder: string;
-  secureTextEntry?: boolean;
-  value: string;
-  onChangeText: (text: string) => void;
-};
+interface InputProps extends TextInputProps {
+  iconName: keyof typeof Ionicons.glyphMap;
+}
 
-export default function Input({ iconName, placeholder, secureTextEntry = false, value, onChangeText }: InputProps) {
-  const [showPassword, setShowPassword] = useState(false);
+export default function TextInputField({ iconName, secureTextEntry, ...rest }: InputProps) {
+  const [hidePassword, setHidePassword] = useState(!!secureTextEntry);
 
   return (
     <View style={styles.container}>
-      <Feather name={iconName} size={20} color="#888" style={styles.icon} />
+      <Ionicons name={iconName} size={20} color="#777" style={styles.icon} />
       <TextInput
         style={styles.input}
-        placeholder={placeholder}
-        secureTextEntry={secureTextEntry && !showPassword}
-        value={value}
-        onChangeText={onChangeText}
-        autoCapitalize="none"
+        secureTextEntry={hidePassword}
+        placeholderTextColor="#999"
+        {...rest}
       />
       {secureTextEntry && (
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-          <Feather name={showPassword ? 'eye-off' : 'eye'} size={20} color="#888" />
+        <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+          <Ionicons
+            name={hidePassword ? 'eye-off-outline' : 'eye-outline'}
+            size={20}
+            color="#777"
+            style={styles.icon}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -36,13 +41,13 @@ export default function Input({ iconName, placeholder, secureTextEntry = false, 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
     alignItems: 'center',
+    borderColor: '#ddd',
+    borderWidth: 1,
     borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     marginBottom: 15,
-    backgroundColor: '#fff',
   },
   icon: {
     marginRight: 10,
