@@ -19,6 +19,9 @@ import PrimaryButton from '../../components/common/Button';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuthStore from '../../state/authStore'; 
 
+import { Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
+
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -97,7 +100,13 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, justifyContent: 'center' },
-  logo: { width: 400, height: 80, resizeMode: 'contain', alignSelf: 'center' },
+  // logo: { width: 400, height: 80, resizeMode: 'contain', alignSelf: 'center' },
+  logo: {
+    width: width * 0.8,
+    height: 80,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
   subtitle: { textAlign: 'center', marginBottom: 24, color: '#555' },
 
   inputWrapper: {

@@ -10,6 +10,11 @@ import { prescriptions } from './PatientDashboard/data/mockPrescriptions';
 import { appointments } from './PatientDashboard/data/mockAppointments';
 import { medicalHistory } from './PatientDashboard/data/mockMedicalHistory';
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
 export default function PatientDashboardScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -18,25 +23,25 @@ export default function PatientDashboardScreen() {
       {/* Stats */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.sectionRow}>
-          <StatCard label="Appointments" value="2" icon="calendar-outline" />
-          <StatCard label="Prescriptions" value="5" icon="medkit-outline" />
-          <StatCard label="Records" value="12" icon="document-text-outline" />
-        </View>
+          <View style={{ width: wp('2%') }} />
+            <StatCard label="Appointments" value="2" icon="trending-up-outline" />
+          </View>          
+          <View style={styles.verticalStack}>
+            <StatCard label="Prescriptions" value="5" />
+            <StatCard label="Records" value="12" />
+          </View>
       </ScrollView>
 
       {/* Quick Actions */}
-      {/* <Text style={styles.sectionTitle}>Quick Actions</Text> */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.quickActionsRow}>
-          <QuickActionItem label="Medical History" icon="flask-outline" />
-          <QuickActionItem label="Scan QR" icon="qr-code-outline" onPress={() => console.log('Pressed')} />
-        </View>
-      </ScrollView>
+      <View style={styles.quickActionsRow}>
+        <QuickActionItem label="Medical History" icon="flask-outline" />
+        <QuickActionItem label="Scan QR" icon="qr-code-outline" onPress={() => console.log('Pressed')} />
+      </View>
 
       {/* Prescriptions */}
       <Text style={styles.sectionTitle}>Prescriptions</Text>
       <View style={styles.prescriptionsRow}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {prescriptions.map((item, index) => (
             <PrescriptionCard key={index} {...item} />
           ))}
@@ -47,10 +52,10 @@ export default function PatientDashboardScreen() {
       <Text style={styles.sectionTitle}>Appointments</Text>
       <View style={styles.appointmentsRow}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {appointments.map((item, index) => (
-              <AppointmentCard key={index} {...item} />
-            ))}
-          </ScrollView>
+          {appointments.map((item, index) => (
+            <AppointmentCard key={index} {...item} />
+          ))}
+        </ScrollView>
       </View>
 
       {/* Medical History */}
@@ -72,35 +77,41 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8FF',
   },
   content: {
-    padding: 20,
+    padding: wp('5%'),
   },
   heading: {
-    fontSize: 26,
+    fontSize: wp('6%'),
     fontWeight: '600',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
+  },
+  sectionTitle: {
+    fontSize: wp('4.5%'),
+    fontWeight: '500',
+    marginTop: hp('3%'),
+    marginBottom: hp('1.5%'),
   },
   sectionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
-    paddingHorizontal: 4,
+    marginBottom: hp('2%'),
   },
+  verticalStack: {
+    flexDirection: 'column',
+    gap: hp('1.5%'), 
+    paddingHorizontal: wp('3%'),
+    marginBottom: hp('2%'),
+  },  
   quickActionsRow: {
-    paddingHorizontal: 4,
+    paddingHorizontal: wp('2%'),
   },
   prescriptionsRow: {
-    paddingHorizontal: 4,
+    paddingHorizontal: wp('2%'),
   },
   appointmentsRow: {
-    paddingHorizontal: 4,
+    paddingHorizontal: wp('2%'),
   },
   medicalHistoryRow: {
-    paddingHorizontal: 4,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginTop: 24,
-    marginVertical: 12,
+    paddingHorizontal: wp('2%'),
+    paddingBottom: hp('4%'),
   },
 });

@@ -14,6 +14,9 @@ import { AuthStackParamList } from '../../navigation/AuthNavigator';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import GoogleLogo from '../../assets/GoogleLogo';
 
+import { Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
+
 export default function RegisterScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
   const [fullName, setFullName] = useState('');
@@ -107,7 +110,13 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, justifyContent: 'center' },
-  logo: { width: 400, height: 80, resizeMode: 'contain', alignSelf: 'center' },
+  // logo: { width: 400, height: 80, resizeMode: 'contain', alignSelf: 'center' },
+  logo: {
+    width: width * 0.8,
+    height: 80,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
   subtitle: { textAlign: 'center', marginBottom: 24, color: '#555' },
   separatorContainer: {
     flexDirection: 'row',
