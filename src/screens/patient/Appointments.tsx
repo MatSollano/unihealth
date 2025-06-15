@@ -1,10 +1,12 @@
-// screens/AppointmentsScreen.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 import AppointmentCard from './Appointments/AppointmentCard';
+import RatingModal from '../../components/common/RatingModal';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Appointment = {
   id: number;
@@ -21,6 +23,9 @@ type Appointment = {
 const AppointmentsScreen: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'All' | 'Pending' | 'Ongoing' | 'Completed' | 'Canceled'>('All');
   const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState('');
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const appointments: Appointment[] = [
     {
@@ -53,26 +58,6 @@ const AppointmentsScreen: React.FC = () => {
       time: '9:00 AM',
       status: 'Pending',
     },
-    {
-      id: 4,
-      doctorName: 'Dr. Emily Tan',
-      specialty: 'Pediatrician',
-      clinic: 'Family Care Center',
-      address: '789 Healthy St, Mandaue City',
-      date: 'Dec 20, 2023',
-      time: '9:00 AM',
-      status: 'Pending',
-    },
-    {
-      id: 5,
-      doctorName: 'Dr. Emily Tan',
-      specialty: 'Pediatrician',
-      clinic: 'Family Care Center',
-      address: '789 Healthy St, Mandaue City',
-      date: 'Dec 20, 2023',
-      time: '9:00 AM',
-      status: 'Pending',
-    },
   ];
 
   const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>(appointments);
@@ -89,24 +74,25 @@ const AppointmentsScreen: React.FC = () => {
     }, 500); // simulate loading
   }, [selectedFilter]);
 
+  const handleRate = (doctorName: string) => {
+    setSelectedDoctor(doctorName);
+    setModalVisible(true);
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Appointments</Text>
         <View style={styles.headerIcons}>
-          <Ionicons name="add" size={wp('6%')} style={styles.icon} />
+          <Ionicons name="add" size={wp('6%')} style={styles.icon} onPress={() => navigation.navigate('BookAppointment')}/>
           <Ionicons name="notifications-outline" size={wp('6%')} style={styles.icon} />
         </View>
       </View>
 
       {/* Filter Tabs */}
       <View style={styles.filterWrapper}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.filtersContent}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filtersContent}>
           {['All', 'Pending', 'Ongoing', 'Completed', 'Canceled'].map((label) => (
             <TouchableOpacity
               key={label}
@@ -130,7 +116,7 @@ const AppointmentsScreen: React.FC = () => {
         ) : filteredAppointments.length > 0 ? (
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {filteredAppointments.map((item) => (
-              <AppointmentCard key={item.id} {...item} />
+              <AppointmentCard key={item.id} {...item} onRatePress={() => handleRate(item.doctorName)} />
             ))}
           </ScrollView>
         ) : (
@@ -139,40 +125,28 @@ const AppointmentsScreen: React.FC = () => {
           </View>
         )}
       </View>
+
+      <RatingModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        doctorName={selectedDoctor}
+        onSubmit={(rating, feedback) => {
+          console.log('Submitted rating:', { doctor: selectedDoctor, rating, feedback });
+          setModalVisible(false); 
+        }}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8F8FF',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: wp('5%'),
-  },
-  headerTitle: {
-    fontSize: wp('6%'),
-    fontWeight: '600',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    marginHorizontal: wp('2%'),
-  },
-  filterWrapper: {
-    height: hp('6%'),
-    justifyContent: 'center',
-  },
-  filtersContent: {
-    paddingHorizontal: wp('5%'),
-    alignItems: 'center',
-  },
+  container: { flex: 1, backgroundColor: '#FFF' },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: wp('5%') },
+  headerTitle: { fontSize: wp('6%'), fontWeight: '600' },
+  headerIcons: { flexDirection: 'row', alignItems: 'center' },
+  icon: { marginHorizontal: wp('2%') },
+  filterWrapper: { height: hp('6%'), justifyContent: 'center' },
+  filtersContent: { paddingHorizontal: wp('5%'), alignItems: 'center' },
   filterButton: {
     paddingHorizontal: wp('4%'),
     paddingVertical: hp('1%'),
@@ -180,39 +154,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E7EB',
     marginRight: wp('3%'),
   },
-  activeFilter: {
-    backgroundColor: '#0F4C81',
-  },
-  filterText: {
-    fontSize: wp('3.5%'),
-    color: '#374151',
-  },
-  activeFilterText: {
-    color: '#fff',
-    fontWeight: '500',
-  },
-  listContainer: {
-    flex: 1,
-    paddingHorizontal: wp('5%'),
-    paddingVertical: hp('1%'),
-  },
-  scrollContainer: {
-    paddingBottom: hp('10%'),
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: wp('4%'),
-    color: '#9CA3AF',
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  activeFilter: { backgroundColor: '#0F4C81' },
+  filterText: { fontSize: wp('3.5%'), color: '#374151' },
+  activeFilterText: { color: '#fff', fontWeight: '500' },
+  listContainer: { flex: 1, paddingHorizontal: wp('5%'), paddingVertical: hp('1%') },
+  scrollContainer: { paddingBottom: hp('10%'), marginTop: hp('0.5%') },
+  emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyText: { fontSize: wp('4%'), color: '#9CA3AF' },
+  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default AppointmentsScreen;

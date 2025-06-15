@@ -132,7 +132,7 @@ const Prescriptions = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F8FF' },
+  container: { flex: 1, backgroundColor: '#FFF' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   filters: {
     marginTop: hp('1.5%'),
-    marginBottom: hp('1%'),
+    marginBottom: hp('1.5%'),
     paddingHorizontal: wp('5%'),
   },
   filterButton: {

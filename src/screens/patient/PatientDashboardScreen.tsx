@@ -74,7 +74,7 @@ export default function PatientDashboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F8FF',
+    backgroundColor: '#FFF',
   },
   content: {
     padding: wp('5%'),

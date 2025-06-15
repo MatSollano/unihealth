@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PatientDashboard from '../screens/patient/PatientDashboardScreen';
 import Prescriptions from '../screens/patient/Prescriptions';
 import Appointments from '../screens/patient/Appointments';
+import VisitsStackNavigator from './VisitsStackNavigator';
 import MedicalCertificates from '../screens/patient/MedicalCertificates';
 import Profile from '../screens/patient/Profile';
 
@@ -57,7 +59,8 @@ export default function PatientNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={withTopSafeArea(PatientDashboard)} />
-      <Tab.Screen name="Visits" component={withTopSafeArea(Appointments)} />
+      {/* <Tab.Screen name="Visits" component={withTopSafeArea(Appointments)} /> */}
+      <Tab.Screen name="Visits" component={withTopSafeArea(VisitsStackNavigator)} />
       <Tab.Screen name="Prescription" component={withTopSafeArea(Prescriptions)} />
       <Tab.Screen name="Med Certs" component={withTopSafeArea(MedicalCertificates)} />
       <Tab.Screen name="Profile" component={withTopSafeArea(Profile)} />
