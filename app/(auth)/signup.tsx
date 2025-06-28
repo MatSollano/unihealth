@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
 import { signUp } from '@/services/firebaseService';
+import { updateProfile } from "firebase/auth";
 
 export default function SignUpScreen() {
   const [fullName, setFullName] = useState('');
