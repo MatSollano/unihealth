@@ -7,12 +7,12 @@ interface ButtonProps extends TouchableOpacityProps {
   variant?: 'primary' | 'secondary' | 'outline';
 }
 
-export function Button({ title, variant = 'primary', style, ...rest }: ButtonProps) {
+export function Button({ title, variant = 'primary', style, disabled, ...rest }: ButtonProps) {
   if (variant === 'primary') {
     return (
-      <TouchableOpacity style={[styles.button, style]} {...rest}>
+      <TouchableOpacity style={[styles.button, style]} disabled={disabled} {...rest}>
         <LinearGradient
-          colors={['#004D80', '#4695EB']}
+          colors={disabled ? ['#9CA3AF', '#9CA3AF'] : ['#004D80', '#4695EB']}
           style={styles.gradient}
         >
           <Text style={styles.primaryText}>{title}</Text>
@@ -27,13 +27,16 @@ export function Button({ title, variant = 'primary', style, ...rest }: ButtonPro
         styles.button, 
         variant === 'outline' && styles.outlineButton,
         variant === 'secondary' && styles.secondaryButton,
+        disabled && styles.disabledButton,
         style
       ]} 
+      disabled={disabled}
       {...rest}
     >
       <Text style={[
         variant === 'outline' && styles.outlineText,
         variant === 'secondary' && styles.secondaryText,
+        disabled && styles.disabledText,
       ]}>
         {title}
       </Text>
@@ -68,6 +71,11 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
   },
+  disabledButton: {
+    backgroundColor: '#F3F4F6',
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
   secondaryText: {
     color: '#374151',
     fontSize: 16,
@@ -75,6 +83,11 @@ const styles = StyleSheet.create({
   },
   outlineText: {
     color: '#004D80',
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+  },
+  disabledText: {
+    color: '#9CA3AF',
     fontSize: 16,
     fontFamily: 'Inter-SemiBold',
   },

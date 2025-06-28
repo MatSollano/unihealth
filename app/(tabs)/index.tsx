@@ -1,14 +1,42 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Bell, Plus, Calendar, FileText, Activity, Heart } from 'lucide-react-native';
+import { Bell, Calendar, FileText, Activity, Heart } from 'lucide-react-native';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { QuickActionCard } from '@/components/dashboard/QuickActionCard';
 import { AppointmentCard } from '@/components/dashboard/AppointmentCard';
 import { PrescriptionCard } from '@/components/dashboard/PrescriptionCard';
+import { useAuthStore } from '@/store/authStore';
+import { useHealthStore } from '@/store/healthStore';
+import { subscribeToHealthData, subscribeToAppointments } from '@/services/firebaseService';
 
 export default function HomeScreen() {
+  const { user } = useAuthStore();
+  const { healthData, appointments, setHealthData, setAppointments } = useHealthStore();
+
+  useEffect(() => {
+    if (user) {
+      // Subscribe to real-time health data
+      const unsubscribeHealth = subscribeToHealthData(user.uid, (data) => {
+        if (data) {
+          setHealthData(data);
+        }
+      });
+
+      // Subscribe to real-time appointments
+      const unsubscribeAppointments = subscribeToAppointments(user.uid, (data) => {
+        setAppointments(data);
+      });
+
+      return () => {
+        unsubscribeHealth();
+        unsubscribeAppointments();
+      };
+    }
+  }, [user]);
+
+  const upcomingAppointment = appointments.find(apt => apt.status === 'upcoming');
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -16,7 +44,7 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <View>
             <Text style={styles.greeting}>Good morning,</Text>
-            <Text style={styles.userName}>John Doe</Text>
+            <Text style={styles.userName}>{user?.displayName || 'User'}</Text>
           </View>
           <TouchableOpacity style={styles.notificationButton}>
             <Bell size={24} color="#6B7280" />
@@ -29,21 +57,21 @@ export default function HomeScreen() {
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsContainer}>
             <StatCard
               title="Heart Rate"
-              value="72"
+              value={healthData.heartRate.toString()}
               unit="bpm"
               icon={<Heart size={24} color="#fff" />}
               gradient={['#EF4444', '#DC2626']}
             />
             <StatCard
               title="Steps Today"
-              value="8,432"
+              value={healthData.steps.toLocaleString()}
               unit="steps"
               icon={<Activity size={24} color="#fff" />}
               gradient={['#10B981', '#059669']}
             />
             <StatCard
               title="Sleep"
-              value="7.5"
+              value={healthData.sleep.toString()}
               unit="hours"
               icon={<Activity size={24} color="#fff" />}
               gradient={['#8B5CF6', '#7C3AED']}
@@ -78,13 +106,19 @@ export default function HomeScreen() {
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          <AppointmentCard
-            doctorName="Dr. Sarah Johnson"
-            specialty="Cardiologist"
-            date="Today"
-            time="2:30 PM"
-            imageUrl="https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400"
-          />
+          {upcomingAppointment ? (
+            <AppointmentCard
+              doctorName={upcomingAppointment.doctorName}
+              specialty={upcomingAppointment.specialty}
+              date={upcomingAppointment.date}
+              time={upcomingAppointment.time}
+              imageUrl={upcomingAppointment.imageUrl}
+            />
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>No upcoming appointments</Text>
+            </View>
+          )}
         </View>
 
         {/* Recent Prescriptions */}
@@ -177,5 +211,21 @@ const styles = StyleSheet.create({
   quickActionsGrid: {
     flexDirection: 'row',
     gap: 12,
+  },
+  emptyState: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
   },
 });

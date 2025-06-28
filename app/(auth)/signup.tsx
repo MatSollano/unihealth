@@ -15,6 +15,7 @@ import { Mail, Lock, User, Eye, EyeOff, Heart } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
+import { signUp } from '@/services/firebaseService';
 
 export default function SignUpScreen() {
   const [fullName, setFullName] = useState('');
@@ -23,8 +24,9 @@ export default function SignUpScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!fullName || !email || !password || !confirmPassword) {
       Alert.alert('Missing Fields', 'Please fill in all fields.');
       return;
@@ -34,9 +36,17 @@ export default function SignUpScreen() {
       return;
     }
 
-    Alert.alert('Success', 'Account created successfully!', [
-      { text: 'OK', onPress: () => router.push('/(auth)/signin') }
-    ]);
+    setLoading(true);
+    try {
+      await signUp(email, password, fullName);
+      Alert.alert('Success', 'Account created successfully!', [
+        { text: 'OK', onPress: () => router.replace('/(tabs)') }
+      ]);
+    } catch (error: any) {
+      Alert.alert('Sign Up Error', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -110,7 +120,11 @@ export default function SignUpScreen() {
               }
             />
 
-            <Button title="Create Account" onPress={handleSignUp} />
+            <Button 
+              title={loading ? "Creating Account..." : "Create Account"} 
+              onPress={handleSignUp}
+              disabled={loading}
+            />
           </View>
 
           {/* Footer */}

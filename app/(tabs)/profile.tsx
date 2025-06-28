@@ -2,15 +2,20 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Settings, User, FileText, Shield, CircleHelp as HelpCircle, LogOut, ChevronRight, Camera, CreditCard as Edit } from 'lucide-react-native';
+import { Settings, User, FileText, Shield, HelpCircle, LogOut, ChevronRight, Camera, Edit } from 'lucide-react-native';
 import { useAuthStore } from '@/store/authStore';
+import { logout } from '@/services/firebaseService';
 
 export default function ProfileScreen() {
-  const { logout } = useAuthStore();
+  const { user } = useAuthStore();
 
-  const handleLogout = () => {
-    logout();
-    router.replace('/(auth)/signin');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.replace('/(auth)/signin');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const menuItems = [
@@ -68,9 +73,9 @@ export default function ProfileScreen() {
               <Camera size={16} color="#fff" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.userName}>John Doe</Text>
-          <Text style={styles.userEmail}>john.doe@email.com</Text>
-          <Text style={styles.patientId}>Patient ID: #HC-2024-001</Text>
+          <Text style={styles.userName}>{user?.displayName || 'User'}</Text>
+          <Text style={styles.userEmail}>{user?.email}</Text>
+          <Text style={styles.patientId}>Patient ID: #HC-{user?.uid?.slice(-6)}</Text>
         </View>
 
         {/* Menu Items */}

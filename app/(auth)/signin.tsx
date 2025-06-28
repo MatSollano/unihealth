@@ -15,23 +15,29 @@ import { Mail, Lock, Eye, EyeOff, Heart } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
-import { useAuthStore } from '@/store/authStore';
+import { signIn } from '@/services/firebaseService';
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { setUser } = useAuthStore();
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (!email || !password) {
       Alert.alert('Missing Fields', 'Please fill out both fields.');
       return;
     }
     
-    // Mock authentication - replace with real auth
-    setUser({ email, id: '1', name: 'John Doe' });
-    router.replace('/(tabs)');
+    setLoading(true);
+    try {
+      await signIn(email, password);
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      Alert.alert('Sign In Error', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,7 +91,11 @@ export default function SignInScreen() {
               <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
 
-            <Button title="Sign In" onPress={handleSignIn} />
+            <Button 
+              title={loading ? "Signing In..." : "Sign In"} 
+              onPress={handleSignIn}
+              disabled={loading}
+            />
           </View>
 
           {/* Footer */}

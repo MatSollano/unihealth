@@ -1,51 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Bell, Search } from 'lucide-react-native';
+import { Plus, Bell } from 'lucide-react-native';
 import { AppointmentListCard } from '@/components/appointments/AppointmentListCard';
 import { FilterTabs } from '@/components/ui/FilterTabs';
 import { SearchBar } from '@/components/ui/SearchBar';
-
-const mockAppointments = [
-  {
-    id: '1',
-    doctorName: 'Dr. Sarah Johnson',
-    specialty: 'Cardiologist',
-    clinic: 'Heart Care Center',
-    date: 'Today',
-    time: '2:30 PM',
-    status: 'upcoming' as const,
-    imageUrl: 'https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400',
-  },
-  {
-    id: '2',
-    doctorName: 'Dr. Michael Chen',
-    specialty: 'Endocrinologist',
-    clinic: 'Diabetes Care Clinic',
-    date: 'Tomorrow',
-    time: '10:00 AM',
-    status: 'upcoming' as const,
-    imageUrl: 'https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400',
-  },
-  {
-    id: '3',
-    doctorName: 'Dr. Emily Rodriguez',
-    specialty: 'Dermatologist',
-    clinic: 'Skin Health Center',
-    date: 'Dec 15',
-    time: '3:00 PM',
-    status: 'completed' as const,
-    imageUrl: 'https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400',
-  },
-];
+import { useAuthStore } from '@/store/authStore';
+import { useHealthStore } from '@/store/healthStore';
+import { subscribeToAppointments } from '@/services/firebaseService';
 
 const filterOptions = ['All', 'Upcoming', 'Completed', 'Cancelled'];
 
 export default function AppointmentsScreen() {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const { user } = useAuthStore();
+  const { appointments, setAppointments } = useHealthStore();
 
-  const filteredAppointments = mockAppointments.filter(appointment => {
+  useEffect(() => {
+    if (user) {
+      const unsubscribe = subscribeToAppointments(user.uid, (data) => {
+        setAppointments(data);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [user]);
+
+  const filteredAppointments = appointments.filter(appointment => {
     const matchesFilter = selectedFilter === 'All' || 
       appointment.status.toLowerCase() === selectedFilter.toLowerCase();
     const matchesSearch = appointment.doctorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -87,13 +69,19 @@ export default function AppointmentsScreen() {
       {/* Appointments List */}
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.appointmentsList}>
-          {filteredAppointments.map((appointment) => (
-            <AppointmentListCard
-              key={appointment.id}
-              {...appointment}
-              onPress={() => {}}
-            />
-          ))}
+          {filteredAppointments.length > 0 ? (
+            filteredAppointments.map((appointment) => (
+              <AppointmentListCard
+                key={appointment.id}
+                {...appointment}
+                onPress={() => {}}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>No appointments found</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -141,5 +129,21 @@ const styles = StyleSheet.create({
   appointmentsList: {
     padding: 20,
     gap: 12,
+  },
+  emptyState: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
   },
 });

@@ -1,48 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bell, Filter } from 'lucide-react-native';
 import { PrescriptionListCard } from '@/components/prescriptions/PrescriptionListCard';
 import { FilterTabs } from '@/components/ui/FilterTabs';
 import { SearchBar } from '@/components/ui/SearchBar';
-
-const mockPrescriptions = [
-  {
-    id: '1',
-    medicineName: 'Lisinopril',
-    dosage: '10mg daily',
-    doctorName: 'Dr. Sarah Johnson',
-    prescribedDate: '2024-01-15',
-    daysLeft: 15,
-    status: 'active' as const,
-  },
-  {
-    id: '2',
-    medicineName: 'Metformin',
-    dosage: '500mg twice daily',
-    doctorName: 'Dr. Michael Chen',
-    prescribedDate: '2024-01-10',
-    daysLeft: 8,
-    status: 'active' as const,
-  },
-  {
-    id: '3',
-    medicineName: 'Atorvastatin',
-    dosage: '20mg daily',
-    doctorName: 'Dr. Sarah Johnson',
-    prescribedDate: '2023-12-20',
-    daysLeft: 0,
-    status: 'expired' as const,
-  },
-];
+import { useAuthStore } from '@/store/authStore';
+import { useHealthStore } from '@/store/healthStore';
+import { getPrescriptions } from '@/services/firebaseService';
 
 const filterOptions = ['All', 'Active', 'Expired', 'Low Stock'];
 
 export default function PrescriptionsScreen() {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const { user } = useAuthStore();
+  const { prescriptions, setPrescriptions } = useHealthStore();
 
-  const filteredPrescriptions = mockPrescriptions.filter(prescription => {
+  useEffect(() => {
+    if (user) {
+      loadPrescriptions();
+    }
+  }, [user]);
+
+  const loadPrescriptions = async () => {
+    if (user) {
+      try {
+        const data = await getPrescriptions(user.uid);
+        setPrescriptions(data);
+      } catch (error) {
+        console.error('Error loading prescriptions:', error);
+      }
+    }
+  };
+
+  const filteredPrescriptions = prescriptions.filter(prescription => {
     const matchesFilter = selectedFilter === 'All' || 
       (selectedFilter === 'Low Stock' && prescription.daysLeft <= 7) ||
       prescription.status.toLowerCase() === selectedFilter.toLowerCase();
@@ -85,13 +77,19 @@ export default function PrescriptionsScreen() {
       {/* Prescriptions List */}
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.prescriptionsList}>
-          {filteredPrescriptions.map((prescription) => (
-            <PrescriptionListCard
-              key={prescription.id}
-              {...prescription}
-              onPress={() => {}}
-            />
-          ))}
+          {filteredPrescriptions.length > 0 ? (
+            filteredPrescriptions.map((prescription) => (
+              <PrescriptionListCard
+                key={prescription.id}
+                {...prescription}
+                onPress={() => {}}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>No prescriptions found</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -139,5 +137,21 @@ const styles = StyleSheet.create({
   prescriptionsList: {
     padding: 20,
     gap: 12,
+  },
+  emptyState: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
   },
 });
