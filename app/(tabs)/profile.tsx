@@ -2,17 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { 
-  Settings, 
-  User, 
-  FileText, 
-  Shield, 
-  HelpCircle, 
-  LogOut, 
-  ChevronRight,
-  Camera,
-  Edit
-} from 'lucide-react-native';
+import { Settings, User, FileText, Shield, CircleHelp as HelpCircle, LogOut, ChevronRight, Camera, CreditCard as Edit } from 'lucide-react-native';
 import { useAuthStore } from '@/store/authStore';
 
 export default function ProfileScreen() {
