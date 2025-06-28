@@ -7,13 +7,18 @@ export default function Index() {
   const { user, isLoading } = useAuthStore();
 
   useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        router.replace('/(tabs)');
-      } else {
-        router.replace('/(auth)/signin');
+    // Add a small delay to ensure the navigation system is ready
+    const timer = setTimeout(() => {
+      if (!isLoading) {
+        if (user) {
+          router.replace('/(tabs)');
+        } else {
+          router.replace('/(auth)/signin');
+        }
       }
-    }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [user, isLoading]);
 
   return (
