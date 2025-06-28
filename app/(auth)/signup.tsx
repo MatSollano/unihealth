@@ -48,6 +48,9 @@ export default function SignUpScreen() {
       setLoading(false);
     }
   };
+  await updateProfile(auth.currentUser, {
+  displayName: "John Doe"
+});
 
   return (
     <SafeAreaView style={styles.container}>
