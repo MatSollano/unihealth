@@ -51,7 +51,6 @@ export default function SignUpScreen() {
       setLoading(false);
     }
   };
-});
 
   return (
     <SafeAreaView style={styles.container}>
