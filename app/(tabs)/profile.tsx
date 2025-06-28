@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { MoreVertical, Camera, User, FileText, BookOpen, LogOut, ChevronRight } from 'lucide-react-native';
+import { MoveVertical as MoreVertical, Camera, User, FileText, BookOpen, LogOut, ChevronRight } from 'lucide-react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAuthStore } from '@/store/authStore';
 

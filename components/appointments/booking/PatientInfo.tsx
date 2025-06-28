@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Edit } from 'lucide-react-native';
+import { CreditCard as Edit } from 'lucide-react-native';
 
 interface Patient {
   name: string;
