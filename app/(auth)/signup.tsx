@@ -39,6 +39,9 @@ export default function SignUpScreen() {
     setLoading(true);
     try {
       await signUp(email, password, fullName);
+      await updateProfile(auth.currentUser, {
+        displayName: fullName, 
+      });
       Alert.alert('Success', 'Account created successfully!', [
         { text: 'OK', onPress: () => router.replace('/(tabs)') }
       ]);
@@ -48,8 +51,6 @@ export default function SignUpScreen() {
       setLoading(false);
     }
   };
-  await updateProfile(auth.currentUser, {
-  displayName: "John Doe"
 });
 
   return (
