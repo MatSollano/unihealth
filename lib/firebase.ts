@@ -2,15 +2,15 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 
-// Your Firebase configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-project.firebaseapp.com",
-  databaseURL: "https://your-project-default-rtdb.firebaseio.com/",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "your-app-id"
+  apiKey: "AIzaSyD2Gtl-4di2gK-OejLLoIhDjOu7yjrstoo",
+  authDomain: "unihealth-9fc00.firebaseapp.com",
+  databaseURL: "https://unihealth-9fc00-default-rtdb.firebaseio.com/",
+  projectId: "unihealth-9fc00",
+  storageBucket: "unihealth-9fc00.firebasestorage.app",
+  messagingSenderId: "819007548137",
+  appId: "1:819007548137:web:587a7b7a3728f42f459e78"
 };
 
 // Initialize Firebase
