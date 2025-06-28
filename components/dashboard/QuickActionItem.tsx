@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Flask, QrCode } from 'lucide-react-native';
+import { FlaskRound as Flask, QrCode } from 'lucide-react-native';
 
 interface QuickActionItemProps {
   icon: string;
