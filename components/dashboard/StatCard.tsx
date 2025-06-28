@@ -1,59 +1,67 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TrendingUp } from 'lucide-react-native';
 
 interface StatCardProps {
-  label: string;
+  title: string;
   value: string;
-  icon?: string;
+  unit: string;
+  icon: React.ReactNode;
+  gradient: string[];
 }
 
-export function StatCard({ label, value, icon }: StatCardProps) {
+export function StatCard({ title, value, unit, icon, gradient }: StatCardProps) {
   return (
-    <LinearGradient
-      colors={['#004D80', '#4695EB']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.card}
-    >
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value}</Text>
-      {icon && (
+    <LinearGradient colors={gradient} style={styles.card}>
+      <View style={styles.header}>
         <View style={styles.iconContainer}>
-          <TrendingUp size={86} color="#fff" style={styles.icon} />
+          {icon}
         </View>
-      )}
+        <Text style={styles.title}>{title}</Text>
+      </View>
+      <View style={styles.valueContainer}>
+        <Text style={styles.value}>{value}</Text>
+        <Text style={styles.unit}>{unit}</Text>
+      </View>
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    width: 160,
+    padding: 20,
     borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    minWidth: 150,
-    minHeight: 100,
+    marginRight: 16,
   },
-  value: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  label: {
-    fontSize: 14,
-    color: '#e0e0e0',
-    marginVertical: 4,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
   },
   iconContainer: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: -16,
+    marginRight: 8,
   },
-  icon: {
-    opacity: 0.3,
+  title: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#fff',
+    opacity: 0.9,
+  },
+  valueContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  value: {
+    fontSize: 28,
+    fontFamily: 'Inter-Bold',
+    color: '#fff',
+  },
+  unit: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#fff',
+    opacity: 0.8,
+    marginLeft: 4,
   },
 });

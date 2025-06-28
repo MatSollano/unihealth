@@ -3,23 +3,24 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   StyleSheet,
   Alert,
-  Dimensions,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Fingerprint, Mail, Lock } from 'lucide-react-native';
+import { Mail, Lock, Eye, EyeOff, Heart } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
 import { useAuthStore } from '@/store/authStore';
 
-const { width } = Dimensions.get('window');
-
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useAuthStore();
 
   const handleSignIn = () => {
@@ -33,62 +34,77 @@ export default function SignInScreen() {
     router.replace('/(tabs)');
   };
 
-  const handleBiometricLogin = () => {
-    Alert.alert('Biometric Login', 'Fingerprint login tapped!');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <Image
-        source={require('../../assets/health-logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.subtitle}>Your Health, Unified as One</Text>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* Header */}
+          <View style={styles.header}>
+            <LinearGradient
+              colors={['#004D80', '#4695EB']}
+              style={styles.logoContainer}
+            >
+              <Heart size={32} color="#fff" />
+            </LinearGradient>
+            <Text style={styles.title}>HealthConnect</Text>
+            <Text style={styles.subtitle}>Your Health, Unified as One</Text>
+          </View>
 
-      <TextInput
-        placeholder="Email or username"
-        value={email}
-        onChangeText={setEmail}
-        icon={<Mail size={20} color="#777" />}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+          {/* Form */}
+          <View style={styles.form}>
+            <TextInput
+              placeholder="Email address"
+              value={email}
+              onChangeText={setEmail}
+              icon={<Mail size={20} color="#6B7280" />}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        icon={<Lock size={20} color="#777" />}
-        secureTextEntry
-      />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              icon={<Lock size={20} color="#6B7280" />}
+              secureTextEntry={!showPassword}
+              rightIcon={
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  {showPassword ? (
+                    <EyeOff size={20} color="#6B7280" />
+                  ) : (
+                    <Eye size={20} color="#6B7280" />
+                  )}
+                </TouchableOpacity>
+              }
+            />
 
-      <TouchableOpacity style={styles.forgotWrapper}>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
+            <TouchableOpacity style={styles.forgotPassword}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
 
-      <Button title="Sign In" onPress={handleSignIn} />
+            <Button title="Sign In" onPress={handleSignIn} />
+          </View>
 
-      <Text style={styles.orText}>Or use biometric login</Text>
+          {/* Footer */}
+          <View style={styles.footer}>
+            <View style={styles.signupRow}>
+              <Text style={styles.signupText}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
+                <Text style={styles.signupLink}>Sign Up</Text>
+              </TouchableOpacity>
+            </View>
 
-      <TouchableOpacity style={styles.biometricButton} onPress={handleBiometricLogin}>
-        <Fingerprint size={32} color="#1e3a8a" />
-      </TouchableOpacity>
-
-      <View style={styles.footerContainer}>
-        <View style={styles.footerRow}>
-          <Text style={styles.footerText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
-            <Text style={styles.signupLink}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.termsText}>
-          By signing in, you agree to our{' '}
-          <Text style={styles.link}>Terms</Text> and{' '}
-          <Text style={styles.link}>Privacy Policy</Text>
-        </Text>
-      </View>
+            <Text style={styles.termsText}>
+              By signing in, you agree to our{' '}
+              <Text style={styles.link}>Terms of Service</Text> and{' '}
+              <Text style={styles.link}>Privacy Policy</Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -96,68 +112,78 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    justifyContent: 'center',
     backgroundColor: '#fff',
   },
-  logo: {
-    width: width * 0.8,
+  keyboardView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    padding: 24,
+    justifyContent: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 48,
+  },
+  logoContainer: {
+    width: 80,
     height: 80,
-    resizeMode: 'contain',
-    alignSelf: 'center',
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 32,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
+    marginBottom: 8,
   },
   subtitle: {
-    textAlign: 'center',
-    marginBottom: 32,
-    color: '#555',
     fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
+    textAlign: 'center',
   },
-  forgotWrapper: {
+  form: {
+    marginBottom: 32,
+  },
+  forgotPassword: {
     alignItems: 'flex-end',
     marginBottom: 24,
   },
-  forgotText: {
-    fontWeight: '500',
-    color: '#004d80',
+  forgotPasswordText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#004D80',
   },
-  orText: {
-    textAlign: 'center',
-    color: '#777',
-    marginVertical: 24,
-  },
-  biometricButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#e8f0fe',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 32,
-  },
-  footerContainer: {
+  footer: {
     alignItems: 'center',
   },
-  footerRow: {
+  signupRow: {
     flexDirection: 'row',
     marginBottom: 16,
   },
-  footerText: {
+  signupText: {
     fontSize: 14,
-    color: '#444',
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
   },
   signupLink: {
-    fontWeight: '500',
-    color: '#004d80',
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#004D80',
   },
   termsText: {
     fontSize: 12,
-    color: '#777',
+    fontFamily: 'Inter-Regular',
+    color: '#9CA3AF',
     textAlign: 'center',
-    paddingHorizontal: 16,
+    lineHeight: 18,
   },
   link: {
-    color: '#1e3a8a',
+    color: '#004D80',
     textDecorationLine: 'underline',
   },
 });

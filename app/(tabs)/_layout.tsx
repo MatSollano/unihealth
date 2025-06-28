@@ -1,17 +1,24 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, Calendar, FileText, Award, User } from 'lucide-react-native';
+import { Home, Calendar, FileText, Award, User } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#2563EB',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: '#004D80',
+        tabBarInactiveTintColor: '#9CA3AF',
         tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopWidth: 1,
+          borderTopColor: '#E5E7EB',
           paddingBottom: 8,
           paddingTop: 8,
-          height: 60,
+          height: 80,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'Inter-Medium',
         },
       }}
     >
@@ -27,7 +34,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="appointments"
         options={{
-          title: 'Visits',
+          title: 'Appointments',
           tabBarIcon: ({ color, size }) => (
             <Calendar size={size} color={color} />
           ),
@@ -45,7 +52,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="certificates"
         options={{
-          title: 'Med Certs',
+          title: 'Certificates',
           tabBarIcon: ({ color, size }) => (
             <Award size={size} color={color} />
           ),

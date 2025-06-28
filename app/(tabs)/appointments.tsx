@@ -1,53 +1,55 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Bell, Filter } from 'lucide-react-native';
-import { PrescriptionListCard } from '@/components/prescriptions/PrescriptionListCard';
+import { Plus, Bell, Search } from 'lucide-react-native';
+import { AppointmentListCard } from '@/components/appointments/AppointmentListCard';
 import { FilterTabs } from '@/components/ui/FilterTabs';
 import { SearchBar } from '@/components/ui/SearchBar';
 
-const mockPrescriptions = [
+const mockAppointments = [
   {
     id: '1',
-    medicineName: 'Lisinopril',
-    dosage: '10mg daily',
     doctorName: 'Dr. Sarah Johnson',
-    prescribedDate: '2024-01-15',
-    daysLeft: 15,
-    status: 'active' as const,
+    specialty: 'Cardiologist',
+    clinic: 'Heart Care Center',
+    date: 'Today',
+    time: '2:30 PM',
+    status: 'upcoming' as const,
+    imageUrl: 'https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
   {
     id: '2',
-    medicineName: 'Metformin',
-    dosage: '500mg twice daily',
     doctorName: 'Dr. Michael Chen',
-    prescribedDate: '2024-01-10',
-    daysLeft: 8,
-    status: 'active' as const,
+    specialty: 'Endocrinologist',
+    clinic: 'Diabetes Care Clinic',
+    date: 'Tomorrow',
+    time: '10:00 AM',
+    status: 'upcoming' as const,
+    imageUrl: 'https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
   {
     id: '3',
-    medicineName: 'Atorvastatin',
-    dosage: '20mg daily',
-    doctorName: 'Dr. Sarah Johnson',
-    prescribedDate: '2023-12-20',
-    daysLeft: 0,
-    status: 'expired' as const,
+    doctorName: 'Dr. Emily Rodriguez',
+    specialty: 'Dermatologist',
+    clinic: 'Skin Health Center',
+    date: 'Dec 15',
+    time: '3:00 PM',
+    status: 'completed' as const,
+    imageUrl: 'https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
 ];
 
-const filterOptions = ['All', 'Active', 'Expired', 'Low Stock'];
+const filterOptions = ['All', 'Upcoming', 'Completed', 'Cancelled'];
 
-export default function PrescriptionsScreen() {
+export default function AppointmentsScreen() {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredPrescriptions = mockPrescriptions.filter(prescription => {
+  const filteredAppointments = mockAppointments.filter(appointment => {
     const matchesFilter = selectedFilter === 'All' || 
-      (selectedFilter === 'Low Stock' && prescription.daysLeft <= 7) ||
-      prescription.status.toLowerCase() === selectedFilter.toLowerCase();
-    const matchesSearch = prescription.medicineName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prescription.doctorName.toLowerCase().includes(searchQuery.toLowerCase());
+      appointment.status.toLowerCase() === selectedFilter.toLowerCase();
+    const matchesSearch = appointment.doctorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      appointment.specialty.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -55,10 +57,10 @@ export default function PrescriptionsScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Prescriptions</Text>
+        <Text style={styles.headerTitle}>Appointments</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.actionButton}>
-            <Filter size={24} color="#6B7280" />
+            <Plus size={24} color="#004D80" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
             <Bell size={24} color="#6B7280" />
@@ -69,7 +71,7 @@ export default function PrescriptionsScreen() {
       {/* Search */}
       <View style={styles.searchContainer}>
         <SearchBar
-          placeholder="Search prescriptions..."
+          placeholder="Search appointments..."
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -82,13 +84,13 @@ export default function PrescriptionsScreen() {
         onSelect={setSelectedFilter}
       />
 
-      {/* Prescriptions List */}
+      {/* Appointments List */}
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.prescriptionsList}>
-          {filteredPrescriptions.map((prescription) => (
-            <PrescriptionListCard
-              key={prescription.id}
-              {...prescription}
+        <View style={styles.appointmentsList}>
+          {filteredAppointments.map((appointment) => (
+            <AppointmentListCard
+              key={appointment.id}
+              {...appointment}
               onPress={() => {}}
             />
           ))}
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  prescriptionsList: {
+  appointmentsList: {
     padding: 20,
     gap: 12,
   },

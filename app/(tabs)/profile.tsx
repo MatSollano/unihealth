@@ -1,9 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { MoveVertical as MoreVertical, Camera, User, FileText, BookOpen, LogOut, ChevronRight } from 'lucide-react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { 
+  Settings, 
+  User, 
+  FileText, 
+  Shield, 
+  HelpCircle, 
+  LogOut, 
+  ChevronRight,
+  Camera,
+  Edit
+} from 'lucide-react-native';
 import { useAuthStore } from '@/store/authStore';
 
 export default function ProfileScreen() {
@@ -14,63 +23,93 @@ export default function ProfileScreen() {
     router.replace('/(auth)/signin');
   };
 
+  const menuItems = [
+    {
+      icon: <User size={24} color="#6B7280" />,
+      title: 'Personal Information',
+      subtitle: 'Update your details',
+      onPress: () => {},
+    },
+    {
+      icon: <FileText size={24} color="#6B7280" />,
+      title: 'Medical History',
+      subtitle: 'View your records',
+      onPress: () => {},
+    },
+    {
+      icon: <Shield size={24} color="#6B7280" />,
+      title: 'Privacy & Security',
+      subtitle: 'Manage your privacy',
+      onPress: () => {},
+    },
+    {
+      icon: <Settings size={24} color="#6B7280" />,
+      title: 'Settings',
+      subtitle: 'App preferences',
+      onPress: () => {},
+    },
+    {
+      icon: <HelpCircle size={24} color="#6B7280" />,
+      title: 'Help & Support',
+      subtitle: 'Get assistance',
+      onPress: () => {},
+    },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
-        <MoreVertical size={wp('5.5%')} color="#333" />
-      </View>
-
-      {/* Profile Photo & Name */}
-      <View style={styles.profileSection}>
-        <View style={styles.avatarContainer}>
-          <Image
-            source={require('../../assets/avatar/april.png')}
-            style={styles.avatar}
-          />
-          <TouchableOpacity style={styles.cameraButton}>
-            <Camera size={wp('4%')} color="#FFF" />
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Profile</Text>
+          <TouchableOpacity style={styles.editButton}>
+            <Edit size={20} color="#004D80" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.name}>April Marie Rosales</Text>
-        <Text style={styles.patientId}>Patient ID: #PT-0892345</Text>
-      </View>
 
-      {/* List Items */}
-      <View style={styles.list}>
-        <TouchableOpacity style={styles.listItem}>
-          <User size={wp('5.5%')} color="#374151" />
-          <View style={styles.listText}>
-            <Text style={styles.listTitle}>Personal Information</Text>
-            <Text style={styles.listSubtitle}>Phone, email, address</Text>
+        {/* Profile Info */}
+        <View style={styles.profileSection}>
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{ uri: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400' }}
+              style={styles.avatar}
+            />
+            <TouchableOpacity style={styles.cameraButton}>
+              <Camera size={16} color="#fff" />
+            </TouchableOpacity>
           </View>
-          <ChevronRight size={wp('5%')} color="#9CA3AF" />
+          <Text style={styles.userName}>John Doe</Text>
+          <Text style={styles.userEmail}>john.doe@email.com</Text>
+          <Text style={styles.patientId}>Patient ID: #HC-2024-001</Text>
+        </View>
+
+        {/* Menu Items */}
+        <View style={styles.menuSection}>
+          {menuItems.map((item, index) => (
+            <TouchableOpacity key={index} style={styles.menuItem} onPress={item.onPress}>
+              <View style={styles.menuItemLeft}>
+                <View style={styles.menuItemIcon}>
+                  {item.icon}
+                </View>
+                <View style={styles.menuItemText}>
+                  <Text style={styles.menuItemTitle}>{item.title}</Text>
+                  <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+                </View>
+              </View>
+              <ChevronRight size={20} color="#9CA3AF" />
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Logout Button */}
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <LogOut size={20} color="#EF4444" />
+          <Text style={styles.logoutText}>Sign Out</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.listItem}>
-          <FileText size={wp('5.5%')} color="#374151" />
-          <View style={styles.listText}>
-            <Text style={styles.listTitle}>Terms and Conditions</Text>
-            <Text style={styles.listSubtitle}>Use Policies</Text>
-          </View>
-          <ChevronRight size={wp('5%')} color="#9CA3AF" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.listItem}>
-          <BookOpen size={wp('5.5%')} color="#374151" />
-          <View style={styles.listText}>
-            <Text style={styles.listTitle}>User Manual</Text>
-          </View>
-          <ChevronRight size={wp('5%')} color="#9CA3AF" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <LogOut size={wp('5%')} color="#2563EB" />
-        <Text style={styles.logoutText}>Logout</Text>
-      </TouchableOpacity>
+        {/* App Version */}
+        <Text style={styles.versionText}>Version 1.0.0</Text>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -78,90 +117,139 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F9FAFB',
+  },
+  scrollView: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: wp('5%'),
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#fff',
   },
   headerTitle: {
-    fontSize: wp('6%'),
-    fontWeight: '600',
+    fontSize: 24,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
+  },
+  editButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   profileSection: {
+    backgroundColor: '#fff',
     alignItems: 'center',
-    marginTop: hp('3%'),
-    marginBottom: hp('2%'),
+    paddingVertical: 32,
+    marginBottom: 24,
   },
   avatarContainer: {
     position: 'relative',
+    marginBottom: 16,
   },
   avatar: {
-    width: wp('22%'),
-    height: wp('22%'),
-    borderRadius: wp('11%'),
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
   cameraButton: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: '#2563EB',
-    borderRadius: wp('4%'),
-    padding: wp('1.5%'),
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#004D80',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#fff',
   },
-  name: {
-    fontSize: wp('5%'),
-    fontWeight: '600',
-    marginTop: hp('1%'),
+  userName: {
+    fontSize: 24,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
+    marginBottom: 4,
+  },
+  userEmail: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
+    marginBottom: 8,
   },
   patientId: {
-    fontSize: wp('3.5%'),
-    color: '#6B7280',
-    marginTop: hp('0.3%'),
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#9CA3AF',
   },
-  list: {
-    marginTop: hp('2%'),
-    paddingHorizontal: wp('5%'),
+  menuSection: {
+    backgroundColor: '#fff',
+    marginBottom: 24,
   },
-  listItem: {
+  menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F9FAFB',
-    borderRadius: wp('3%'),
-    padding: wp('4%'),
-    marginBottom: hp('1.5%'),
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
   },
-  listText: {
+  menuItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
-    marginLeft: wp('3%'),
   },
-  listTitle: {
-    fontSize: wp('4%'),
-    fontWeight: '500',
+  menuItemIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  menuItemText: {
+    flex: 1,
+  },
+  menuItemTitle: {
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
     color: '#111827',
+    marginBottom: 2,
   },
-  listSubtitle: {
-    fontSize: wp('3.3%'),
+  menuItemSubtitle: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
     color: '#6B7280',
-    marginTop: hp('0.3%'),
   },
   logoutButton: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: hp('5%'),
-    marginHorizontal: wp('5%'),
-    borderWidth: 1,
-    borderColor: '#2563EB',
-    borderRadius: wp('2%'),
-    paddingVertical: hp('1.5%'),
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    marginHorizontal: 20,
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginBottom: 24,
   },
   logoutText: {
-    color: '#2563EB',
-    fontSize: wp('4%'),
-    fontWeight: '600',
-    marginLeft: wp('2%'),
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+    color: '#EF4444',
+    marginLeft: 8,
+  },
+  versionText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#9CA3AF',
+    textAlign: 'center',
+    marginBottom: 32,
   },
 });

@@ -1,59 +1,82 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Search, Bell, FileText, ChevronRight } from 'lucide-react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { mockData } from '@/data/mockData';
+import { Bell, Download } from 'lucide-react-native';
+import { CertificateCard } from '@/components/certificates/CertificateCard';
+import { SearchBar } from '@/components/ui/SearchBar';
 
-export default function MedicalCertificatesScreen() {
-  const [search, setSearch] = useState('');
-  const { certificates } = mockData;
+const mockCertificates = [
+  {
+    id: '1',
+    title: 'Medical Fitness Certificate',
+    issueDate: '2024-01-15',
+    expiryDate: '2024-07-15',
+    doctorName: 'Dr. Sarah Johnson',
+    type: 'fitness' as const,
+  },
+  {
+    id: '2',
+    title: 'Vaccination Certificate',
+    issueDate: '2023-12-10',
+    expiryDate: '2024-12-10',
+    doctorName: 'Dr. Michael Chen',
+    type: 'vaccination' as const,
+  },
+  {
+    id: '3',
+    title: 'Medical Leave Certificate',
+    issueDate: '2024-01-05',
+    expiryDate: '2024-01-12',
+    doctorName: 'Dr. Emily Rodriguez',
+    type: 'leave' as const,
+  },
+];
 
-  const filtered = certificates.filter(c =>
-    c.title.toLowerCase().includes(search.toLowerCase())
-  );
+export default function CertificatesScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const renderCard = ({ item }: { item: typeof certificates[0] }) => (
-    <TouchableOpacity style={styles.card}>
-      <View style={styles.iconContainer}>
-        <FileText size={wp('7%')} color="#2563EB" />
-      </View>
-      <Text style={styles.title}>{item.title}</Text>
-      {item.files ? <Text style={styles.files}>{item.files}</Text> : null}
-      <Text style={styles.issued}>Issued on {item.issued}</Text>
-      <Text style={styles.doctor}>{item.doctor}</Text>
-      <ChevronRight size={wp('5%')} color="#9CA3AF" style={styles.chevron} />
-    </TouchableOpacity>
+  const filteredCertificates = mockCertificates.filter(certificate =>
+    certificate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    certificate.doctorName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Medical Certificates</Text>
-        <View style={styles.headerIcons}>
-          <Bell size={wp('6%')} color="#333" />
+        <View style={styles.headerActions}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Download size={24} color="#6B7280" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Bell size={24} color="#6B7280" />
+          </TouchableOpacity>
         </View>
       </View>
 
+      {/* Search */}
       <View style={styles.searchContainer}>
-        <Search size={wp('5%')} color="#9CA3AF" />
-        <TextInput
-          placeholder="Search certificates"
-          value={search}
-          onChangeText={setSearch}
-          style={styles.searchInput}
+        <SearchBar
+          placeholder="Search certificates..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
         />
       </View>
 
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderCard}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-      />
+      {/* Certificates List */}
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.certificatesList}>
+          {filteredCertificates.map((certificate) => (
+            <CertificateCard
+              key={certificate.id}
+              {...certificate}
+              onPress={() => {}}
+              onDownload={() => {}}
+            />
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -61,84 +84,43 @@ export default function MedicalCertificatesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F9FAFB',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: wp('5%'),
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#fff',
   },
   headerTitle: {
-    fontSize: wp('6%'),
-    fontWeight: '600',
+    fontSize: 24,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
   },
-  headerIcons: {
+  headerActions: {
     flexDirection: 'row',
+    gap: 8,
+  },
+  actionButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F3F4F6',
-    borderRadius: wp('2%'),
-    paddingHorizontal: wp('3%'),
-    paddingVertical: hp('1%'),
-    marginHorizontal: wp('5%'),
-    marginBottom: hp('2%'),
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#fff',
   },
-  searchInput: {
-    marginLeft: wp('2%'),
-    fontSize: wp('3.8%'),
+  scrollView: {
     flex: 1,
   },
-  listContent: {
-    paddingHorizontal: wp('5%'),
-    paddingBottom: hp('10%'),
-  },
-  row: {
-    justifyContent: 'space-between',
-    marginBottom: hp('2%'),
-  },
-  card: {
-    backgroundColor: '#F9FAFB',
-    borderRadius: wp('3%'),
-    padding: wp('4%'),
-    width: wp('42%'),
-    height: hp('22%'),
-    position: 'relative',
-    justifyContent: 'space-between',
-  },
-  iconContainer: {
-    backgroundColor: '#DBEAFE',
-    padding: wp('2.5%'),
-    borderRadius: wp('2.5%'),
-    alignSelf: 'flex-start',
-    marginBottom: hp('1%'),
-  },
-  title: {
-    fontSize: wp('4%'),
-    fontWeight: '600',
-    marginBottom: hp('0.3%'),
-  },
-  files: {
-    fontSize: wp('3.3%'),
-    color: '#6B7280',
-    marginBottom: hp('0.3%'),
-  },
-  issued: {
-    fontSize: wp('3.3%'),
-    color: '#6B7280',
-  },
-  doctor: {
-    fontSize: wp('3.4%'),
-    color: '#111827',
-    fontWeight: '500',
-    marginTop: hp('0.5%'),
-  },
-  chevron: {
-    position: 'absolute',
-    bottom: wp('3%'),
-    right: wp('3%'),
+  certificatesList: {
+    padding: 20,
+    gap: 12,
   },
 });

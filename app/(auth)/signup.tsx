@@ -4,96 +4,132 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
-  Dimensions,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Mail, Lock, User } from 'lucide-react-native';
+import { Mail, Lock, User, Eye, EyeOff, Heart } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
-import { SocialButtons } from '@/components/auth/SocialButtons';
-
-const { width } = Dimensions.get('window');
 
 export default function SignUpScreen() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSignUp = () => {
     if (!fullName || !email || !password || !confirmPassword) {
-      alert('Please fill in all fields.');
+      Alert.alert('Missing Fields', 'Please fill in all fields.');
       return;
     }
     if (password !== confirmPassword) {
-      alert('Passwords do not match.');
+      Alert.alert('Password Mismatch', 'Passwords do not match.');
       return;
     }
 
-    console.log('Signing up...');
-    // Implement signup logic
+    Alert.alert('Success', 'Account created successfully!', [
+      { text: 'OK', onPress: () => router.push('/(auth)/signin') }
+    ]);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image
-        source={require('../../assets/health-logo.png')}
-        style={styles.logo}
-      />
-      <Text style={styles.subtitle}>Your Health, Unified as One</Text>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* Header */}
+          <View style={styles.header}>
+            <LinearGradient
+              colors={['#004D80', '#4695EB']}
+              style={styles.logoContainer}
+            >
+              <Heart size={32} color="#fff" />
+            </LinearGradient>
+            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.subtitle}>Join HealthConnect today</Text>
+          </View>
 
-      <TextInput
-        placeholder="Enter your full name"
-        value={fullName}
-        onChangeText={setFullName}
-        icon={<User size={20} color="#777" />}
-      />
+          {/* Form */}
+          <View style={styles.form}>
+            <TextInput
+              placeholder="Full name"
+              value={fullName}
+              onChangeText={setFullName}
+              icon={<User size={20} color="#6B7280" />}
+            />
 
-      <TextInput
-        placeholder="Enter your email"
-        value={email}
-        onChangeText={setEmail}
-        icon={<Mail size={20} color="#777" />}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+            <TextInput
+              placeholder="Email address"
+              value={email}
+              onChangeText={setEmail}
+              icon={<Mail size={20} color="#6B7280" />}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
 
-      <TextInput
-        placeholder="Create password"
-        value={password}
-        onChangeText={setPassword}
-        icon={<Lock size={20} color="#777" />}
-        secureTextEntry
-      />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              icon={<Lock size={20} color="#6B7280" />}
+              secureTextEntry={!showPassword}
+              rightIcon={
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  {showPassword ? (
+                    <EyeOff size={20} color="#6B7280" />
+                  ) : (
+                    <Eye size={20} color="#6B7280" />
+                  )}
+                </TouchableOpacity>
+              }
+            />
 
-      <TextInput
-        placeholder="Confirm password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        icon={<Lock size={20} color="#777" />}
-        secureTextEntry
-      />
+            <TextInput
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              icon={<Lock size={20} color="#6B7280" />}
+              secureTextEntry={!showConfirmPassword}
+              rightIcon={
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} color="#6B7280" />
+                  ) : (
+                    <Eye size={20} color="#6B7280" />
+                  )}
+                </TouchableOpacity>
+              }
+            />
 
-      <Button title="Sign Up" onPress={handleSignUp} />
+            <Button title="Create Account" onPress={handleSignUp} />
+          </View>
 
-      <SocialButtons />
+          {/* Footer */}
+          <View style={styles.footer}>
+            <View style={styles.signinRow}>
+              <Text style={styles.signinText}>Already have an account? </Text>
+              <TouchableOpacity onPress={() => router.push('/(auth)/signin')}>
+                <Text style={styles.signinLink}>Sign In</Text>
+              </TouchableOpacity>
+            </View>
 
-      <View style={styles.footerContainer}>
-        <View style={styles.footerRow}>
-          <Text style={styles.footerText}>Already have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/(auth)/signin')}>
-            <Text style={styles.signinLink}>Sign In</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.termsText}>
-          By signing up, you agree to our{' '}
-          <Text style={styles.link}>Terms</Text> and{' '}
-          <Text style={styles.link}>Privacy Policy</Text>
-        </Text>
-      </View>
+            <Text style={styles.termsText}>
+              By creating an account, you agree to our{' '}
+              <Text style={styles.link}>Terms of Service</Text> and{' '}
+              <Text style={styles.link}>Privacy Policy</Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -101,46 +137,69 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    justifyContent: 'center',
     backgroundColor: '#fff',
   },
-  logo: {
-    width: width * 0.8,
+  keyboardView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    padding: 24,
+    justifyContent: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 48,
+  },
+  logoContainer: {
+    width: 80,
     height: 80,
-    resizeMode: 'contain',
-    alignSelf: 'center',
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 32,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
+    marginBottom: 8,
   },
   subtitle: {
-    textAlign: 'center',
-    marginBottom: 32,
-    color: '#555',
     fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
+    textAlign: 'center',
   },
-  footerContainer: {
+  form: {
+    marginBottom: 32,
+  },
+  footer: {
     alignItems: 'center',
-    marginTop: 24,
   },
-  footerRow: {
+  signinRow: {
     flexDirection: 'row',
     marginBottom: 16,
   },
-  footerText: {
+  signinText: {
     fontSize: 14,
-    color: '#444',
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
   },
   signinLink: {
-    fontWeight: '500',
-    color: '#004d80',
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: '#004D80',
   },
   termsText: {
     fontSize: 12,
-    color: '#777',
+    fontFamily: 'Inter-Regular',
+    color: '#9CA3AF',
     textAlign: 'center',
-    paddingHorizontal: 16,
+    lineHeight: 18,
   },
   link: {
-    color: '#1e3a8a',
+    color: '#004D80',
     textDecorationLine: 'underline',
   },
 });

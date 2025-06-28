@@ -1,38 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   TextInput as RNTextInput,
   StyleSheet,
   TextInputProps,
-  TouchableOpacity,
 } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
 
 interface CustomTextInputProps extends TextInputProps {
   icon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
-export function TextInput({ icon, secureTextEntry, style, ...rest }: CustomTextInputProps) {
-  const [hidePassword, setHidePassword] = useState(!!secureTextEntry);
-
+export function TextInput({ icon, rightIcon, style, ...rest }: CustomTextInputProps) {
   return (
     <View style={[styles.container, style]}>
       {icon && <View style={styles.iconContainer}>{icon}</View>}
       <RNTextInput
         style={styles.input}
-        secureTextEntry={hidePassword}
-        placeholderTextColor="#999"
+        placeholderTextColor="#9CA3AF"
         {...rest}
       />
-      {secureTextEntry && (
-        <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-          {hidePassword ? (
-            <EyeOff size={20} color="#777" />
-          ) : (
-            <Eye size={20} color="#777" />
-          )}
-        </TouchableOpacity>
-      )}
+      {rightIcon && <View style={styles.rightIconContainer}>{rightIcon}</View>}
     </View>
   );
 }
@@ -41,20 +29,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    borderColor: '#E5E7EB',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     marginBottom: 16,
     backgroundColor: '#fff',
   },
   iconContainer: {
     marginRight: 12,
   },
+  rightIconContainer: {
+    marginLeft: 12,
+  },
   input: {
     flex: 1,
     fontSize: 16,
-    paddingVertical: 8,
+    fontFamily: 'Inter-Regular',
+    color: '#111827',
   },
 });

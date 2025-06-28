@@ -1,66 +1,114 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Bell, Plus, Calendar, FileText, Activity, Heart } from 'lucide-react-native';
 import { StatCard } from '@/components/dashboard/StatCard';
-import { QuickActionItem } from '@/components/dashboard/QuickActionItem';
-import { PrescriptionCard } from '@/components/dashboard/PrescriptionCard';
+import { QuickActionCard } from '@/components/dashboard/QuickActionCard';
 import { AppointmentCard } from '@/components/dashboard/AppointmentCard';
-import { MedicalHistoryCard } from '@/components/dashboard/MedicalHistoryCard';
-import { mockData } from '@/data/mockData';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { PrescriptionCard } from '@/components/dashboard/PrescriptionCard';
 
-export default function DashboardScreen() {
-  const { prescriptions, appointments, medicalHistory } = mockData;
-
+export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        <Text style={styles.heading}>Welcome!</Text>
-
-        {/* Stats */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.statsRow}>
-            <View style={{ width: wp('2%') }} />
-            <StatCard label="Appointments" value="2" icon="trending-up" />
-            <View style={styles.verticalStack}>
-              <StatCard label="Prescriptions" value="5" />
-              <StatCard label="Records" value="12" />
-            </View>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.greeting}>Good morning,</Text>
+            <Text style={styles.userName}>John Doe</Text>
           </View>
-        </ScrollView>
-
-        {/* Quick Actions */}
-        <View style={styles.quickActionsRow}>
-          <QuickActionItem label="Medical History" icon="flask" />
-          <QuickActionItem label="Scan QR" icon="qr-code" />
+          <TouchableOpacity style={styles.notificationButton}>
+            <Bell size={24} color="#6B7280" />
+          </TouchableOpacity>
         </View>
 
-        {/* Prescriptions */}
-        <Text style={styles.sectionTitle}>Prescriptions</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.horizontalList}>
-            {prescriptions.map((item) => (
-              <PrescriptionCard key={item.id} {...item} />
-            ))}
-          </View>
-        </ScrollView>
+        {/* Health Stats */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Health Overview</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsContainer}>
+            <StatCard
+              title="Heart Rate"
+              value="72"
+              unit="bpm"
+              icon={<Heart size={24} color="#fff" />}
+              gradient={['#EF4444', '#DC2626']}
+            />
+            <StatCard
+              title="Steps Today"
+              value="8,432"
+              unit="steps"
+              icon={<Activity size={24} color="#fff" />}
+              gradient={['#10B981', '#059669']}
+            />
+            <StatCard
+              title="Sleep"
+              value="7.5"
+              unit="hours"
+              icon={<Activity size={24} color="#fff" />}
+              gradient={['#8B5CF6', '#7C3AED']}
+            />
+          </ScrollView>
+        </View>
 
-        {/* Appointments */}
-        <Text style={styles.sectionTitle}>Appointments</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.horizontalList}>
-            {appointments.map((item) => (
-              <AppointmentCard key={item.id} {...item} />
-            ))}
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <View style={styles.quickActionsGrid}>
+            <QuickActionCard
+              title="Book Appointment"
+              subtitle="Schedule with doctor"
+              icon={<Calendar size={24} color="#004D80" />}
+              onPress={() => {}}
+            />
+            <QuickActionCard
+              title="View Prescriptions"
+              subtitle="Check medications"
+              icon={<FileText size={24} color="#004D80" />}
+              onPress={() => {}}
+            />
           </View>
-        </ScrollView>
+        </View>
 
-        {/* Medical History */}
-        <Text style={styles.sectionTitle}>Medical History</Text>
-        <View style={styles.medicalHistorySection}>
-          {medicalHistory.map((item) => (
-            <MedicalHistoryCard key={item.id} {...item} />
-          ))}
+        {/* Upcoming Appointments */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Upcoming Appointments</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>See All</Text>
+            </TouchableOpacity>
+          </View>
+          <AppointmentCard
+            doctorName="Dr. Sarah Johnson"
+            specialty="Cardiologist"
+            date="Today"
+            time="2:30 PM"
+            imageUrl="https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400"
+          />
+        </View>
+
+        {/* Recent Prescriptions */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Recent Prescriptions</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>See All</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <PrescriptionCard
+              medicineName="Lisinopril"
+              dosage="10mg daily"
+              doctorName="Dr. Sarah Johnson"
+              daysLeft={15}
+            />
+            <PrescriptionCard
+              medicineName="Metformin"
+              dosage="500mg twice daily"
+              doctorName="Dr. Michael Chen"
+              daysLeft={8}
+            />
+          </ScrollView>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -70,44 +118,64 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F9FAFB',
   },
   scrollView: {
     flex: 1,
   },
-  content: {
-    padding: wp('5%'),
-    paddingBottom: hp('10%'),
-  },
-  heading: {
-    fontSize: wp('6%'),
-    fontWeight: '600',
-    marginBottom: hp('2%'),
-  },
-  sectionTitle: {
-    fontSize: wp('4.5%'),
-    fontWeight: '500',
-    marginTop: hp('3%'),
-    marginBottom: hp('1.5%'),
-  },
-  statsRow: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: hp('2%'),
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#fff',
   },
-  verticalStack: {
-    flexDirection: 'column',
-    gap: hp('1.5%'),
-    paddingHorizontal: wp('3%'),
+  greeting: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#6B7280',
   },
-  quickActionsRow: {
-    paddingHorizontal: wp('2%'),
+  userName: {
+    fontSize: 24,
+    fontFamily: 'Inter-Bold',
+    color: '#111827',
   },
-  horizontalList: {
+  notificationButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  section: {
+    marginTop: 24,
+    paddingHorizontal: 20,
+  },
+  sectionHeader: {
     flexDirection: 'row',
-    paddingHorizontal: wp('2%'),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
   },
-  medicalHistorySection: {
-    paddingHorizontal: wp('2%'),
+  sectionTitle: {
+    fontSize: 20,
+    fontFamily: 'Inter-SemiBold',
+    color: '#111827',
+    marginBottom: 16,
+  },
+  seeAllText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    color: '#004D80',
+  },
+  statsContainer: {
+    marginHorizontal: -20,
+    paddingHorizontal: 20,
+  },
+  quickActionsGrid: {
+    flexDirection: 'row',
+    gap: 12,
   },
 });
