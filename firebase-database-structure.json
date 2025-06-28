@@ -1,0 +1,565 @@
+{
+  "users": {
+    "user_uid_1": {
+      "name": "John Doe",
+      "email": "john.doe@email.com",
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "lastLogin": "2024-01-20T08:15:00.000Z",
+      "profile": {
+        "dateOfBirth": "1990-05-15",
+        "gender": "male",
+        "bloodType": "O+",
+        "height": 175,
+        "weight": 70,
+        "emergencyContact": {
+          "name": "Jane Doe",
+          "phone": "+1234567890",
+          "relationship": "spouse"
+        },
+        "medicalHistory": {
+          "allergies": ["penicillin", "shellfish"],
+          "chronicConditions": ["hypertension"],
+          "surgeries": [
+            {
+              "procedure": "Appendectomy",
+              "date": "2015-03-20",
+              "hospital": "City General Hospital"
+            }
+          ]
+        }
+      }
+    },
+    "user_uid_2": {
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@email.com",
+      "createdAt": "2024-01-10T14:20:00.000Z",
+      "lastLogin": "2024-01-20T09:45:00.000Z",
+      "profile": {
+        "dateOfBirth": "1985-08-22",
+        "gender": "female",
+        "bloodType": "A+",
+        "height": 165,
+        "weight": 60,
+        "emergencyContact": {
+          "name": "Michael Johnson",
+          "phone": "+1234567891",
+          "relationship": "husband"
+        },
+        "medicalHistory": {
+          "allergies": ["latex"],
+          "chronicConditions": ["diabetes"],
+          "surgeries": []
+        }
+      }
+    }
+  },
+  "healthData": {
+    "user_uid_1": {
+      "heartRate": 72,
+      "steps": 8432,
+      "sleep": 7.5,
+      "bloodPressure": {
+        "systolic": 120,
+        "diastolic": 80,
+        "recordedAt": "2024-01-20T07:00:00.000Z"
+      },
+      "weight": 70.5,
+      "bodyTemperature": 36.6,
+      "oxygenSaturation": 98,
+      "lastUpdated": "2024-01-20T08:00:00.000Z",
+      "dailyMetrics": {
+        "2024-01-20": {
+          "steps": 8432,
+          "caloriesBurned": 2100,
+          "activeMinutes": 45,
+          "sleepHours": 7.5,
+          "waterIntake": 2.1
+        },
+        "2024-01-19": {
+          "steps": 9200,
+          "caloriesBurned": 2250,
+          "activeMinutes": 52,
+          "sleepHours": 8.0,
+          "waterIntake": 2.3
+        }
+      }
+    },
+    "user_uid_2": {
+      "heartRate": 68,
+      "steps": 6800,
+      "sleep": 8.0,
+      "bloodPressure": {
+        "systolic": 115,
+        "diastolic": 75,
+        "recordedAt": "2024-01-20T07:30:00.000Z"
+      },
+      "weight": 60.2,
+      "bodyTemperature": 36.4,
+      "oxygenSaturation": 99,
+      "lastUpdated": "2024-01-20T08:30:00.000Z",
+      "dailyMetrics": {
+        "2024-01-20": {
+          "steps": 6800,
+          "caloriesBurned": 1850,
+          "activeMinutes": 38,
+          "sleepHours": 8.0,
+          "waterIntake": 2.5
+        }
+      }
+    }
+  },
+  "appointments": {
+    "user_uid_1": {
+      "appointment_1": {
+        "id": "appointment_1",
+        "doctorName": "Dr. Sarah Johnson",
+        "specialty": "Cardiologist",
+        "clinic": "Heart Care Center",
+        "date": "2024-01-22",
+        "time": "14:30",
+        "status": "upcoming",
+        "imageUrl": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Regular checkup for hypertension",
+        "address": "123 Medical Plaza, Suite 200",
+        "phone": "+1234567892",
+        "createdAt": "2024-01-15T10:00:00.000Z",
+        "reminderSet": true,
+        "reminderTime": "2024-01-22T13:30:00.000Z"
+      },
+      "appointment_2": {
+        "id": "appointment_2",
+        "doctorName": "Dr. Michael Chen",
+        "specialty": "Endocrinologist",
+        "clinic": "Diabetes Care Clinic",
+        "date": "2024-01-25",
+        "time": "10:00",
+        "status": "upcoming",
+        "imageUrl": "https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Follow-up consultation",
+        "address": "456 Health Street, Floor 3",
+        "phone": "+1234567893",
+        "createdAt": "2024-01-16T14:30:00.000Z",
+        "reminderSet": true,
+        "reminderTime": "2024-01-25T09:00:00.000Z"
+      },
+      "appointment_3": {
+        "id": "appointment_3",
+        "doctorName": "Dr. Emily Rodriguez",
+        "specialty": "Dermatologist",
+        "clinic": "Skin Health Center",
+        "date": "2024-01-10",
+        "time": "15:00",
+        "status": "completed",
+        "imageUrl": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Skin examination completed",
+        "address": "789 Wellness Ave, Building A",
+        "phone": "+1234567894",
+        "createdAt": "2024-01-05T09:00:00.000Z",
+        "completedAt": "2024-01-10T15:45:00.000Z"
+      }
+    },
+    "user_uid_2": {
+      "appointment_4": {
+        "id": "appointment_4",
+        "doctorName": "Dr. Robert Wilson",
+        "specialty": "General Practitioner",
+        "clinic": "Family Health Clinic",
+        "date": "2024-01-23",
+        "time": "11:00",
+        "status": "upcoming",
+        "imageUrl": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Annual physical examination",
+        "address": "321 Community Drive",
+        "phone": "+1234567895",
+        "createdAt": "2024-01-12T16:00:00.000Z",
+        "reminderSet": true,
+        "reminderTime": "2024-01-23T10:00:00.000Z"
+      }
+    }
+  },
+  "prescriptions": {
+    "user_uid_1": {
+      "prescription_1": {
+        "id": "prescription_1",
+        "medicineName": "Lisinopril",
+        "dosage": "10mg daily",
+        "doctorName": "Dr. Sarah Johnson",
+        "prescribedDate": "2024-01-15",
+        "startDate": "2024-01-16",
+        "endDate": "2024-02-15",
+        "daysLeft": 15,
+        "status": "active",
+        "instructions": "Take with food in the morning",
+        "sideEffects": ["dizziness", "dry cough"],
+        "refillsRemaining": 2,
+        "pharmacy": {
+          "name": "City Pharmacy",
+          "address": "123 Main Street",
+          "phone": "+1234567896"
+        },
+        "createdAt": "2024-01-15T11:00:00.000Z"
+      },
+      "prescription_2": {
+        "id": "prescription_2",
+        "medicineName": "Metformin",
+        "dosage": "500mg twice daily",
+        "doctorName": "Dr. Michael Chen",
+        "prescribedDate": "2024-01-10",
+        "startDate": "2024-01-11",
+        "endDate": "2024-02-10",
+        "daysLeft": 8,
+        "status": "active",
+        "instructions": "Take with meals",
+        "sideEffects": ["nausea", "stomach upset"],
+        "refillsRemaining": 1,
+        "pharmacy": {
+          "name": "Health Plus Pharmacy",
+          "address": "456 Oak Avenue",
+          "phone": "+1234567897"
+        },
+        "createdAt": "2024-01-10T15:30:00.000Z"
+      },
+      "prescription_3": {
+        "id": "prescription_3",
+        "medicineName": "Atorvastatin",
+        "dosage": "20mg daily",
+        "doctorName": "Dr. Sarah Johnson",
+        "prescribedDate": "2023-12-20",
+        "startDate": "2023-12-21",
+        "endDate": "2024-01-20",
+        "daysLeft": 0,
+        "status": "expired",
+        "instructions": "Take at bedtime",
+        "sideEffects": ["muscle pain", "headache"],
+        "refillsRemaining": 0,
+        "pharmacy": {
+          "name": "City Pharmacy",
+          "address": "123 Main Street",
+          "phone": "+1234567896"
+        },
+        "createdAt": "2023-12-20T10:00:00.000Z"
+      }
+    },
+    "user_uid_2": {
+      "prescription_4": {
+        "id": "prescription_4",
+        "medicineName": "Insulin Glargine",
+        "dosage": "20 units daily",
+        "doctorName": "Dr. Michael Chen",
+        "prescribedDate": "2024-01-12",
+        "startDate": "2024-01-13",
+        "endDate": "2024-02-12",
+        "daysLeft": 20,
+        "status": "active",
+        "instructions": "Inject subcutaneously at bedtime",
+        "sideEffects": ["injection site reactions", "hypoglycemia"],
+        "refillsRemaining": 3,
+        "pharmacy": {
+          "name": "Diabetes Care Pharmacy",
+          "address": "789 Medical Center Blvd",
+          "phone": "+1234567898"
+        },
+        "createdAt": "2024-01-12T13:00:00.000Z"
+      }
+    }
+  },
+  "certificates": {
+    "user_uid_1": {
+      "certificate_1": {
+        "id": "certificate_1",
+        "title": "Medical Fitness Certificate",
+        "issueDate": "2024-01-15",
+        "expiryDate": "2024-07-15",
+        "doctorName": "Dr. Sarah Johnson",
+        "type": "fitness",
+        "purpose": "Employment fitness assessment",
+        "validFor": "General employment",
+        "restrictions": "None",
+        "clinic": "Heart Care Center",
+        "licenseNumber": "MD12345",
+        "certificateNumber": "FC-2024-001",
+        "createdAt": "2024-01-15T16:00:00.000Z"
+      },
+      "certificate_2": {
+        "id": "certificate_2",
+        "title": "Vaccination Certificate",
+        "issueDate": "2023-12-10",
+        "expiryDate": "2024-12-10",
+        "doctorName": "Dr. Michael Chen",
+        "type": "vaccination",
+        "purpose": "COVID-19 vaccination record",
+        "validFor": "International travel",
+        "vaccineDetails": {
+          "vaccineName": "COVID-19 mRNA Vaccine",
+          "manufacturer": "Pfizer-BioNTech",
+          "batchNumber": "ABC123",
+          "doses": [
+            {
+              "doseNumber": 1,
+              "date": "2023-06-15",
+              "location": "City Health Center"
+            },
+            {
+              "doseNumber": 2,
+              "date": "2023-07-15",
+              "location": "City Health Center"
+            },
+            {
+              "doseNumber": 3,
+              "date": "2023-12-10",
+              "location": "Diabetes Care Clinic"
+            }
+          ]
+        },
+        "clinic": "Diabetes Care Clinic",
+        "licenseNumber": "MD67890",
+        "certificateNumber": "VC-2023-045",
+        "createdAt": "2023-12-10T11:00:00.000Z"
+      },
+      "certificate_3": {
+        "id": "certificate_3",
+        "title": "Medical Leave Certificate",
+        "issueDate": "2024-01-05",
+        "expiryDate": "2024-01-12",
+        "doctorName": "Dr. Emily Rodriguez",
+        "type": "leave",
+        "purpose": "Medical leave from work",
+        "validFor": "7 days medical leave",
+        "diagnosis": "Acute dermatitis",
+        "recommendations": "Rest and topical treatment",
+        "clinic": "Skin Health Center",
+        "licenseNumber": "MD54321",
+        "certificateNumber": "ML-2024-003",
+        "createdAt": "2024-01-05T14:30:00.000Z"
+      }
+    },
+    "user_uid_2": {
+      "certificate_4": {
+        "id": "certificate_4",
+        "title": "Diabetes Management Certificate",
+        "issueDate": "2024-01-18",
+        "expiryDate": "2024-07-18",
+        "doctorName": "Dr. Michael Chen",
+        "type": "fitness",
+        "purpose": "Diabetes management compliance",
+        "validFor": "Insurance and employment",
+        "restrictions": "Regular monitoring required",
+        "clinic": "Diabetes Care Clinic",
+        "licenseNumber": "MD67890",
+        "certificateNumber": "DM-2024-012",
+        "createdAt": "2024-01-18T10:30:00.000Z"
+      }
+    }
+  },
+  "doctors": {
+    "doctor_1": {
+      "id": "doctor_1",
+      "name": "Dr. Sarah Johnson",
+      "specialty": "Cardiologist",
+      "clinic": "Heart Care Center",
+      "licenseNumber": "MD12345",
+      "phone": "+1234567892",
+      "email": "sarah.johnson@heartcare.com",
+      "address": "123 Medical Plaza, Suite 200",
+      "experience": 15,
+      "education": "Harvard Medical School",
+      "certifications": ["Board Certified Cardiologist", "ACLS Certified"],
+      "imageUrl": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "availability": {
+        "monday": ["09:00", "17:00"],
+        "tuesday": ["09:00", "17:00"],
+        "wednesday": ["09:00", "17:00"],
+        "thursday": ["09:00", "17:00"],
+        "friday": ["09:00", "15:00"]
+      },
+      "rating": 4.8,
+      "reviewCount": 127
+    },
+    "doctor_2": {
+      "id": "doctor_2",
+      "name": "Dr. Michael Chen",
+      "specialty": "Endocrinologist",
+      "clinic": "Diabetes Care Clinic",
+      "licenseNumber": "MD67890",
+      "phone": "+1234567893",
+      "email": "michael.chen@diabetescare.com",
+      "address": "456 Health Street, Floor 3",
+      "experience": 12,
+      "education": "Johns Hopkins University",
+      "certifications": ["Board Certified Endocrinologist", "Diabetes Educator"],
+      "imageUrl": "https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "availability": {
+        "monday": ["08:00", "16:00"],
+        "tuesday": ["08:00", "16:00"],
+        "wednesday": ["08:00", "16:00"],
+        "thursday": ["08:00", "16:00"],
+        "friday": ["08:00", "14:00"]
+      },
+      "rating": 4.9,
+      "reviewCount": 89
+    },
+    "doctor_3": {
+      "id": "doctor_3",
+      "name": "Dr. Emily Rodriguez",
+      "specialty": "Dermatologist",
+      "clinic": "Skin Health Center",
+      "licenseNumber": "MD54321",
+      "phone": "+1234567894",
+      "email": "emily.rodriguez@skinhealth.com",
+      "address": "789 Wellness Ave, Building A",
+      "experience": 8,
+      "education": "Stanford University School of Medicine",
+      "certifications": ["Board Certified Dermatologist", "Mohs Surgery Certified"],
+      "imageUrl": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "availability": {
+        "tuesday": ["10:00", "18:00"],
+        "wednesday": ["10:00", "18:00"],
+        "thursday": ["10:00", "18:00"],
+        "friday": ["10:00", "16:00"],
+        "saturday": ["09:00", "13:00"]
+      },
+      "rating": 4.7,
+      "reviewCount": 156
+    }
+  },
+  "clinics": {
+    "clinic_1": {
+      "id": "clinic_1",
+      "name": "Heart Care Center",
+      "address": "123 Medical Plaza, Suite 200",
+      "phone": "+1234567892",
+      "email": "info@heartcare.com",
+      "website": "www.heartcare.com",
+      "specialties": ["Cardiology", "Cardiac Surgery", "Vascular Medicine"],
+      "facilities": ["ECG", "Echocardiogram", "Stress Testing", "Cardiac Catheterization"],
+      "operatingHours": {
+        "monday": ["08:00", "18:00"],
+        "tuesday": ["08:00", "18:00"],
+        "wednesday": ["08:00", "18:00"],
+        "thursday": ["08:00", "18:00"],
+        "friday": ["08:00", "16:00"],
+        "saturday": ["09:00", "14:00"]
+      },
+      "emergencyServices": true,
+      "parkingAvailable": true,
+      "wheelchairAccessible": true
+    },
+    "clinic_2": {
+      "id": "clinic_2",
+      "name": "Diabetes Care Clinic",
+      "address": "456 Health Street, Floor 3",
+      "phone": "+1234567893",
+      "email": "info@diabetescare.com",
+      "website": "www.diabetescare.com",
+      "specialties": ["Endocrinology", "Diabetes Management", "Nutrition Counseling"],
+      "facilities": ["HbA1c Testing", "Continuous Glucose Monitoring", "Insulin Pump Training"],
+      "operatingHours": {
+        "monday": ["07:00", "17:00"],
+        "tuesday": ["07:00", "17:00"],
+        "wednesday": ["07:00", "17:00"],
+        "thursday": ["07:00", "17:00"],
+        "friday": ["07:00", "15:00"]
+      },
+      "emergencyServices": false,
+      "parkingAvailable": true,
+      "wheelchairAccessible": true
+    }
+  },
+  "notifications": {
+    "user_uid_1": {
+      "notification_1": {
+        "id": "notification_1",
+        "type": "appointment_reminder",
+        "title": "Upcoming Appointment",
+        "message": "You have an appointment with Dr. Sarah Johnson tomorrow at 2:30 PM",
+        "timestamp": "2024-01-21T14:30:00.000Z",
+        "read": false,
+        "actionRequired": false,
+        "relatedId": "appointment_1"
+      },
+      "notification_2": {
+        "id": "notification_2",
+        "type": "prescription_reminder",
+        "title": "Low Medication Stock",
+        "message": "Your Metformin prescription has only 8 days left. Consider refilling soon.",
+        "timestamp": "2024-01-20T09:00:00.000Z",
+        "read": true,
+        "actionRequired": true,
+        "relatedId": "prescription_2"
+      },
+      "notification_3": {
+        "id": "notification_3",
+        "type": "health_alert",
+        "title": "Health Goal Achieved",
+        "message": "Congratulations! You've reached your daily step goal of 8,000 steps.",
+        "timestamp": "2024-01-20T20:00:00.000Z",
+        "read": true,
+        "actionRequired": false,
+        "relatedId": null
+      }
+    }
+  },
+  "healthGoals": {
+    "user_uid_1": {
+      "steps": {
+        "target": 8000,
+        "current": 8432,
+        "achieved": true,
+        "streak": 5
+      },
+      "weight": {
+        "target": 68,
+        "current": 70.5,
+        "targetDate": "2024-06-01"
+      },
+      "bloodPressure": {
+        "systolicTarget": 120,
+        "diastolicTarget": 80,
+        "currentSystolic": 120,
+        "currentDiastolic": 80,
+        "achieved": true
+      },
+      "sleep": {
+        "target": 8,
+        "current": 7.5,
+        "achieved": false
+      }
+    }
+  },
+  "emergencyContacts": {
+    "user_uid_1": {
+      "primary": {
+        "name": "Jane Doe",
+        "phone": "+1234567890",
+        "relationship": "spouse",
+        "address": "123 Home Street"
+      },
+      "secondary": {
+        "name": "Dr. Sarah Johnson",
+        "phone": "+1234567892",
+        "relationship": "primary_doctor",
+        "clinic": "Heart Care Center"
+      }
+    }
+  },
+  "insurance": {
+    "user_uid_1": {
+      "provider": "HealthFirst Insurance",
+      "policyNumber": "HF123456789",
+      "groupNumber": "GRP001",
+      "memberID": "MEM789456",
+      "effectiveDate": "2024-01-01",
+      "expiryDate": "2024-12-31",
+      "copay": {
+        "primaryCare": 25,
+        "specialist": 50,
+        "emergency": 200
+      },
+      "deductible": {
+        "individual": 1500,
+        "family": 3000,
+        "met": 450
+      }
+    }
+  }
+}
