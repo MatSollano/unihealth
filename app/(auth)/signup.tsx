@@ -16,7 +16,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
 import { signUp } from '@/services/firebaseService';
-import { updateProfile } from "firebase/auth";
 
 export default function SignUpScreen() {
   const [fullName, setFullName] = useState('');
@@ -40,9 +39,6 @@ export default function SignUpScreen() {
     setLoading(true);
     try {
       await signUp(email, password, fullName);
-      await updateProfile(auth.currentUser, {
-        displayName: fullName, 
-      });
       Alert.alert('Success', 'Account created successfully!', [
         { text: 'OK', onPress: () => router.replace('/(tabs)') }
       ]);

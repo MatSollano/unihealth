@@ -1,6 +1,6 @@
 import { database, auth } from '@/lib/firebase';
 import { ref, set, get, push, remove, onValue, off } from 'firebase/database';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { useAuthStore } from '@/store/authStore';
 import { useHealthStore } from '@/store/healthStore';
 
@@ -14,19 +14,26 @@ export const signIn = async (email: string, password: string) => {
   }
 };
 
-export const signUp = async (email: string, password: string, name: string) => {
+export const signUp = async (email: string, password: string, name?: string) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
+    // Update user profile with display name if provided
+    if (name && user) {
+      await updateProfile(user, {
+        displayName: name,
+      });
+    }
+    
     // Save user profile to database
     await set(ref(database, `users/${user.uid}`), {
-      name,
-      email,
+      name: name || user.displayName || '',
+      email: user.email,
       createdAt: new Date().toISOString(),
     });
     
-    return user;
+    return userCredential;
   } catch (error) {
     throw error;
   }
