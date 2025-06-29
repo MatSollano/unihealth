@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Bell, Calendar, FileText, Activity, Heart, Plus } from 'lucide-react-native';
+import { Bell, Calendar, FileText, Activity, Heart, QrCode } from 'lucide-react-native';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { QuickActionCard } from '@/components/dashboard/QuickActionCard';
 import { AppointmentCard } from '@/components/dashboard/AppointmentCard';
@@ -92,6 +92,14 @@ export default function HomeScreen() {
     router.push('/(tabs)/prescriptions');
   };
 
+  const handleMedicalHistory = () => {
+    router.push('/(tabs)/profile/medical-history');
+  };
+
+  const handleGenerateQR = () => {
+    router.push('/(tabs)/qr-code');
+  };
+
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -166,35 +174,21 @@ export default function HomeScreen() {
         {/* Quick Actions Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.quickActionsGrid}>
+          <View style={styles.quickActionsContainer}>
             <QuickActionCard
-              title="Book Appointment"
-              subtitle="Schedule with doctor"
-              icon={<Calendar size={24} color={Colors.primary} />}
-              onPress={handleBookAppointment}
+              title="Medical History"
+              subtitle="View complete medical records"
+              icon={<FileText size={28} color={Colors.primary} />}
+              onPress={handleMedicalHistory}
+              variant="full"
             />
             <QuickActionCard
-              title="View Prescriptions"
-              subtitle="Check medications"
-              icon={<FileText size={24} color={Colors.primary} />}
-              onPress={handleViewPrescriptions}
+              title="Generate QR Code"
+              subtitle="Share your health profile"
+              icon={<QrCode size={28} color={Colors.primary} />}
+              onPress={handleGenerateQR}
+              variant="full"
             />
-            {isTablet && (
-              <>
-                <QuickActionCard
-                  title="Health Records"
-                  subtitle="View medical history"
-                  icon={<Activity size={24} color={Colors.primary} />}
-                  onPress={() => {}}
-                />
-                <QuickActionCard
-                  title="Emergency"
-                  subtitle="Quick access"
-                  icon={<Plus size={24} color={Colors.primary} />}
-                  onPress={() => {}}
-                />
-              </>
-            )}
           </View>
         </View>
 
@@ -349,10 +343,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.xl,
     gap: Spacing.md,
   },
-  quickActionsGrid: {
-    flexDirection: 'row',
+  quickActionsContainer: {
     gap: Spacing.lg,
-    flexWrap: 'wrap',
   },
   contentCard: {
     backgroundColor: Colors.surface,
