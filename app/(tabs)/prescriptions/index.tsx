@@ -203,9 +203,6 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.md,
     backgroundColor: Colors.surface,
   },
-  scrollView: {
-    flex: 1,
-  },
   prescriptionsList: {
     padding: Spacing.lg,
     gap: Spacing.md,
