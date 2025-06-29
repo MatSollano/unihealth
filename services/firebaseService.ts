@@ -168,7 +168,7 @@ export const savePrescription = async (userId: string, prescription: any) => {
 
 export const getPrescriptions = async (userId: string) => {
   try {
-    const snapshot = await get(ref(database, `prescriptions/${userId}`));
+    const snapshot = await get(ref(database, `prescriptions/${userId}`);
     const data = snapshot.val();
     if (data) {
       return Object.keys(data).map(key => ({ id: key, ...data[key] }));
@@ -192,7 +192,7 @@ export const getDoctorPrescriptions = async (doctorId: string) => {
         Object.keys(userPrescriptions).forEach(prescriptionId => {
           const prescription = userPrescriptions[prescriptionId];
           if (prescription.doctorId === doctorId) {
-            // Get patient name from users collection
+            // Get patient name from users collection if not already included
             doctorPrescriptions.push({
               id: prescriptionId,
               patientId: userId,
@@ -342,4 +342,19 @@ export const subscribeToAppointments = (userId: string, callback: (data: any[]) 
 
 export const subscribeToPatientAppointments = (patientId: string, callback: (data: any[]) => void) => {
   return subscribeToAppointments(patientId, callback);
+};
+
+// Doctor real-time listeners
+export const subscribeToDoctorAppointments = (doctorId: string, callback: (data: any[]) => void) => {
+  const appointmentsRef = ref(database, `doctorAppointments/${doctorId}`);
+  onValue(appointmentsRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const appointments = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+      callback(appointments);
+    } else {
+      callback([]);
+    }
+  });
+  return () => off(appointmentsRef);
 };

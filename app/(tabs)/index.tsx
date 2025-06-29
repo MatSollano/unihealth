@@ -12,7 +12,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useAuthStore } from '@/store/authStore';
 import { useHealthStore } from '@/store/healthStore';
 import { useResponsive } from '@/hooks/useResponsive';
-import { subscribeToHealthData, subscribeToAppointments } from '@/services/firebaseService';
+import { subscribeToHealthData, subscribeToAppointments, getPrescriptions } from '@/services/firebaseService';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 export default function HomeScreen() {
@@ -20,8 +20,10 @@ export default function HomeScreen() {
   const { 
     healthData, 
     appointments, 
+    prescriptions,
     setHealthData, 
-    setAppointments, 
+    setAppointments,
+    setPrescriptions,
     loading, 
     error,
     setLoading,
@@ -33,6 +35,7 @@ export default function HomeScreen() {
     if (user) {
       setLoading('healthData', true);
       setLoading('appointments', true);
+      setLoading('prescriptions', true);
 
       // Subscribe to real-time health data
       const unsubscribeHealth = subscribeToHealthData(user.uid, (data) => {
@@ -48,6 +51,20 @@ export default function HomeScreen() {
         setLoading('appointments', false);
       });
 
+      // Load prescriptions
+      const loadPrescriptions = async () => {
+        try {
+          const prescriptionsData = await getPrescriptions(user.uid);
+          setPrescriptions(prescriptionsData);
+        } catch (error) {
+          setError('prescriptions', error.message);
+        } finally {
+          setLoading('prescriptions', false);
+        }
+      };
+
+      loadPrescriptions();
+
       return () => {
         unsubscribeHealth();
         unsubscribeAppointments();
@@ -56,6 +73,7 @@ export default function HomeScreen() {
   }, [user]);
 
   const upcomingAppointment = appointments.find(apt => apt.status === 'upcoming');
+  const activePrescriptions = prescriptions.filter(p => p.status === 'active');
   const isLoading = loading.healthData || loading.appointments;
 
   const handleBookAppointment = () => {
@@ -112,21 +130,21 @@ export default function HomeScreen() {
             >
               <StatCard
                 title="Heart Rate"
-                value={healthData.heartRate.toString()}
+                value={healthData.heartRate?.toString() || '72'}
                 unit="bpm"
                 icon={<Heart size={24} color="#fff" />}
                 gradient={['#EF4444', '#DC2626']}
               />
               <StatCard
                 title="Steps Today"
-                value={healthData.steps.toLocaleString()}
+                value={healthData.steps?.toLocaleString() || '8,432'}
                 unit="steps"
                 icon={<Activity size={24} color="#fff" />}
                 gradient={['#10B981', '#059669']}
               />
               <StatCard
                 title="Sleep"
-                value={healthData.sleep.toString()}
+                value={healthData.sleep?.toString() || '7.5'}
                 unit="hours"
                 icon={<Activity size={24} color="#fff" />}
                 gradient={['#8B5CF6', '#7C3AED']}
@@ -204,6 +222,7 @@ export default function HomeScreen() {
               description="Schedule your next appointment to stay on top of your health"
               actionText="Book Appointment"
               onAction={handleBookAppointment}
+              variant="compact"
             />
           )}
         </View>
@@ -211,25 +230,33 @@ export default function HomeScreen() {
         {/* Recent Prescriptions */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Recent Prescriptions</Text>
+            <Text style={styles.sectionTitle}>Active Prescriptions</Text>
             <TouchableOpacity onPress={handleViewAllPrescriptions}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <PrescriptionCard
-              medicineName="Lisinopril"
-              dosage="10mg daily"
-              doctorName="Dr. Sarah Johnson"
-              daysLeft={15}
+          {activePrescriptions.length > 0 ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {activePrescriptions.slice(0, 3).map((prescription) => (
+                <PrescriptionCard
+                  key={prescription.id}
+                  medicineName={prescription.medicineName}
+                  dosage={prescription.dosage}
+                  doctorName={prescription.doctorName}
+                  daysLeft={prescription.daysLeft}
+                />
+              ))}
+            </ScrollView>
+          ) : (
+            <EmptyState
+              icon={<FileText size={48} color={Colors.textTertiary} />}
+              title="No active prescriptions"
+              description="Your prescriptions from doctors will appear here"
+              actionText="Book Appointment"
+              onAction={handleBookAppointment}
+              variant="compact"
             />
-            <PrescriptionCard
-              medicineName="Metformin"
-              dosage="500mg twice daily"
-              doctorName="Dr. Michael Chen"
-              daysLeft={8}
-            />
-          </ScrollView>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
