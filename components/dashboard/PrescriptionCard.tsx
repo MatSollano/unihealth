@@ -39,11 +39,11 @@ export function PrescriptionCard({ medicineName, dosage, doctorName, daysLeft }:
 
 const styles = StyleSheet.create({
   card: {
-      backgroundColor: '#fff',
-  borderRadius: BorderRadius.xl,
-  padding: Spacing.lg,
-  width: 200,
-  ...Shadows.lg,
+    backgroundColor: '#fff',
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.lg,
+    width: 200,
+    ...Shadows.lg,
   },
   iconContainer: {
     width: 48,
