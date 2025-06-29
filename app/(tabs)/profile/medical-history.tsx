@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { ArrowLeft, Heart, Pill, Activity, AlertTriangle, Calendar, User } from 'lucide-react-native';
+import { ArrowLeft, Heart, Pill, Activity, TriangleAlert as AlertTriangle, Calendar, User } from 'lucide-react-native';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useAuthStore } from '@/store/authStore';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
