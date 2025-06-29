@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Calendar, Clock } from 'lucide-react-native';
+import { Calendar, Clock, MapPin } from 'lucide-react-native';
+import { Colors, Spacing, FontSizes, BorderRadius } from '@/constants/theme';
 
 interface AppointmentCardProps {
   doctorName: string;
@@ -12,20 +13,25 @@ interface AppointmentCardProps {
 
 export function AppointmentCard({ doctorName, specialty, date, time, imageUrl }: AppointmentCardProps) {
   return (
-    <TouchableOpacity style={styles.card}>
-      <Image source={{ uri: imageUrl }} style={styles.doctorImage} />
-      <View style={styles.content}>
-        <Text style={styles.doctorName}>{doctorName}</Text>
-        <Text style={styles.specialty}>{specialty}</Text>
-        <View style={styles.timeInfo}>
-          <View style={styles.timeItem}>
-            <Calendar size={16} color="#6B7280" />
-            <Text style={styles.timeText}>{date}</Text>
-          </View>
-          <View style={styles.timeItem}>
-            <Clock size={16} color="#6B7280" />
-            <Text style={styles.timeText}>{time}</Text>
-          </View>
+    <TouchableOpacity style={styles.card} activeOpacity={0.7}>
+      <View style={styles.header}>
+        <Image source={{ uri: imageUrl }} style={styles.doctorImage} />
+        <View style={styles.doctorInfo}>
+          <Text style={styles.doctorName}>{doctorName}</Text>
+          <Text style={styles.specialty}>{specialty}</Text>
+        </View>
+      </View>
+      
+      <View style={styles.divider} />
+      
+      <View style={styles.timeInfo}>
+        <View style={styles.timeItem}>
+          <Calendar size={18} color={Colors.primary} />
+          <Text style={styles.timeText}>{date}</Text>
+        </View>
+        <View style={styles.timeItem}>
+          <Clock size={18} color={Colors.primary} />
+          <Text style={styles.timeText}>{time}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -34,49 +40,51 @@ export function AppointmentCard({ doctorName, specialty, date, time, imageUrl }:
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: 'transparent',
+  },
+  header: {
     flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    alignItems: 'center',
+    marginBottom: Spacing.lg,
   },
   doctorImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 16,
+    width: 64,
+    height: 64,
+    borderRadius: BorderRadius.xl,
+    marginRight: Spacing.lg,
   },
-  content: {
+  doctorInfo: {
     flex: 1,
+    gap: Spacing.xs,
   },
   doctorName: {
-    fontSize: 18,
-    fontFamily: 'Inter-SemiBold',
-    color: '#111827',
-    marginBottom: 4,
+    fontSize: FontSizes.lg,
+    fontFamily: 'Inter-Bold',
+    color: Colors.textPrimary,
   },
   specialty: {
-    fontSize: 14,
+    fontSize: FontSizes.md,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
-    marginBottom: 12,
+    color: Colors.textSecondary,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.gray200,
+    marginBottom: Spacing.lg,
   },
   timeInfo: {
     flexDirection: 'row',
-    gap: 16,
+    justifyContent: 'space-between',
   },
   timeItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: Spacing.sm,
+    flex: 1,
   },
   timeText: {
-    fontSize: 14,
-    fontFamily: 'Inter-Medium',
-    color: '#6B7280',
+    fontSize: FontSizes.md,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.textPrimary,
   },
 });

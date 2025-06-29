@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Colors, Spacing, FontSizes, BorderRadius } from '@/constants/theme';
 
 interface StatCardProps {
   title: string;
@@ -17,11 +18,13 @@ export function StatCard({ title, value, unit, icon, gradient }: StatCardProps) 
         <View style={styles.iconContainer}>
           {icon}
         </View>
-        <Text style={styles.title}>{title}</Text>
       </View>
-      <View style={styles.valueContainer}>
-        <Text style={styles.value}>{value}</Text>
-        <Text style={styles.unit}>{unit}</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{title}</Text>
+        <View style={styles.valueContainer}>
+          <Text style={styles.value}>{value}</Text>
+          <Text style={styles.unit}>{unit}</Text>
+        </View>
       </View>
     </LinearGradient>
   );
@@ -29,21 +32,27 @@ export function StatCard({ title, value, unit, icon, gradient }: StatCardProps) 
 
 const styles = StyleSheet.create({
   card: {
-    width: 160,
-    padding: 20,
-    borderRadius: 16,
-    marginRight: 16,
+    width: 180,
+    padding: Spacing.xl,
+    borderRadius: BorderRadius.xl,
+    marginRight: Spacing.md,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: Spacing.lg,
   },
   iconContainer: {
-    marginRight: 8,
+    width: 40,
+    height: 40,
+    borderRadius: BorderRadius.lg,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    gap: Spacing.sm,
   },
   title: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Medium',
     color: '#fff',
     opacity: 0.9,
@@ -51,17 +60,18 @@ const styles = StyleSheet.create({
   valueContainer: {
     flexDirection: 'row',
     alignItems: 'baseline',
+    gap: Spacing.xs,
   },
   value: {
-    fontSize: 28,
+    fontSize: FontSizes.xxxl,
     fontFamily: 'Inter-Bold',
     color: '#fff',
+    lineHeight: FontSizes.xxxl + 4,
   },
   unit: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Medium',
     color: '#fff',
     opacity: 0.8,
-    marginLeft: 4,
   },
 });

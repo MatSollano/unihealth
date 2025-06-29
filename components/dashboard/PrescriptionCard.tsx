@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Pill, Clock } from 'lucide-react-native';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 interface PrescriptionCardProps {
   medicineName: string;
@@ -13,18 +14,24 @@ export function PrescriptionCard({ medicineName, dosage, doctorName, daysLeft }:
   const isLowStock = daysLeft <= 7;
 
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} activeOpacity={0.7}>
       <View style={[styles.iconContainer, isLowStock && styles.lowStockIcon]}>
-        <Pill size={24} color={isLowStock ? '#EF4444' : '#004D80'} />
+        <Pill size={24} color={isLowStock ? Colors.warning : Colors.primary} />
       </View>
-      <Text style={styles.medicineName}>{medicineName}</Text>
-      <Text style={styles.dosage}>{dosage}</Text>
-      <Text style={styles.doctorName}>Dr. {doctorName}</Text>
-      <View style={styles.daysLeftContainer}>
-        <Clock size={14} color={isLowStock ? '#EF4444' : '#6B7280'} />
-        <Text style={[styles.daysLeft, isLowStock && styles.lowStockText]}>
-          {daysLeft} days left
-        </Text>
+      
+      <View style={styles.content}>
+        <Text style={styles.medicineName} numberOfLines={1}>{medicineName}</Text>
+        <Text style={styles.dosage} numberOfLines={1}>{dosage}</Text>
+        <Text style={styles.doctorName} numberOfLines={1}>Dr. {doctorName}</Text>
+        
+        <View style={styles.footer}>
+          <View style={styles.daysLeftContainer}>
+            <Clock size={14} color={isLowStock ? Colors.warning : Colors.textSecondary} />
+            <Text style={[styles.daysLeft, isLowStock && styles.lowStockText]}>
+              {daysLeft} days left
+            </Text>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -32,58 +39,59 @@ export function PrescriptionCard({ medicineName, dosage, doctorName, daysLeft }:
 
 const styles = StyleSheet.create({
   card: {
-    width: 180,
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    marginRight: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    width: 200,
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.lg,
+    ...Shadows.md,
   },
   iconContainer: {
     width: 48,
     height: 48,
-    borderRadius: 24,
-    backgroundColor: '#E8F0FE',
+    borderRadius: BorderRadius.lg,
+    backgroundColor: `${Colors.primary}15`,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: Spacing.md,
   },
   lowStockIcon: {
-    backgroundColor: '#FEE2E2',
+    backgroundColor: `${Colors.warning}15`,
+  },
+  content: {
+    gap: Spacing.xs,
   },
   medicineName: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
-    color: '#111827',
-    marginBottom: 4,
+    fontSize: FontSizes.md,
+    fontFamily: 'Inter-Bold',
+    color: Colors.textPrimary,
   },
   dosage: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
-    marginBottom: 8,
+    color: Colors.textSecondary,
   },
   doctorName: {
-    fontSize: 12,
+    fontSize: FontSizes.xs,
     fontFamily: 'Inter-Medium',
-    color: '#9CA3AF',
-    marginBottom: 8,
+    color: Colors.textTertiary,
+    marginBottom: Spacing.sm,
+  },
+  footer: {
+    paddingTop: Spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: Colors.gray100,
   },
   daysLeftContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: Spacing.xs,
   },
   daysLeft: {
-    fontSize: 12,
-    fontFamily: 'Inter-Medium',
-    color: '#6B7280',
+    fontSize: FontSizes.xs,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.textSecondary,
   },
   lowStockText: {
-    color: '#EF4444',
+    color: Colors.warning,
   },
 });

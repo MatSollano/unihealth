@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 interface QuickActionCardProps {
   title: string;
@@ -10,12 +11,14 @@ interface QuickActionCardProps {
 
 export function QuickActionCard({ title, subtitle, icon, onPress }: QuickActionCardProps) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <View style={styles.iconContainer}>
         {icon}
       </View>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -23,36 +26,36 @@ export function QuickActionCard({ title, subtitle, icon, onPress }: QuickActionC
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 16,
+    minWidth: 150,
+    backgroundColor: Colors.surface,
+    padding: Spacing.xl,
+    borderRadius: BorderRadius.xl,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    ...Shadows.md,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#E8F0FE',
+    width: 56,
+    height: 56,
+    borderRadius: BorderRadius.xl,
+    backgroundColor: `${Colors.primary}15`,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: Spacing.lg,
+  },
+  content: {
+    alignItems: 'center',
+    gap: Spacing.xs,
   },
   title: {
-    fontSize: 16,
+    fontSize: FontSizes.md,
     fontFamily: 'Inter-SemiBold',
-    color: '#111827',
+    color: Colors.textPrimary,
     textAlign: 'center',
-    marginBottom: 4,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
+    color: Colors.textSecondary,
     textAlign: 'center',
   },
 });

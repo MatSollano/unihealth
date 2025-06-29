@@ -102,10 +102,14 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Header */}
         <View style={styles.header}>
-          <View>
+          <View style={styles.headerContent}>
             <Text style={styles.greeting}>Good morning,</Text>
             <Text style={styles.userName}>{user?.displayName || 'User'}</Text>
           </View>
@@ -114,9 +118,15 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Health Stats */}
+        {/* Health Stats Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Health Overview</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Health Overview</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAllText}>View Details</Text>
+            </TouchableOpacity>
+          </View>
+          
           {error.healthData ? (
             <View style={styles.errorContainer}>
               <Text style={styles.errorText}>{error.healthData}</Text>
@@ -153,17 +163,10 @@ export default function HomeScreen() {
           )}
         </View>
 
-        {/* Quick Actions */}
+        {/* Quick Actions Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={[
-            styles.quickActionsGrid,
-            { 
-              flexDirection: isTablet ? 'row' : 'row',
-              flexWrap: isTablet ? 'wrap' : 'nowrap',
-              gap: isTablet ? Spacing.lg : Spacing.md,
-            }
-          ]}>
+          <View style={styles.quickActionsGrid}>
             <QuickActionCard
               title="Book Appointment"
               subtitle="Schedule with doctor"
@@ -195,7 +198,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Upcoming Appointments */}
+        {/* Upcoming Appointments Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Upcoming Appointments</Text>
@@ -203,31 +206,34 @@ export default function HomeScreen() {
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          {error.appointments ? (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{error.appointments}</Text>
-            </View>
-          ) : upcomingAppointment ? (
-            <AppointmentCard
-              doctorName={upcomingAppointment.doctorName}
-              specialty={upcomingAppointment.specialty}
-              date={upcomingAppointment.date}
-              time={upcomingAppointment.time}
-              imageUrl={upcomingAppointment.imageUrl}
-            />
-          ) : (
-            <EmptyState
-              icon={<Calendar size={48} color={Colors.textTertiary} />}
-              title="No upcoming appointments"
-              description="Schedule your next appointment to stay on top of your health"
-              actionText="Book Appointment"
-              onAction={handleBookAppointment}
-              variant="compact"
-            />
-          )}
+          
+          <View style={styles.contentCard}>
+            {error.appointments ? (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{error.appointments}</Text>
+              </View>
+            ) : upcomingAppointment ? (
+              <AppointmentCard
+                doctorName={upcomingAppointment.doctorName}
+                specialty={upcomingAppointment.specialty}
+                date={upcomingAppointment.date}
+                time={upcomingAppointment.time}
+                imageUrl={upcomingAppointment.imageUrl}
+              />
+            ) : (
+              <EmptyState
+                icon={<Calendar size={40} color={Colors.textTertiary} />}
+                title="No upcoming appointments"
+                description="Schedule your next appointment to stay on top of your health"
+                actionText="Book Appointment"
+                onAction={handleBookAppointment}
+                variant="compact"
+              />
+            )}
+          </View>
         </View>
 
-        {/* Recent Prescriptions */}
+        {/* Active Prescriptions Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Active Prescriptions</Text>
@@ -235,29 +241,39 @@ export default function HomeScreen() {
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          {activePrescriptions.length > 0 ? (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {activePrescriptions.slice(0, 3).map((prescription) => (
-                <PrescriptionCard
-                  key={prescription.id}
-                  medicineName={prescription.medicineName}
-                  dosage={prescription.dosage}
-                  doctorName={prescription.doctorName}
-                  daysLeft={prescription.daysLeft}
-                />
-              ))}
-            </ScrollView>
-          ) : (
-            <EmptyState
-              icon={<FileText size={48} color={Colors.textTertiary} />}
-              title="No active prescriptions"
-              description="Your prescriptions from doctors will appear here"
-              actionText="Book Appointment"
-              onAction={handleBookAppointment}
-              variant="compact"
-            />
-          )}
+          
+          <View style={styles.contentCard}>
+            {activePrescriptions.length > 0 ? (
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.prescriptionsContent}
+              >
+                {activePrescriptions.slice(0, 3).map((prescription) => (
+                  <PrescriptionCard
+                    key={prescription.id}
+                    medicineName={prescription.medicineName}
+                    dosage={prescription.dosage}
+                    doctorName={prescription.doctorName}
+                    daysLeft={prescription.daysLeft}
+                  />
+                ))}
+              </ScrollView>
+            ) : (
+              <EmptyState
+                icon={<FileText size={40} color={Colors.textTertiary} />}
+                title="No active prescriptions"
+                description="Your prescriptions from doctors will appear here"
+                actionText="Book Appointment"
+                onAction={handleBookAppointment}
+                variant="compact"
+              />
+            )}
+          </View>
         </View>
+
+        {/* Bottom Spacing */}
+        <View style={styles.bottomSpacing} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -271,18 +287,27 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: Spacing.xxxxl,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingTop: Spacing.lg,
+    paddingBottom: Spacing.xxl,
     backgroundColor: Colors.surface,
+    marginBottom: Spacing.lg,
+  },
+  headerContent: {
+    flex: 1,
   },
   greeting: {
     fontSize: FontSizes.md,
     fontFamily: 'Inter-Regular',
     color: Colors.textSecondary,
+    marginBottom: Spacing.xs,
   },
   userName: {
     fontSize: FontSizes.xxl,
@@ -290,32 +315,31 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
   },
   notificationButton: {
-    width: 44,
-    height: 44,
+    width: 48,
+    height: 48,
     borderRadius: BorderRadius.full,
     backgroundColor: Colors.gray100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   section: {
-    marginTop: Spacing.xxl,
+    marginBottom: Spacing.xxxxl,
     paddingHorizontal: Spacing.xl,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.xl,
   },
   sectionTitle: {
     fontSize: FontSizes.xl,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Inter-Bold',
     color: Colors.textPrimary,
-    marginBottom: Spacing.lg,
   },
   seeAllText: {
     fontSize: FontSizes.sm,
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Inter-SemiBold',
     color: Colors.primary,
   },
   statsContainer: {
@@ -323,9 +347,20 @@ const styles = StyleSheet.create({
   },
   statsContent: {
     paddingHorizontal: Spacing.xl,
+    gap: Spacing.md,
   },
   quickActionsGrid: {
     flexDirection: 'row',
+    gap: Spacing.lg,
+    flexWrap: 'wrap',
+  },
+  contentCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.xl,
+    ...Shadows.md,
+  },
+  prescriptionsContent: {
     gap: Spacing.md,
   },
   errorContainer: {
@@ -333,12 +368,16 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.lg,
     padding: Spacing.xl,
     alignItems: 'center',
-    ...Shadows.md,
+    borderLeftWidth: 4,
+    borderLeftColor: Colors.error,
   },
   errorText: {
     fontSize: FontSizes.md,
     fontFamily: 'Inter-Regular',
     color: Colors.error,
     textAlign: 'center',
+  },
+  bottomSpacing: {
+    height: Spacing.xxxxl,
   },
 });
