@@ -3,6 +3,7 @@ export interface User {
   email: string | null;
   displayName: string | null;
   photoURL?: string | null;
+  role?: 'patient' | 'doctor';
 }
 
 export interface HealthData {
@@ -35,6 +36,9 @@ export interface Appointment {
   createdAt: string;
   reminderSet?: boolean;
   reminderTime?: string;
+  patientId?: string;
+  patientName?: string;
+  doctorId?: string;
 }
 
 export interface Prescription {
@@ -56,6 +60,9 @@ export interface Prescription {
     phone: string;
   };
   createdAt: string;
+  patientId?: string;
+  patientName?: string;
+  doctorId?: string;
 }
 
 export interface Certificate {
@@ -72,6 +79,9 @@ export interface Certificate {
   licenseNumber?: string;
   certificateNumber?: string;
   createdAt: string;
+  patientId?: string;
+  patientName?: string;
+  doctorId?: string;
 }
 
 export interface Doctor {
@@ -92,6 +102,24 @@ export interface Doctor {
   reviewCount: number;
 }
 
+export interface Patient {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  bloodType?: string;
+  allergies?: string[];
+  emergencyContact?: {
+    name: string;
+    phone: string;
+    relationship: string;
+  };
+  imageUrl?: string;
+  lastVisit?: string;
+}
+
 export interface Notification {
   id: string;
   type: 'appointment_reminder' | 'prescription_reminder' | 'health_alert';
@@ -110,3 +138,5 @@ export interface ApiResponse<T> {
   error?: string;
   loading: boolean;
 }
+
+export type UserRole = 'patient' | 'doctor';

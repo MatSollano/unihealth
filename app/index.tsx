@@ -2,16 +2,22 @@ import { useEffect } from 'react';
 import { router } from 'expo-router';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAuthStore } from '@/store/authStore';
+import { Colors } from '@/constants/theme';
 
 export default function Index() {
-  const { user, isLoading } = useAuthStore();
+  const { user, userRole, isLoading } = useAuthStore();
 
   useEffect(() => {
     // Add a small delay to ensure the navigation system is ready
     const timer = setTimeout(() => {
       if (!isLoading) {
-        if (user) {
-          router.replace('/(tabs)');
+        if (user && userRole) {
+          // Navigate based on user role
+          if (userRole === 'doctor') {
+            router.replace('/(doctor-tabs)');
+          } else {
+            router.replace('/(tabs)');
+          }
         } else {
           router.replace('/(auth)/signin');
         }
@@ -19,11 +25,11 @@ export default function Index() {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [user, isLoading]);
+  }, [user, userRole, isLoading]);
 
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#004D80" />
+      <ActivityIndicator size="large" color={Colors.primary} />
     </View>
   );
 }
@@ -33,6 +39,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.surface,
   },
 });
