@@ -173,7 +173,7 @@ export default function HomeScreen() {
 
         {/* Quick Actions Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.quickActionsTitle}>Quick Actions</Text>
           <View style={styles.quickActionsContainer}>
             <QuickActionCard
               title="Medical History"
@@ -330,6 +330,12 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.xl,
     fontFamily: 'Inter-Bold',
     color: Colors.textPrimary,
+  },
+  quickActionsTitle: {
+    fontSize: FontSizes.xl,
+    fontFamily: 'Inter-Bold',
+    color: Colors.textPrimary,
+    marginBottom: Spacing.lg,
   },
   seeAllText: {
     fontSize: FontSizes.sm,
