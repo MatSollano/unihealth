@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import { Bell, Calendar, FileText, Activity, Heart, Plus } from 'lucide-react-native';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { QuickActionCard } from '@/components/dashboard/QuickActionCard';
@@ -57,10 +58,20 @@ export default function HomeScreen() {
   const upcomingAppointment = appointments.find(apt => apt.status === 'upcoming');
   const isLoading = loading.healthData || loading.appointments;
 
-  const getGridColumns = () => {
-    if (isDesktop) return 4;
-    if (isTablet) return 3;
-    return 2;
+  const handleBookAppointment = () => {
+    router.push('/(tabs)/appointments/book');
+  };
+
+  const handleViewPrescriptions = () => {
+    router.push('/(tabs)/prescriptions');
+  };
+
+  const handleViewAppointments = () => {
+    router.push('/(tabs)/appointments');
+  };
+
+  const handleViewAllPrescriptions = () => {
+    router.push('/(tabs)/prescriptions');
   };
 
   if (isLoading) {
@@ -130,7 +141,8 @@ export default function HomeScreen() {
           <View style={[
             styles.quickActionsGrid,
             { 
-              gridTemplateColumns: isTablet ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)',
+              flexDirection: isTablet ? 'row' : 'row',
+              flexWrap: isTablet ? 'wrap' : 'nowrap',
               gap: isTablet ? Spacing.lg : Spacing.md,
             }
           ]}>
@@ -138,13 +150,13 @@ export default function HomeScreen() {
               title="Book Appointment"
               subtitle="Schedule with doctor"
               icon={<Calendar size={24} color={Colors.primary} />}
-              onPress={() => {}}
+              onPress={handleBookAppointment}
             />
             <QuickActionCard
               title="View Prescriptions"
               subtitle="Check medications"
               icon={<FileText size={24} color={Colors.primary} />}
-              onPress={() => {}}
+              onPress={handleViewPrescriptions}
             />
             {isTablet && (
               <>
@@ -169,7 +181,7 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Upcoming Appointments</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleViewAppointments}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -191,7 +203,7 @@ export default function HomeScreen() {
               title="No upcoming appointments"
               description="Schedule your next appointment to stay on top of your health"
               actionText="Book Appointment"
-              onAction={() => {}}
+              onAction={handleBookAppointment}
             />
           )}
         </View>
@@ -200,7 +212,7 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recent Prescriptions</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleViewAllPrescriptions}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
