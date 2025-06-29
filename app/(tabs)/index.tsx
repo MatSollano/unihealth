@@ -236,7 +236,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
           
-          <View style={styles.contentCard}>
+          <View style={styles.contentCardPrescription}>
             {activePrescriptions.length > 0 ? (
               <ScrollView 
                 horizontal 
@@ -354,6 +354,11 @@ const styles = StyleSheet.create({
   },
   contentCard: {
     backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.xl,
+    ...Shadows.md,
+  },
+  contentCardPrescription: {
     borderRadius: BorderRadius.xl,
     padding: Spacing.xl,
     ...Shadows.md,
