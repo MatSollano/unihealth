@@ -70,13 +70,12 @@ export default function CertificatesScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Certificates</Text>
-        <View style={styles.headerActions}>
-          <TouchableOpacity 
-            style={styles.actionButton} 
-            onPress={handleRefresh}
-            disabled={refreshing}
-          >
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>My Certificates</Text>
+          <Text style={styles.headerSubtitle}>
+            {filteredAppointments.length} {filteredAppointments.length === 1 ? 'appointment' : 'appointments'}
+          </Text>
+        </View>
             <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={handleDownloadAll}>
