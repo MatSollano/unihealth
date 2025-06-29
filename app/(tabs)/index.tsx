@@ -1,31 +1,50 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Bell, Calendar, FileText, Activity, Heart } from 'lucide-react-native';
+import { Bell, Calendar, FileText, Activity, Heart, Plus } from 'lucide-react-native';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { QuickActionCard } from '@/components/dashboard/QuickActionCard';
 import { AppointmentCard } from '@/components/dashboard/AppointmentCard';
 import { PrescriptionCard } from '@/components/dashboard/PrescriptionCard';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useAuthStore } from '@/store/authStore';
 import { useHealthStore } from '@/store/healthStore';
+import { useResponsive } from '@/hooks/useResponsive';
 import { subscribeToHealthData, subscribeToAppointments } from '@/services/firebaseService';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 export default function HomeScreen() {
   const { user } = useAuthStore();
-  const { healthData, appointments, setHealthData, setAppointments } = useHealthStore();
+  const { 
+    healthData, 
+    appointments, 
+    setHealthData, 
+    setAppointments, 
+    loading, 
+    error,
+    setLoading,
+    setError 
+  } = useHealthStore();
+  const { isTablet, isDesktop } = useResponsive();
 
   useEffect(() => {
     if (user) {
+      setLoading('healthData', true);
+      setLoading('appointments', true);
+
       // Subscribe to real-time health data
       const unsubscribeHealth = subscribeToHealthData(user.uid, (data) => {
         if (data) {
           setHealthData(data);
         }
+        setLoading('healthData', false);
       });
 
       // Subscribe to real-time appointments
       const unsubscribeAppointments = subscribeToAppointments(user.uid, (data) => {
         setAppointments(data);
+        setLoading('appointments', false);
       });
 
       return () => {
@@ -36,6 +55,21 @@ export default function HomeScreen() {
   }, [user]);
 
   const upcomingAppointment = appointments.find(apt => apt.status === 'upcoming');
+  const isLoading = loading.healthData || loading.appointments;
+
+  const getGridColumns = () => {
+    if (isDesktop) return 4;
+    if (isTablet) return 3;
+    return 2;
+  };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <LoadingSpinner />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,54 +81,87 @@ export default function HomeScreen() {
             <Text style={styles.userName}>{user?.displayName || 'User'}</Text>
           </View>
           <TouchableOpacity style={styles.notificationButton}>
-            <Bell size={24} color="#6B7280" />
+            <Bell size={24} color={Colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
         {/* Health Stats */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Health Overview</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsContainer}>
-            <StatCard
-              title="Heart Rate"
-              value={healthData.heartRate.toString()}
-              unit="bpm"
-              icon={<Heart size={24} color="#fff" />}
-              gradient={['#EF4444', '#DC2626']}
-            />
-            <StatCard
-              title="Steps Today"
-              value={healthData.steps.toLocaleString()}
-              unit="steps"
-              icon={<Activity size={24} color="#fff" />}
-              gradient={['#10B981', '#059669']}
-            />
-            <StatCard
-              title="Sleep"
-              value={healthData.sleep.toString()}
-              unit="hours"
-              icon={<Activity size={24} color="#fff" />}
-              gradient={['#8B5CF6', '#7C3AED']}
-            />
-          </ScrollView>
+          {error.healthData ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>{error.healthData}</Text>
+            </View>
+          ) : (
+            <ScrollView 
+              horizontal 
+              showsHorizontalScrollIndicator={false} 
+              style={styles.statsContainer}
+              contentContainerStyle={styles.statsContent}
+            >
+              <StatCard
+                title="Heart Rate"
+                value={healthData.heartRate.toString()}
+                unit="bpm"
+                icon={<Heart size={24} color="#fff" />}
+                gradient={['#EF4444', '#DC2626']}
+              />
+              <StatCard
+                title="Steps Today"
+                value={healthData.steps.toLocaleString()}
+                unit="steps"
+                icon={<Activity size={24} color="#fff" />}
+                gradient={['#10B981', '#059669']}
+              />
+              <StatCard
+                title="Sleep"
+                value={healthData.sleep.toString()}
+                unit="hours"
+                icon={<Activity size={24} color="#fff" />}
+                gradient={['#8B5CF6', '#7C3AED']}
+              />
+            </ScrollView>
+          )}
         </View>
 
         {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.quickActionsGrid}>
+          <View style={[
+            styles.quickActionsGrid,
+            { 
+              gridTemplateColumns: isTablet ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)',
+              gap: isTablet ? Spacing.lg : Spacing.md,
+            }
+          ]}>
             <QuickActionCard
               title="Book Appointment"
               subtitle="Schedule with doctor"
-              icon={<Calendar size={24} color="#004D80" />}
+              icon={<Calendar size={24} color={Colors.primary} />}
               onPress={() => {}}
             />
             <QuickActionCard
               title="View Prescriptions"
               subtitle="Check medications"
-              icon={<FileText size={24} color="#004D80" />}
+              icon={<FileText size={24} color={Colors.primary} />}
               onPress={() => {}}
             />
+            {isTablet && (
+              <>
+                <QuickActionCard
+                  title="Health Records"
+                  subtitle="View medical history"
+                  icon={<Activity size={24} color={Colors.primary} />}
+                  onPress={() => {}}
+                />
+                <QuickActionCard
+                  title="Emergency"
+                  subtitle="Quick access"
+                  icon={<Plus size={24} color={Colors.primary} />}
+                  onPress={() => {}}
+                />
+              </>
+            )}
           </View>
         </View>
 
@@ -106,7 +173,11 @@ export default function HomeScreen() {
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
-          {upcomingAppointment ? (
+          {error.appointments ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>{error.appointments}</Text>
+            </View>
+          ) : upcomingAppointment ? (
             <AppointmentCard
               doctorName={upcomingAppointment.doctorName}
               specialty={upcomingAppointment.specialty}
@@ -115,9 +186,13 @@ export default function HomeScreen() {
               imageUrl={upcomingAppointment.imageUrl}
             />
           ) : (
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyText}>No upcoming appointments</Text>
-            </View>
+            <EmptyState
+              icon={<Calendar size={48} color={Colors.textTertiary} />}
+              title="No upcoming appointments"
+              description="Schedule your next appointment to stay on top of your health"
+              actionText="Book Appointment"
+              onAction={() => {}}
+            />
           )}
         </View>
 
@@ -152,7 +227,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Colors.background,
   },
   scrollView: {
     flex: 1,
@@ -161,71 +236,70 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#fff',
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.lg,
+    backgroundColor: Colors.surface,
   },
   greeting: {
-    fontSize: 16,
+    fontSize: FontSizes.md,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
+    color: Colors.textSecondary,
   },
   userName: {
-    fontSize: 24,
+    fontSize: FontSizes.xxl,
     fontFamily: 'Inter-Bold',
-    color: '#111827',
+    color: Colors.textPrimary,
   },
   notificationButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: '#F3F4F6',
+    borderRadius: BorderRadius.full,
+    backgroundColor: Colors.gray100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   section: {
-    marginTop: 24,
-    paddingHorizontal: 20,
+    marginTop: Spacing.xxl,
+    paddingHorizontal: Spacing.xl,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: Spacing.lg,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: FontSizes.xl,
     fontFamily: 'Inter-SemiBold',
-    color: '#111827',
-    marginBottom: 16,
+    color: Colors.textPrimary,
+    marginBottom: Spacing.lg,
   },
   seeAllText: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Medium',
-    color: '#004D80',
+    color: Colors.primary,
   },
   statsContainer: {
-    marginHorizontal: -20,
-    paddingHorizontal: 20,
+    marginHorizontal: -Spacing.xl,
+  },
+  statsContent: {
+    paddingHorizontal: Spacing.xl,
   },
   quickActionsGrid: {
     flexDirection: 'row',
-    gap: 12,
+    gap: Spacing.md,
   },
-  emptyState: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 32,
+  errorContainer: {
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.xl,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    ...Shadows.md,
   },
-  emptyText: {
-    fontSize: 16,
+  errorText: {
+    fontSize: FontSizes.md,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
+    color: Colors.error,
+    textAlign: 'center',
   },
 });
