@@ -37,7 +37,7 @@ export default function TabLayout() {
         options={{
           title: 'Visits',
           tabBarIcon: ({ color, size }) => (
-            <Calendar size={20} color={color} />
+            <Calendar size={size} color={color} />
           ),
         }}
       />
@@ -46,7 +46,7 @@ export default function TabLayout() {
         options={{
           title: 'Prescription',
           tabBarIcon: ({ color, size }) => (
-            <FileText size={20} color={color} />
+            <FileText size={size} color={color} />
           ),
         }}
       />
@@ -55,7 +55,7 @@ export default function TabLayout() {
         options={{
           title: 'Med Certs',
           tabBarIcon: ({ color, size }) => (
-            <Award size={20} color={color} />
+            <Award size={size} color={color} />
           ),
         }}
       />
@@ -64,7 +64,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <User size={20} color={color} />
+            <User size={size} color={color} />
           ),
         }}
       />
