@@ -168,8 +168,7 @@ export const savePrescription = async (userId: string, prescription: any) => {
 
 export const getPrescriptions = async (userId: string) => {
   try {
-    const snapshot = await get(ref(database, `prescriptions/${userId}`);
-    )
+    const snapshot = await get(ref(database, `prescriptions/${userId}`));
     const data = snapshot.val();
     if (data) {
       return Object.keys(data).map(key => ({ id: key, ...data[key] }));
