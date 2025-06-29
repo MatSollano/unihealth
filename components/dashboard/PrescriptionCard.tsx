@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: BorderRadius.xl,
     padding: Spacing.lg,
+    width: 200;
   },
   iconContainer: {
     width: 48,
