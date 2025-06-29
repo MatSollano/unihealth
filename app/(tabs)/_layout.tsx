@@ -55,7 +55,7 @@ export default function TabLayout() {
         options={{
           title: 'Med Certs',
           tabBarIcon: ({ color, size }) => (
-            <Award size={size} color={color} />
+            <Award size={24} color={color} />
           ),
         }}
       />
