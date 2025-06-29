@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     padding: Spacing.lg,
     borderLeftWidth: 4,
-    borderLeftColor: Colors.success,
+    borderLeftColor: Colors.sucscess,
   },
   securityTitle: {
     fontSize: FontSizes.md,
