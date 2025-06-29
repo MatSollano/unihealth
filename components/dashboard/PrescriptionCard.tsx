@@ -42,8 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.xl,
     padding: Spacing.lg,
     width: 200,
-        ...Shadows.md,
-
+    ...Shadows.lg,
   },
   iconContainer: {
     width: 48,
