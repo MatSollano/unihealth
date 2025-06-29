@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ChevronRight } from 'lucide-react-native';
 import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 interface QuickActionCardProps {
@@ -26,6 +27,11 @@ export function QuickActionCard({ title, subtitle, icon, onPress, variant = 'def
         <Text style={[styles.title, isFullWidth && styles.fullWidthTitle]}>{title}</Text>
         <Text style={[styles.subtitle, isFullWidth && styles.fullWidthSubtitle]}>{subtitle}</Text>
       </View>
+      {isFullWidth && (
+        <View style={styles.chevronContainer}>
+          <ChevronRight size={20} color={Colors.textTertiary} />
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
@@ -45,8 +51,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: Spacing.xxl,
+    paddingVertical: Spacing.xl,
     paddingHorizontal: Spacing.xl,
+    borderWidth: 1,
+    borderColor: Colors.gray200,
   },
   iconContainer: {
     width: 56,
@@ -58,10 +66,10 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg,
   },
   fullWidthIconContainer: {
-    width: 64,
-    height: 64,
+    width: 56,
+    height: 56,
     marginBottom: 0,
-    marginRight: Spacing.xl,
+    marginRight: Spacing.lg,
   },
   content: {
     alignItems: 'center',
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
   fullWidthContent: {
     flex: 1,
     alignItems: 'flex-start',
-    gap: Spacing.sm,
+    gap: Spacing.xs,
   },
   title: {
     fontSize: FontSizes.md,
@@ -89,7 +97,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   fullWidthSubtitle: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.sm,
     textAlign: 'left',
+  },
+  chevronContainer: {
+    marginLeft: Spacing.md,
   },
 });

@@ -97,7 +97,7 @@ export default function HomeScreen() {
   };
 
   const handleGenerateQR = () => {
-    router.push('/(tabs)/qr-code');
+    router.push('/qr-code');
   };
 
   if (isLoading) {
@@ -178,14 +178,14 @@ export default function HomeScreen() {
             <QuickActionCard
               title="Medical History"
               subtitle="View complete medical records"
-              icon={<FileText size={28} color={Colors.primary} />}
+              icon={<FileText size={24} color={Colors.primary} />}
               onPress={handleMedicalHistory}
               variant="full"
             />
             <QuickActionCard
               title="Generate QR Code"
               subtitle="Share your health profile"
-              icon={<QrCode size={28} color={Colors.primary} />}
+              icon={<QrCode size={24} color={Colors.primary} />}
               onPress={handleGenerateQR}
               variant="full"
             />
