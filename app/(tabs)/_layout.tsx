@@ -46,7 +46,7 @@ export default function TabLayout() {
         options={{
           title: 'Prescription',
           tabBarIcon: ({ color, size }) => (
-            <FileText size={10} color={color} />
+            <FileText size={size} color={color} />
           ),
         }}
       />
@@ -64,7 +64,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <User size={size} color={color} />
+            <User size={24} color={color} />
           ),
         }}
       />
