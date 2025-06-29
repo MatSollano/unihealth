@@ -73,10 +73,15 @@ export default function CertificatesScreen() {
         <View style={styles.headerContent}>
           <Text style={styles.headerTitle}>My Certificates</Text>
           <Text style={styles.headerSubtitle}>
-            {filteredAppointments.length} {filteredAppointments.length === 1 ? 'appointment' : 'appointments'}
+            {filteredCertificates.length} {filteredCertificates.length === 1 ? 'certificate' : 'certificates'}
           </Text>
         </View>
-        </View>
+        <View style={styles.headerActions}>
+          <TouchableOpacity 
+            style={styles.actionButton} 
+            onPress={handleRefresh}
+            disabled={refreshing}
+          >
             <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={handleDownloadAll}>
@@ -179,6 +184,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.xl,
     paddingVertical: Spacing.md,
     backgroundColor: Colors.surface,
+  },
+  scrollView: {
+    flex: 1,
   },
   certificatesList: {
     padding: Spacing.xl,
