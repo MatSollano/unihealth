@@ -76,6 +76,7 @@ export default function CertificatesScreen() {
             {filteredAppointments.length} {filteredAppointments.length === 1 ? 'appointment' : 'appointments'}
           </Text>
         </View>
+        </View>
             <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={handleDownloadAll}>
