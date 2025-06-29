@@ -141,27 +141,13 @@ export const getAppointments = async (userId: string) => {
 // Doctor-specific appointment functions
 export const getDoctorAppointments = async (doctorId: string) => {
   try {
-    const snapshot = await get(ref(database, 'appointments'));
-    const allAppointments = snapshot.val();
-    const doctorAppointments = [];
-    
-    if (allAppointments) {
-      Object.keys(allAppointments).forEach(userId => {
-        const userAppointments = allAppointments[userId];
-        Object.keys(userAppointments).forEach(appointmentId => {
-          const appointment = userAppointments[appointmentId];
-          if (appointment.doctorId === doctorId) {
-            doctorAppointments.push({
-              id: appointmentId,
-              patientId: userId,
-              ...appointment
-            });
-          }
-        });
-      });
+    // Get from doctorAppointments collection for better performance
+    const snapshot = await get(ref(database, `doctorAppointments/${doctorId}`));
+    const data = snapshot.val();
+    if (data) {
+      return Object.keys(data).map(key => ({ id: key, ...data[key] }));
     }
-    
-    return doctorAppointments;
+    return [];
   } catch (error) {
     throw error;
   }
@@ -206,9 +192,11 @@ export const getDoctorPrescriptions = async (doctorId: string) => {
         Object.keys(userPrescriptions).forEach(prescriptionId => {
           const prescription = userPrescriptions[prescriptionId];
           if (prescription.doctorId === doctorId) {
+            // Get patient name from users collection
             doctorPrescriptions.push({
               id: prescriptionId,
               patientId: userId,
+              patientName: prescription.patientName || 'Unknown Patient',
               ...prescription
             });
           }
@@ -264,6 +252,7 @@ export const getDoctorCertificates = async (doctorId: string) => {
             doctorCertificates.push({
               id: certificateId,
               patientId: userId,
+              patientName: certificate.patientName || 'Unknown Patient',
               ...certificate
             });
           }
@@ -280,34 +269,46 @@ export const getDoctorCertificates = async (doctorId: string) => {
 // Patient management functions for doctors
 export const getDoctorPatients = async (doctorId: string) => {
   try {
-    const appointmentsSnapshot = await get(ref(database, 'appointments'));
-    const usersSnapshot = await get(ref(database, 'users'));
-    
-    const allAppointments = appointmentsSnapshot.val();
-    const allUsers = usersSnapshot.val();
+    // Get all appointments for this doctor to find patients
+    const doctorAppointments = await getDoctorAppointments(doctorId);
     const patientIds = new Set();
     
-    if (allAppointments) {
-      Object.keys(allAppointments).forEach(userId => {
-        const userAppointments = allAppointments[userId];
-        Object.keys(userAppointments).forEach(appointmentId => {
-          const appointment = userAppointments[appointmentId];
-          if (appointment.doctorId === doctorId) {
-            patientIds.add(userId);
-          }
-        });
-      });
-    }
-    
-    const patients = [];
-    patientIds.forEach(patientId => {
-      if (allUsers[patientId]) {
-        patients.push({
-          id: patientId,
-          ...allUsers[patientId]
-        });
+    // Extract unique patient IDs
+    doctorAppointments.forEach(appointment => {
+      if (appointment.patientId) {
+        patientIds.add(appointment.patientId);
       }
     });
+    
+    // Get patient details
+    const patients = [];
+    for (const patientId of patientIds) {
+      try {
+        const userSnapshot = await get(ref(database, `users/${patientId}`));
+        const userData = userSnapshot.val();
+        if (userData) {
+          // Get last visit date
+          const lastAppointment = doctorAppointments
+            .filter(apt => apt.patientId === patientId && apt.status === 'completed')
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+          
+          patients.push({
+            id: patientId,
+            name: userData.name,
+            email: userData.email,
+            phone: userData.profile?.phone,
+            dateOfBirth: userData.profile?.dateOfBirth,
+            gender: userData.profile?.gender,
+            bloodType: userData.profile?.bloodType,
+            allergies: userData.profile?.medicalHistory?.allergies,
+            lastVisit: lastAppointment?.date,
+            imageUrl: userData.profile?.imageUrl,
+          });
+        }
+      } catch (error) {
+        console.error(`Error fetching patient ${patientId}:`, error);
+      }
+    }
     
     return patients;
   } catch (error) {

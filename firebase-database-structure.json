@@ -1,8 +1,9 @@
 {
   "users": {
-    "user_uid_1": {
+    "user_uid_patient_1": {
       "name": "John Doe",
       "email": "john.doe@email.com",
+      "role": "patient",
       "createdAt": "2024-01-15T10:30:00.000Z",
       "lastLogin": "2024-01-20T08:15:00.000Z",
       "profile": {
@@ -11,6 +12,7 @@
         "bloodType": "O+",
         "height": 175,
         "weight": 70,
+        "phone": "+1234567890",
         "emergencyContact": {
           "name": "Jane Doe",
           "phone": "+1234567890",
@@ -29,9 +31,10 @@
         }
       }
     },
-    "user_uid_2": {
+    "user_uid_patient_2": {
       "name": "Sarah Johnson",
       "email": "sarah.johnson@email.com",
+      "role": "patient",
       "createdAt": "2024-01-10T14:20:00.000Z",
       "lastLogin": "2024-01-20T09:45:00.000Z",
       "profile": {
@@ -40,6 +43,7 @@
         "bloodType": "A+",
         "height": 165,
         "weight": 60,
+        "phone": "+1234567891",
         "emergencyContact": {
           "name": "Michael Johnson",
           "phone": "+1234567891",
@@ -51,10 +55,62 @@
           "surgeries": []
         }
       }
+    },
+    "user_uid_doctor_1": {
+      "name": "Dr. Emily Rodriguez",
+      "email": "dr.emily@healthconnect.com",
+      "role": "doctor",
+      "createdAt": "2024-01-01T09:00:00.000Z",
+      "lastLogin": "2024-01-20T07:30:00.000Z",
+      "profile": {
+        "specialty": "Cardiologist",
+        "licenseNumber": "MD12345",
+        "experience": 15,
+        "education": "Harvard Medical School",
+        "clinic": "Heart Care Center",
+        "phone": "+1234567892",
+        "address": "123 Medical Plaza, Suite 200",
+        "certifications": ["Board Certified Cardiologist", "ACLS Certified"],
+        "availability": {
+          "monday": ["09:00", "17:00"],
+          "tuesday": ["09:00", "17:00"],
+          "wednesday": ["09:00", "17:00"],
+          "thursday": ["09:00", "17:00"],
+          "friday": ["09:00", "15:00"]
+        },
+        "rating": 4.8,
+        "reviewCount": 127
+      }
+    },
+    "user_uid_doctor_2": {
+      "name": "Dr. Michael Chen",
+      "email": "dr.michael@healthconnect.com",
+      "role": "doctor",
+      "createdAt": "2024-01-01T10:00:00.000Z",
+      "lastLogin": "2024-01-20T08:00:00.000Z",
+      "profile": {
+        "specialty": "Endocrinologist",
+        "licenseNumber": "MD67890",
+        "experience": 12,
+        "education": "Johns Hopkins University",
+        "clinic": "Diabetes Care Clinic",
+        "phone": "+1234567893",
+        "address": "456 Health Street, Floor 3",
+        "certifications": ["Board Certified Endocrinologist", "Diabetes Educator"],
+        "availability": {
+          "monday": ["08:00", "16:00"],
+          "tuesday": ["08:00", "16:00"],
+          "wednesday": ["08:00", "16:00"],
+          "thursday": ["08:00", "16:00"],
+          "friday": ["08:00", "14:00"]
+        },
+        "rating": 4.9,
+        "reviewCount": 89
+      }
     }
   },
   "healthData": {
-    "user_uid_1": {
+    "user_uid_patient_1": {
       "heartRate": 72,
       "steps": 8432,
       "sleep": 7.5,
@@ -84,7 +140,7 @@
         }
       }
     },
-    "user_uid_2": {
+    "user_uid_patient_2": {
       "heartRate": 68,
       "steps": 6800,
       "sleep": 8.0,
@@ -109,10 +165,11 @@
     }
   },
   "appointments": {
-    "user_uid_1": {
+    "user_uid_patient_1": {
       "appointment_1": {
         "id": "appointment_1",
-        "doctorName": "Dr. Sarah Johnson",
+        "doctorId": "user_uid_doctor_1",
+        "doctorName": "Dr. Emily Rodriguez",
         "specialty": "Cardiologist",
         "clinic": "Heart Care Center",
         "date": "2024-01-22",
@@ -128,6 +185,7 @@
       },
       "appointment_2": {
         "id": "appointment_2",
+        "doctorId": "user_uid_doctor_2",
         "doctorName": "Dr. Michael Chen",
         "specialty": "Endocrinologist",
         "clinic": "Diabetes Care Clinic",
@@ -144,46 +202,65 @@
       },
       "appointment_3": {
         "id": "appointment_3",
+        "doctorId": "user_uid_doctor_1",
         "doctorName": "Dr. Emily Rodriguez",
-        "specialty": "Dermatologist",
-        "clinic": "Skin Health Center",
+        "specialty": "Cardiologist",
+        "clinic": "Heart Care Center",
         "date": "2024-01-10",
         "time": "15:00",
         "status": "completed",
-        "imageUrl": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "notes": "Skin examination completed",
-        "address": "789 Wellness Ave, Building A",
-        "phone": "+1234567894",
+        "imageUrl": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Routine cardiac examination completed",
+        "address": "123 Medical Plaza, Suite 200",
+        "phone": "+1234567892",
         "createdAt": "2024-01-05T09:00:00.000Z",
         "completedAt": "2024-01-10T15:45:00.000Z"
       }
     },
-    "user_uid_2": {
+    "user_uid_patient_2": {
       "appointment_4": {
         "id": "appointment_4",
-        "doctorName": "Dr. Robert Wilson",
-        "specialty": "General Practitioner",
-        "clinic": "Family Health Clinic",
+        "doctorId": "user_uid_doctor_2",
+        "doctorName": "Dr. Michael Chen",
+        "specialty": "Endocrinologist",
+        "clinic": "Diabetes Care Clinic",
         "date": "2024-01-23",
         "time": "11:00",
         "status": "upcoming",
-        "imageUrl": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "notes": "Annual physical examination",
-        "address": "321 Community Drive",
-        "phone": "+1234567895",
+        "imageUrl": "https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Diabetes management consultation",
+        "address": "456 Health Street, Floor 3",
+        "phone": "+1234567893",
         "createdAt": "2024-01-12T16:00:00.000Z",
         "reminderSet": true,
         "reminderTime": "2024-01-23T10:00:00.000Z"
+      },
+      "appointment_5": {
+        "id": "appointment_5",
+        "doctorId": "user_uid_doctor_1",
+        "doctorName": "Dr. Emily Rodriguez",
+        "specialty": "Cardiologist",
+        "clinic": "Heart Care Center",
+        "date": "2024-01-20",
+        "time": "09:00",
+        "status": "completed",
+        "imageUrl": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Cardiovascular screening completed",
+        "address": "123 Medical Plaza, Suite 200",
+        "phone": "+1234567892",
+        "createdAt": "2024-01-15T11:00:00.000Z",
+        "completedAt": "2024-01-20T09:45:00.000Z"
       }
     }
   },
   "prescriptions": {
-    "user_uid_1": {
+    "user_uid_patient_1": {
       "prescription_1": {
         "id": "prescription_1",
         "medicineName": "Lisinopril",
         "dosage": "10mg daily",
-        "doctorName": "Dr. Sarah Johnson",
+        "doctorId": "user_uid_doctor_1",
+        "doctorName": "Dr. Emily Rodriguez",
         "prescribedDate": "2024-01-15",
         "startDate": "2024-01-16",
         "endDate": "2024-02-15",
@@ -203,6 +280,7 @@
         "id": "prescription_2",
         "medicineName": "Metformin",
         "dosage": "500mg twice daily",
+        "doctorId": "user_uid_doctor_2",
         "doctorName": "Dr. Michael Chen",
         "prescribedDate": "2024-01-10",
         "startDate": "2024-01-11",
@@ -223,7 +301,8 @@
         "id": "prescription_3",
         "medicineName": "Atorvastatin",
         "dosage": "20mg daily",
-        "doctorName": "Dr. Sarah Johnson",
+        "doctorId": "user_uid_doctor_1",
+        "doctorName": "Dr. Emily Rodriguez",
         "prescribedDate": "2023-12-20",
         "startDate": "2023-12-21",
         "endDate": "2024-01-20",
@@ -240,11 +319,12 @@
         "createdAt": "2023-12-20T10:00:00.000Z"
       }
     },
-    "user_uid_2": {
+    "user_uid_patient_2": {
       "prescription_4": {
         "id": "prescription_4",
         "medicineName": "Insulin Glargine",
         "dosage": "20 units daily",
+        "doctorId": "user_uid_doctor_2",
         "doctorName": "Dr. Michael Chen",
         "prescribedDate": "2024-01-12",
         "startDate": "2024-01-13",
@@ -260,17 +340,39 @@
           "phone": "+1234567898"
         },
         "createdAt": "2024-01-12T13:00:00.000Z"
+      },
+      "prescription_5": {
+        "id": "prescription_5",
+        "medicineName": "Metformin XR",
+        "dosage": "1000mg daily",
+        "doctorId": "user_uid_doctor_2",
+        "doctorName": "Dr. Michael Chen",
+        "prescribedDate": "2024-01-18",
+        "startDate": "2024-01-19",
+        "endDate": "2024-03-19",
+        "daysLeft": 45,
+        "status": "active",
+        "instructions": "Take with dinner",
+        "sideEffects": ["nausea", "diarrhea"],
+        "refillsRemaining": 2,
+        "pharmacy": {
+          "name": "Diabetes Care Pharmacy",
+          "address": "789 Medical Center Blvd",
+          "phone": "+1234567898"
+        },
+        "createdAt": "2024-01-18T14:00:00.000Z"
       }
     }
   },
   "certificates": {
-    "user_uid_1": {
+    "user_uid_patient_1": {
       "certificate_1": {
         "id": "certificate_1",
         "title": "Medical Fitness Certificate",
         "issueDate": "2024-01-15",
         "expiryDate": "2024-07-15",
-        "doctorName": "Dr. Sarah Johnson",
+        "doctorId": "user_uid_doctor_1",
+        "doctorName": "Dr. Emily Rodriguez",
         "type": "fitness",
         "purpose": "Employment fitness assessment",
         "validFor": "General employment",
@@ -285,6 +387,7 @@
         "title": "Vaccination Certificate",
         "issueDate": "2023-12-10",
         "expiryDate": "2024-12-10",
+        "doctorId": "user_uid_doctor_2",
         "doctorName": "Dr. Michael Chen",
         "type": "vaccination",
         "purpose": "COVID-19 vaccination record",
@@ -315,30 +418,15 @@
         "licenseNumber": "MD67890",
         "certificateNumber": "VC-2023-045",
         "createdAt": "2023-12-10T11:00:00.000Z"
-      },
-      "certificate_3": {
-        "id": "certificate_3",
-        "title": "Medical Leave Certificate",
-        "issueDate": "2024-01-05",
-        "expiryDate": "2024-01-12",
-        "doctorName": "Dr. Emily Rodriguez",
-        "type": "leave",
-        "purpose": "Medical leave from work",
-        "validFor": "7 days medical leave",
-        "diagnosis": "Acute dermatitis",
-        "recommendations": "Rest and topical treatment",
-        "clinic": "Skin Health Center",
-        "licenseNumber": "MD54321",
-        "certificateNumber": "ML-2024-003",
-        "createdAt": "2024-01-05T14:30:00.000Z"
       }
     },
-    "user_uid_2": {
-      "certificate_4": {
-        "id": "certificate_4",
+    "user_uid_patient_2": {
+      "certificate_3": {
+        "id": "certificate_3",
         "title": "Diabetes Management Certificate",
         "issueDate": "2024-01-18",
         "expiryDate": "2024-07-18",
+        "doctorId": "user_uid_doctor_2",
         "doctorName": "Dr. Michael Chen",
         "type": "fitness",
         "purpose": "Diabetes management compliance",
@@ -351,127 +439,13 @@
       }
     }
   },
-  "doctors": {
-    "doctor_1": {
-      "id": "doctor_1",
-      "name": "Dr. Sarah Johnson",
-      "specialty": "Cardiologist",
-      "clinic": "Heart Care Center",
-      "licenseNumber": "MD12345",
-      "phone": "+1234567892",
-      "email": "sarah.johnson@heartcare.com",
-      "address": "123 Medical Plaza, Suite 200",
-      "experience": 15,
-      "education": "Harvard Medical School",
-      "certifications": ["Board Certified Cardiologist", "ACLS Certified"],
-      "imageUrl": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "availability": {
-        "monday": ["09:00", "17:00"],
-        "tuesday": ["09:00", "17:00"],
-        "wednesday": ["09:00", "17:00"],
-        "thursday": ["09:00", "17:00"],
-        "friday": ["09:00", "15:00"]
-      },
-      "rating": 4.8,
-      "reviewCount": 127
-    },
-    "doctor_2": {
-      "id": "doctor_2",
-      "name": "Dr. Michael Chen",
-      "specialty": "Endocrinologist",
-      "clinic": "Diabetes Care Clinic",
-      "licenseNumber": "MD67890",
-      "phone": "+1234567893",
-      "email": "michael.chen@diabetescare.com",
-      "address": "456 Health Street, Floor 3",
-      "experience": 12,
-      "education": "Johns Hopkins University",
-      "certifications": ["Board Certified Endocrinologist", "Diabetes Educator"],
-      "imageUrl": "https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "availability": {
-        "monday": ["08:00", "16:00"],
-        "tuesday": ["08:00", "16:00"],
-        "wednesday": ["08:00", "16:00"],
-        "thursday": ["08:00", "16:00"],
-        "friday": ["08:00", "14:00"]
-      },
-      "rating": 4.9,
-      "reviewCount": 89
-    },
-    "doctor_3": {
-      "id": "doctor_3",
-      "name": "Dr. Emily Rodriguez",
-      "specialty": "Dermatologist",
-      "clinic": "Skin Health Center",
-      "licenseNumber": "MD54321",
-      "phone": "+1234567894",
-      "email": "emily.rodriguez@skinhealth.com",
-      "address": "789 Wellness Ave, Building A",
-      "experience": 8,
-      "education": "Stanford University School of Medicine",
-      "certifications": ["Board Certified Dermatologist", "Mohs Surgery Certified"],
-      "imageUrl": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "availability": {
-        "tuesday": ["10:00", "18:00"],
-        "wednesday": ["10:00", "18:00"],
-        "thursday": ["10:00", "18:00"],
-        "friday": ["10:00", "16:00"],
-        "saturday": ["09:00", "13:00"]
-      },
-      "rating": 4.7,
-      "reviewCount": 156
-    }
-  },
-  "clinics": {
-    "clinic_1": {
-      "id": "clinic_1",
-      "name": "Heart Care Center",
-      "address": "123 Medical Plaza, Suite 200",
-      "phone": "+1234567892",
-      "email": "info@heartcare.com",
-      "website": "www.heartcare.com",
-      "specialties": ["Cardiology", "Cardiac Surgery", "Vascular Medicine"],
-      "facilities": ["ECG", "Echocardiogram", "Stress Testing", "Cardiac Catheterization"],
-      "operatingHours": {
-        "monday": ["08:00", "18:00"],
-        "tuesday": ["08:00", "18:00"],
-        "wednesday": ["08:00", "18:00"],
-        "thursday": ["08:00", "18:00"],
-        "friday": ["08:00", "16:00"],
-        "saturday": ["09:00", "14:00"]
-      },
-      "emergencyServices": true,
-      "parkingAvailable": true,
-      "wheelchairAccessible": true
-    },
-    "clinic_2": {
-      "id": "clinic_2",
-      "name": "Diabetes Care Clinic",
-      "address": "456 Health Street, Floor 3",
-      "phone": "+1234567893",
-      "email": "info@diabetescare.com",
-      "website": "www.diabetescare.com",
-      "specialties": ["Endocrinology", "Diabetes Management", "Nutrition Counseling"],
-      "facilities": ["HbA1c Testing", "Continuous Glucose Monitoring", "Insulin Pump Training"],
-      "operatingHours": {
-        "monday": ["07:00", "17:00"],
-        "tuesday": ["07:00", "17:00"],
-        "wednesday": ["07:00", "17:00"],
-        "thursday": ["07:00", "17:00"],
-        "friday": ["07:00", "15:00"]
-      },
-      "emergencyServices": false,
-      "parkingAvailable": true,
-      "wheelchairAccessible": true
-    }
-  },
   "notifications": {
-    "user_uid_1": {
+    "user_uid_patient_1": {
       "notification_1": {
         "id": "notification_1",
         "type": "appointment_reminder",
         "title": "Upcoming Appointment",
-        "message": "You have an appointment with Dr. Sarah Johnson tomorrow at 2:30 PM",
+        "message": "You have an appointment with Dr. Emily Rodriguez tomorrow at 2:30 PM",
         "timestamp": "2024-01-21T14:30:00.000Z",
         "read": false,
         "actionRequired": false,
@@ -486,79 +460,79 @@
         "read": true,
         "actionRequired": true,
         "relatedId": "prescription_2"
-      },
+      }
+    },
+    "user_uid_doctor_1": {
       "notification_3": {
         "id": "notification_3",
-        "type": "health_alert",
-        "title": "Health Goal Achieved",
-        "message": "Congratulations! You've reached your daily step goal of 8,000 steps.",
-        "timestamp": "2024-01-20T20:00:00.000Z",
-        "read": true,
+        "type": "appointment_reminder",
+        "title": "Today's Appointments",
+        "message": "You have 3 appointments scheduled for today",
+        "timestamp": "2024-01-20T08:00:00.000Z",
+        "read": false,
         "actionRequired": false,
         "relatedId": null
       }
     }
   },
-  "healthGoals": {
-    "user_uid_1": {
-      "steps": {
-        "target": 8000,
-        "current": 8432,
-        "achieved": true,
-        "streak": 5
+  "doctorAppointments": {
+    "user_uid_doctor_1": {
+      "appointment_today_1": {
+        "id": "appointment_today_1",
+        "patientId": "user_uid_patient_1",
+        "patientName": "John Doe",
+        "specialty": "Cardiologist",
+        "date": "2024-01-20",
+        "time": "09:00",
+        "status": "completed",
+        "notes": "Regular cardiac checkup completed successfully",
+        "createdAt": "2024-01-15T10:00:00.000Z"
       },
-      "weight": {
-        "target": 68,
-        "current": 70.5,
-        "targetDate": "2024-06-01"
+      "appointment_today_2": {
+        "id": "appointment_today_2",
+        "patientId": "user_uid_patient_2",
+        "patientName": "Sarah Johnson",
+        "specialty": "Cardiologist",
+        "date": "2024-01-20",
+        "time": "14:00",
+        "status": "completed",
+        "notes": "Cardiovascular screening for diabetes patient",
+        "createdAt": "2024-01-18T11:00:00.000Z"
       },
-      "bloodPressure": {
-        "systolicTarget": 120,
-        "diastolicTarget": 80,
-        "currentSystolic": 120,
-        "currentDiastolic": 80,
-        "achieved": true
-      },
-      "sleep": {
-        "target": 8,
-        "current": 7.5,
-        "achieved": false
+      "appointment_upcoming_1": {
+        "id": "appointment_upcoming_1",
+        "patientId": "user_uid_patient_1",
+        "patientName": "John Doe",
+        "specialty": "Cardiologist",
+        "date": "2024-01-22",
+        "time": "14:30",
+        "status": "upcoming",
+        "notes": "Follow-up for hypertension management",
+        "createdAt": "2024-01-15T10:00:00.000Z"
       }
-    }
-  },
-  "emergencyContacts": {
-    "user_uid_1": {
-      "primary": {
-        "name": "Jane Doe",
-        "phone": "+1234567890",
-        "relationship": "spouse",
-        "address": "123 Home Street"
+    },
+    "user_uid_doctor_2": {
+      "appointment_today_3": {
+        "id": "appointment_today_3",
+        "patientId": "user_uid_patient_2",
+        "patientName": "Sarah Johnson",
+        "specialty": "Endocrinologist",
+        "date": "2024-01-20",
+        "time": "11:00",
+        "status": "completed",
+        "notes": "Diabetes management review completed",
+        "createdAt": "2024-01-17T14:00:00.000Z"
       },
-      "secondary": {
-        "name": "Dr. Sarah Johnson",
-        "phone": "+1234567892",
-        "relationship": "primary_doctor",
-        "clinic": "Heart Care Center"
-      }
-    }
-  },
-  "insurance": {
-    "user_uid_1": {
-      "provider": "HealthFirst Insurance",
-      "policyNumber": "HF123456789",
-      "groupNumber": "GRP001",
-      "memberID": "MEM789456",
-      "effectiveDate": "2024-01-01",
-      "expiryDate": "2024-12-31",
-      "copay": {
-        "primaryCare": 25,
-        "specialist": 50,
-        "emergency": 200
-      },
-      "deductible": {
-        "individual": 1500,
-        "family": 3000,
-        "met": 450
+      "appointment_upcoming_2": {
+        "id": "appointment_upcoming_2",
+        "patientId": "user_uid_patient_2",
+        "patientName": "Sarah Johnson",
+        "specialty": "Endocrinologist",
+        "date": "2024-01-23",
+        "time": "11:00",
+        "status": "upcoming",
+        "notes": "Monthly diabetes consultation",
+        "createdAt": "2024-01-12T16:00:00.000Z"
       }
     }
   }
