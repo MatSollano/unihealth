@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Bell, Download, Plus } from 'lucide-react-native';
+import { Bell, Download, RefreshCw, FileText } from 'lucide-react-native';
 import { CertificateCard } from '@/components/certificates/CertificateCard';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -14,6 +14,7 @@ import { Colors, Spacing, FontSizes, BorderRadius } from '@/constants/theme';
 
 export default function CertificatesScreen() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuthStore();
   const { certificates, setCertificates, loading, error, setLoading, setError } = useHealthStore();
 
@@ -37,6 +38,12 @@ export default function CertificatesScreen() {
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await loadCertificates();
+    setRefreshing(false);
+  };
+
   const filteredCertificates = certificates.filter(certificate =>
     certificate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     certificate.doctorName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -46,8 +53,9 @@ export default function CertificatesScreen() {
     router.push(`/(tabs)/certificates/${certificateId}`);
   };
 
-  const handleAddCertificate = () => {
-    router.push('/(tabs)/certificates/add');
+  const handleDownloadAll = () => {
+    // TODO: Implement download all certificates functionality
+    console.log('Download all certificates');
   };
 
   if (loading.certificates) {
@@ -62,12 +70,16 @@ export default function CertificatesScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Medical Certificates</Text>
+        <Text style={styles.headerTitle}>My Certificates</Text>
         <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.actionButton} onPress={handleAddCertificate}>
-            <Plus size={24} color={Colors.primary} />
+          <TouchableOpacity 
+            style={styles.actionButton} 
+            onPress={handleRefresh}
+            disabled={refreshing}
+          >
+            <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={handleDownloadAll}>
             <Download size={24} color={Colors.textSecondary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
@@ -106,10 +118,15 @@ export default function CertificatesScreen() {
             ))
           ) : (
             <EmptyState
+              icon={<FileText size={48} color={Colors.textTertiary} />}
               title="No certificates found"
-              description={searchQuery ? "Try adjusting your search terms" : "Request your first medical certificate"}
-              actionText="Request Certificate"
-              onAction={handleAddCertificate}
+              description={
+                searchQuery 
+                  ? "Try adjusting your search terms" 
+                  : "Medical certificates issued by your doctors will appear here. Visit a doctor to request certificates when needed."
+              }
+              actionText="Book Appointment"
+              onAction={() => router.push('/(tabs)/appointments/book')}
             />
           )}
         </View>

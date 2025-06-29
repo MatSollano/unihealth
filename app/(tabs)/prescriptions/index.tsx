@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Bell, Filter, Plus } from 'lucide-react-native';
+import { Bell, Filter, RefreshCw } from 'lucide-react-native';
 import { PrescriptionListCard } from '@/components/prescriptions/PrescriptionListCard';
 import { FilterTabs } from '@/components/ui/FilterTabs';
 import { SearchBar } from '@/components/ui/SearchBar';
@@ -19,6 +19,7 @@ const filterOptions: FilterOption[] = ['All', 'Active', 'Expired', 'Low Stock'];
 export default function PrescriptionsScreen() {
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuthStore();
   const { prescriptions, setPrescriptions, loading, error, setLoading, setError } = useHealthStore();
 
@@ -42,6 +43,12 @@ export default function PrescriptionsScreen() {
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await loadPrescriptions();
+    setRefreshing(false);
+  };
+
   const filteredPrescriptions = prescriptions.filter(prescription => {
     const matchesFilter = selectedFilter === 'All' || 
       (selectedFilter === 'Low Stock' && prescription.daysLeft <= 7) ||
@@ -53,10 +60,6 @@ export default function PrescriptionsScreen() {
 
   const handlePrescriptionPress = (prescriptionId: string) => {
     router.push(`/(tabs)/prescriptions/${prescriptionId}`);
-  };
-
-  const handleAddPrescription = () => {
-    router.push('/(tabs)/prescriptions/add');
   };
 
   if (loading.prescriptions) {
@@ -71,10 +74,14 @@ export default function PrescriptionsScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Prescriptions</Text>
+        <Text style={styles.headerTitle}>My Prescriptions</Text>
         <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.actionButton} onPress={handleAddPrescription}>
-            <Plus size={24} color={Colors.primary} />
+          <TouchableOpacity 
+            style={styles.actionButton} 
+            onPress={handleRefresh}
+            disabled={refreshing}
+          >
+            <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
             <Filter size={24} color={Colors.textSecondary} />
@@ -122,9 +129,13 @@ export default function PrescriptionsScreen() {
           ) : (
             <EmptyState
               title="No prescriptions found"
-              description={searchQuery ? "Try adjusting your search terms" : "Add your first prescription to get started"}
-              actionText="Add Prescription"
-              onAction={handleAddPrescription}
+              description={
+                searchQuery 
+                  ? "Try adjusting your search terms" 
+                  : "Your prescriptions from doctors will appear here. Visit a doctor to get your first prescription."
+              }
+              actionText="Book Appointment"
+              onAction={() => router.push('/(tabs)/appointments/book')}
             />
           )}
         </View>
