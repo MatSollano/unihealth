@@ -1,23 +1,24 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, Calendar, FileText, Award, User } from 'lucide-react-native';
+import { Home, Calendar, FileText, Award, User } from 'lucide-react-native';
+import { Colors, FontSizes } from '@/constants/theme';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#004D80',
-        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.textTertiary,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: Colors.surface,
           borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
+          borderTopColor: Colors.gray200,
           paddingBottom: 8,
           paddingTop: 8,
           height: 80,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: FontSizes.xs,
           fontFamily: 'Inter-Medium',
         },
       }}
