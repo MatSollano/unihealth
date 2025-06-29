@@ -330,7 +330,6 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.xl,
     fontFamily: 'Inter-Bold',
     color: Colors.textPrimary,
-    marginBottom: Spacing.lg,
   },
   seeAllText: {
     fontSize: FontSizes.sm,
