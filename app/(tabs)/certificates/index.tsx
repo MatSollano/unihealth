@@ -145,13 +145,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingTop: Spacing.lg,
+    paddingBottom: Spacing.md,
     backgroundColor: Colors.surface,
+  },
+  headerContent: {
+    flex: 1,
   },
   headerTitle: {
     fontSize: FontSizes.xxl,
     fontFamily: 'Inter-Bold',
     color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+  headerSubtitle: {
+    fontSize: FontSizes.sm,
+    fontFamily: 'Inter-Medium',
+    color: Colors.textSecondary,
   },
   headerActions: {
     flexDirection: 'row',
@@ -167,11 +177,8 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingVertical: Spacing.md,
     backgroundColor: Colors.surface,
-  },
-  scrollView: {
-    flex: 1,
   },
   certificatesList: {
     padding: Spacing.xl,
