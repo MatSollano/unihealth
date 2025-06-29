@@ -175,9 +175,9 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   actionButton: {
-    width: 40,
-    height: 40,
-    borderRadius: BorderRadius.md,
+    width: 44,
+    height: 44,
+    borderRadius: BorderRadius.full,
     backgroundColor: Colors.gray100,
     justifyContent: 'center',
     alignItems: 'center',
