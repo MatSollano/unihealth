@@ -46,7 +46,7 @@ export default function TabLayout() {
         options={{
           title: 'Prescription',
           tabBarIcon: ({ color, size }) => (
-            <FileText size={size} color={color} />
+            <FileText size={10} color={color} />
           ),
         }}
       />
