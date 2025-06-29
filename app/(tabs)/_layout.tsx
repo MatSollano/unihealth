@@ -35,7 +35,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="appointments"
         options={{
-          title: 'Appointments',
+          title: 'Visits',
           tabBarIcon: ({ color, size }) => (
             <Calendar size={size} color={color} />
           ),
@@ -44,7 +44,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="prescriptions"
         options={{
-          title: 'Prescriptions',
+          title: 'Prescription',
           tabBarIcon: ({ color, size }) => (
             <FileText size={size} color={color} />
           ),
@@ -53,7 +53,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="certificates"
         options={{
-          title: 'Certificates',
+          title: 'Med Certs',
           tabBarIcon: ({ color, size }) => (
             <Award size={size} color={color} />
           ),
