@@ -39,7 +39,6 @@ export function PrescriptionCard({ medicineName, dosage, doctorName, daysLeft }:
 
 const styles = StyleSheet.create({
   card: {
-    width: 200,
     borderRadius: BorderRadius.xl,
     padding: Spacing.lg,
   },
