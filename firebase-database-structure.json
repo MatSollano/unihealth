@@ -13,6 +13,7 @@
         "height": 175,
         "weight": 70,
         "phone": "+1234567890",
+        "imageUrl": "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
         "emergencyContact": {
           "name": "Jane Doe",
           "phone": "+1234567890",
@@ -44,6 +45,7 @@
         "height": 165,
         "weight": 60,
         "phone": "+1234567891",
+        "imageUrl": "https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=400",
         "emergencyContact": {
           "name": "Michael Johnson",
           "phone": "+1234567891",
@@ -53,6 +55,38 @@
           "allergies": ["latex"],
           "chronicConditions": ["diabetes"],
           "surgeries": []
+        }
+      }
+    },
+    "user_uid_patient_marie": {
+      "name": "Marie Claire",
+      "email": "marie.claire@email.com",
+      "role": "patient",
+      "createdAt": "2024-01-18T11:30:00.000Z",
+      "lastLogin": "2024-01-21T14:22:00.000Z",
+      "profile": {
+        "dateOfBirth": "1992-03-12",
+        "gender": "female",
+        "bloodType": "B+",
+        "height": 168,
+        "weight": 58,
+        "phone": "+1234567899",
+        "imageUrl": "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "emergencyContact": {
+          "name": "Pierre Claire",
+          "phone": "+1234567898",
+          "relationship": "brother"
+        },
+        "medicalHistory": {
+          "allergies": ["peanuts", "dust mites"],
+          "chronicConditions": ["asthma", "seasonal allergies"],
+          "surgeries": [
+            {
+              "procedure": "Tonsillectomy",
+              "date": "2010-07-15",
+              "hospital": "Metropolitan Medical Center"
+            }
+          ]
         }
       }
     },
@@ -107,6 +141,32 @@
         "rating": 4.9,
         "reviewCount": 89
       }
+    },
+    "user_uid_doctor_3": {
+      "name": "Dr. Lisa Thompson",
+      "email": "dr.lisa@healthconnect.com",
+      "role": "doctor",
+      "createdAt": "2024-01-01T11:00:00.000Z",
+      "lastLogin": "2024-01-21T08:45:00.000Z",
+      "profile": {
+        "specialty": "Pulmonologist",
+        "licenseNumber": "MD54321",
+        "experience": 10,
+        "education": "Stanford University School of Medicine",
+        "clinic": "Respiratory Health Center",
+        "phone": "+1234567894",
+        "address": "789 Wellness Ave, Building B",
+        "certifications": ["Board Certified Pulmonologist", "Sleep Medicine Certified"],
+        "availability": {
+          "monday": ["09:00", "17:00"],
+          "tuesday": ["09:00", "17:00"],
+          "wednesday": ["09:00", "17:00"],
+          "thursday": ["09:00", "17:00"],
+          "friday": ["09:00", "16:00"]
+        },
+        "rating": 4.7,
+        "reviewCount": 156
+      }
     }
   },
   "healthData": {
@@ -160,6 +220,43 @@
           "activeMinutes": 38,
           "sleepHours": 8.0,
           "waterIntake": 2.5
+        }
+      }
+    },
+    "user_uid_patient_marie": {
+      "heartRate": 75,
+      "steps": 12450,
+      "sleep": 8.2,
+      "bloodPressure": {
+        "systolic": 118,
+        "diastolic": 78,
+        "recordedAt": "2024-01-21T07:15:00.000Z"
+      },
+      "weight": 58.3,
+      "bodyTemperature": 36.5,
+      "oxygenSaturation": 99,
+      "lastUpdated": "2024-01-21T08:45:00.000Z",
+      "dailyMetrics": {
+        "2024-01-21": {
+          "steps": 12450,
+          "caloriesBurned": 2380,
+          "activeMinutes": 68,
+          "sleepHours": 8.2,
+          "waterIntake": 2.8
+        },
+        "2024-01-20": {
+          "steps": 11200,
+          "caloriesBurned": 2150,
+          "activeMinutes": 55,
+          "sleepHours": 7.8,
+          "waterIntake": 2.6
+        },
+        "2024-01-19": {
+          "steps": 9800,
+          "caloriesBurned": 1950,
+          "activeMinutes": 42,
+          "sleepHours": 8.5,
+          "waterIntake": 2.4
         }
       }
     }
@@ -250,6 +347,58 @@
         "phone": "+1234567892",
         "createdAt": "2024-01-15T11:00:00.000Z",
         "completedAt": "2024-01-20T09:45:00.000Z"
+      }
+    },
+    "user_uid_patient_marie": {
+      "appointment_6": {
+        "id": "appointment_6",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "specialty": "Pulmonologist",
+        "clinic": "Respiratory Health Center",
+        "date": "2024-01-24",
+        "time": "15:30",
+        "status": "upcoming",
+        "imageUrl": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Asthma management and lung function assessment",
+        "address": "789 Wellness Ave, Building B",
+        "phone": "+1234567894",
+        "createdAt": "2024-01-18T13:00:00.000Z",
+        "reminderSet": true,
+        "reminderTime": "2024-01-24T14:30:00.000Z"
+      },
+      "appointment_7": {
+        "id": "appointment_7",
+        "doctorId": "user_uid_doctor_1",
+        "doctorName": "Dr. Emily Rodriguez",
+        "specialty": "Cardiologist",
+        "clinic": "Heart Care Center",
+        "date": "2024-01-26",
+        "time": "11:15",
+        "status": "upcoming",
+        "imageUrl": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Preventive cardiac screening",
+        "address": "123 Medical Plaza, Suite 200",
+        "phone": "+1234567892",
+        "createdAt": "2024-01-19T10:30:00.000Z",
+        "reminderSet": true,
+        "reminderTime": "2024-01-26T10:15:00.000Z"
+      },
+      "appointment_8": {
+        "id": "appointment_8",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "specialty": "Pulmonologist",
+        "clinic": "Respiratory Health Center",
+        "date": "2024-01-15",
+        "time": "14:00",
+        "status": "completed",
+        "imageUrl": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "notes": "Initial consultation for asthma symptoms completed",
+        "address": "789 Wellness Ave, Building B",
+        "phone": "+1234567894",
+        "createdAt": "2024-01-10T16:00:00.000Z",
+        "completedAt": "2024-01-15T14:45:00.000Z"
       }
     }
   },
@@ -362,6 +511,92 @@
         },
         "createdAt": "2024-01-18T14:00:00.000Z"
       }
+    },
+    "user_uid_patient_marie": {
+      "prescription_6": {
+        "id": "prescription_6",
+        "medicineName": "Albuterol Inhaler",
+        "dosage": "2 puffs every 4-6 hours as needed",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "prescribedDate": "2024-01-15",
+        "startDate": "2024-01-16",
+        "endDate": "2024-04-15",
+        "daysLeft": 75,
+        "status": "active",
+        "instructions": "Use as rescue inhaler for asthma symptoms. Shake well before use.",
+        "sideEffects": ["tremor", "nervousness", "headache"],
+        "refillsRemaining": 5,
+        "pharmacy": {
+          "name": "Wellness Pharmacy",
+          "address": "321 Health Boulevard",
+          "phone": "+1234567899"
+        },
+        "createdAt": "2024-01-15T16:30:00.000Z"
+      },
+      "prescription_7": {
+        "id": "prescription_7",
+        "medicineName": "Fluticasone Propionate",
+        "dosage": "2 puffs twice daily",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "prescribedDate": "2024-01-15",
+        "startDate": "2024-01-16",
+        "endDate": "2024-07-15",
+        "daysLeft": 165,
+        "status": "active",
+        "instructions": "Use daily for asthma control. Rinse mouth after use.",
+        "sideEffects": ["throat irritation", "hoarseness"],
+        "refillsRemaining": 3,
+        "pharmacy": {
+          "name": "Wellness Pharmacy",
+          "address": "321 Health Boulevard",
+          "phone": "+1234567899"
+        },
+        "createdAt": "2024-01-15T16:35:00.000Z"
+      },
+      "prescription_8": {
+        "id": "prescription_8",
+        "medicineName": "Cetirizine",
+        "dosage": "10mg daily",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "prescribedDate": "2024-01-18",
+        "startDate": "2024-01-19",
+        "endDate": "2024-04-19",
+        "daysLeft": 78,
+        "status": "active",
+        "instructions": "Take in the evening for seasonal allergies",
+        "sideEffects": ["drowsiness", "dry mouth"],
+        "refillsRemaining": 2,
+        "pharmacy": {
+          "name": "Wellness Pharmacy",
+          "address": "321 Health Boulevard",
+          "phone": "+1234567899"
+        },
+        "createdAt": "2024-01-18T11:20:00.000Z"
+      },
+      "prescription_9": {
+        "id": "prescription_9",
+        "medicineName": "Montelukast",
+        "dosage": "10mg daily",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "prescribedDate": "2024-01-20",
+        "startDate": "2024-01-21",
+        "endDate": "2024-07-21",
+        "daysLeft": 171,
+        "status": "active",
+        "instructions": "Take in the evening for asthma and allergy control",
+        "sideEffects": ["headache", "stomach pain"],
+        "refillsRemaining": 4,
+        "pharmacy": {
+          "name": "Wellness Pharmacy",
+          "address": "321 Health Boulevard",
+          "phone": "+1234567899"
+        },
+        "createdAt": "2024-01-20T14:15:00.000Z"
+      }
     }
   },
   "certificates": {
@@ -437,6 +672,67 @@
         "certificateNumber": "DM-2024-012",
         "createdAt": "2024-01-18T10:30:00.000Z"
       }
+    },
+    "user_uid_patient_marie": {
+      "certificate_4": {
+        "id": "certificate_4",
+        "title": "Respiratory Health Certificate",
+        "issueDate": "2024-01-20",
+        "expiryDate": "2024-07-20",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "type": "fitness",
+        "purpose": "Asthma management compliance",
+        "validFor": "Employment and insurance",
+        "restrictions": "Avoid exposure to allergens",
+        "clinic": "Respiratory Health Center",
+        "licenseNumber": "MD54321",
+        "certificateNumber": "RH-2024-008",
+        "createdAt": "2024-01-20T15:45:00.000Z"
+      },
+      "certificate_5": {
+        "id": "certificate_5",
+        "title": "Allergy Management Certificate",
+        "issueDate": "2024-01-19",
+        "expiryDate": "2024-07-19",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "type": "fitness",
+        "purpose": "Workplace allergy accommodation",
+        "validFor": "Employment accommodation",
+        "restrictions": "Avoid peanuts and dust exposure",
+        "clinic": "Respiratory Health Center",
+        "licenseNumber": "MD54321",
+        "certificateNumber": "AM-2024-003",
+        "createdAt": "2024-01-19T13:20:00.000Z"
+      },
+      "certificate_6": {
+        "id": "certificate_6",
+        "title": "Vaccination Certificate - Flu",
+        "issueDate": "2024-01-10",
+        "expiryDate": "2024-12-31",
+        "doctorId": "user_uid_doctor_3",
+        "doctorName": "Dr. Lisa Thompson",
+        "type": "vaccination",
+        "purpose": "Annual flu vaccination",
+        "validFor": "General health protection",
+        "vaccineDetails": {
+          "vaccineName": "Influenza Vaccine",
+          "manufacturer": "Sanofi Pasteur",
+          "batchNumber": "FLU2024-001",
+          "doses": [
+            {
+              "doseNumber": 1,
+              "date": "2024-01-10",
+              "location": "Respiratory Health Center"
+            }
+          ]
+        },
+        "clinic": "Respiratory Health Center",
+        "licenseNumber": "MD54321",
+        "certificateNumber": "FV-2024-015",
+        "createdAt": "2024-01-10T11:30:00.000Z"
+      }
     }
   },
   "notifications": {
@@ -462,9 +758,41 @@
         "relatedId": "prescription_2"
       }
     },
-    "user_uid_doctor_1": {
+    "user_uid_patient_marie": {
       "notification_3": {
         "id": "notification_3",
+        "type": "appointment_reminder",
+        "title": "Upcoming Appointment",
+        "message": "You have an appointment with Dr. Lisa Thompson tomorrow at 3:30 PM",
+        "timestamp": "2024-01-23T15:30:00.000Z",
+        "read": false,
+        "actionRequired": false,
+        "relatedId": "appointment_6"
+      },
+      "notification_4": {
+        "id": "notification_4",
+        "type": "health_alert",
+        "title": "Daily Step Goal Achieved!",
+        "message": "Congratulations! You've exceeded your daily step goal with 12,450 steps today.",
+        "timestamp": "2024-01-21T20:30:00.000Z",
+        "read": false,
+        "actionRequired": false,
+        "relatedId": null
+      },
+      "notification_5": {
+        "id": "notification_5",
+        "type": "prescription_reminder",
+        "title": "Medication Reminder",
+        "message": "Don't forget to take your evening Cetirizine for allergy control.",
+        "timestamp": "2024-01-21T19:00:00.000Z",
+        "read": true,
+        "actionRequired": false,
+        "relatedId": "prescription_8"
+      }
+    },
+    "user_uid_doctor_1": {
+      "notification_6": {
+        "id": "notification_6",
         "type": "appointment_reminder",
         "title": "Today's Appointments",
         "message": "You have 3 appointments scheduled for today",
@@ -472,6 +800,18 @@
         "read": false,
         "actionRequired": false,
         "relatedId": null
+      }
+    },
+    "user_uid_doctor_3": {
+      "notification_7": {
+        "id": "notification_7",
+        "type": "appointment_reminder",
+        "title": "Upcoming Appointment",
+        "message": "Marie Claire has an appointment tomorrow at 3:30 PM",
+        "timestamp": "2024-01-23T08:00:00.000Z",
+        "read": false,
+        "actionRequired": false,
+        "relatedId": "appointment_6"
       }
     }
   },
@@ -509,6 +849,17 @@
         "status": "upcoming",
         "notes": "Follow-up for hypertension management",
         "createdAt": "2024-01-15T10:00:00.000Z"
+      },
+      "appointment_upcoming_3": {
+        "id": "appointment_upcoming_3",
+        "patientId": "user_uid_patient_marie",
+        "patientName": "Marie Claire",
+        "specialty": "Cardiologist",
+        "date": "2024-01-26",
+        "time": "11:15",
+        "status": "upcoming",
+        "notes": "Preventive cardiac screening for young adult",
+        "createdAt": "2024-01-19T10:30:00.000Z"
       }
     },
     "user_uid_doctor_2": {
@@ -533,6 +884,30 @@
         "status": "upcoming",
         "notes": "Monthly diabetes consultation",
         "createdAt": "2024-01-12T16:00:00.000Z"
+      }
+    },
+    "user_uid_doctor_3": {
+      "appointment_completed_1": {
+        "id": "appointment_completed_1",
+        "patientId": "user_uid_patient_marie",
+        "patientName": "Marie Claire",
+        "specialty": "Pulmonologist",
+        "date": "2024-01-15",
+        "time": "14:00",
+        "status": "completed",
+        "notes": "Initial consultation for asthma symptoms completed. Prescribed inhalers and allergy medications.",
+        "createdAt": "2024-01-10T16:00:00.000Z"
+      },
+      "appointment_upcoming_4": {
+        "id": "appointment_upcoming_4",
+        "patientId": "user_uid_patient_marie",
+        "patientName": "Marie Claire",
+        "specialty": "Pulmonologist",
+        "date": "2024-01-24",
+        "time": "15:30",
+        "status": "upcoming",
+        "notes": "Follow-up for asthma management and lung function assessment",
+        "createdAt": "2024-01-18T13:00:00.000Z"
       }
     }
   }
