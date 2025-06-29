@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Plus, Bell } from 'lucide-react-native';
+import { Plus, Bell, Calendar } from 'lucide-react-native';
 import { AppointmentListCard } from '@/components/appointments/AppointmentListCard';
 import { FilterTabs } from '@/components/ui/FilterTabs';
 import { SearchBar } from '@/components/ui/SearchBar';
@@ -19,6 +19,7 @@ const filterOptions: FilterOption[] = ['All', 'Upcoming', 'Completed', 'Cancelle
 export default function AppointmentsScreen() {
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuthStore();
   const { appointments, setAppointments, loading, error, setLoading, setError } = useHealthStore();
 
@@ -33,6 +34,12 @@ export default function AppointmentsScreen() {
       return () => unsubscribe();
     }
   }, [user]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // Refresh will be handled by the real-time listener
+    setTimeout(() => setRefreshing(false), 1000);
+  };
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesFilter = selectedFilter === 'All' || 
@@ -50,7 +57,7 @@ export default function AppointmentsScreen() {
     router.push('/(tabs)/appointments/book');
   };
 
-  if (loading.appointments) {
+  if (loading.appointments && !refreshing) {
     return (
       <SafeAreaView style={styles.container}>
         <LoadingSpinner />
@@ -62,13 +69,18 @@ export default function AppointmentsScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Appointments</Text>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Appointments</Text>
+          <Text style={styles.headerSubtitle}>
+            {filteredAppointments.length} {filteredAppointments.length === 1 ? 'appointment' : 'appointments'}
+          </Text>
+        </View>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.actionButton} onPress={handleBookAppointment}>
-            <Plus size={24} color={Colors.primary} />
+            <Plus size={22} color={Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Bell size={24} color={Colors.textSecondary} />
+            <Bell size={22} color={Colors.textSecondary} />
           </TouchableOpacity>
         </View>
       </View>
@@ -87,6 +99,7 @@ export default function AppointmentsScreen() {
         options={filterOptions}
         selectedOption={selectedFilter}
         onSelect={setSelectedFilter}
+        variant="compact"
       />
 
       {/* Error State */}
@@ -97,7 +110,13 @@ export default function AppointmentsScreen() {
       )}
 
       {/* Appointments List */}
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.appointmentsList}>
           {filteredAppointments.length > 0 ? (
             filteredAppointments.map((appointment) => (
@@ -109,10 +128,12 @@ export default function AppointmentsScreen() {
             ))
           ) : (
             <EmptyState
+              icon={<Calendar size={48} color={Colors.textTertiary} />}
               title="No appointments found"
               description={searchQuery ? "Try adjusting your search terms" : "Book your first appointment to get started"}
               actionText="Book Appointment"
               onAction={handleBookAppointment}
+              variant="compact"
             />
           )}
         </View>
@@ -131,48 +152,58 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingTop: Spacing.lg,
+    paddingBottom: Spacing.md,
     backgroundColor: Colors.surface,
+  },
+  headerContent: {
+    flex: 1,
   },
   headerTitle: {
     fontSize: FontSizes.xxl,
     fontFamily: 'Inter-Bold',
     color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+  headerSubtitle: {
+    fontSize: FontSizes.sm,
+    fontFamily: 'Inter-Medium',
+    color: Colors.textSecondary,
   },
   headerActions: {
     flexDirection: 'row',
     gap: Spacing.sm,
   },
   actionButton: {
-    width: 44,
-    height: 44,
-    borderRadius: BorderRadius.full,
+    width: 40,
+    height: 40,
+    borderRadius: BorderRadius.md,
     backgroundColor: Colors.gray100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   searchContainer: {
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingVertical: Spacing.md,
     backgroundColor: Colors.surface,
   },
   scrollView: {
     flex: 1,
   },
   appointmentsList: {
-    padding: Spacing.xl,
+    padding: Spacing.lg,
     gap: Spacing.md,
   },
   errorContainer: {
-    margin: Spacing.xl,
-    padding: Spacing.lg,
+    margin: Spacing.lg,
+    padding: Spacing.md,
     backgroundColor: Colors.surface,
     borderRadius: BorderRadius.md,
     borderLeftWidth: 4,
     borderLeftColor: Colors.error,
   },
   errorText: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
     color: Colors.error,
   },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Calendar, Clock, MapPin } from 'lucide-react-native';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 interface AppointmentListCardProps {
   id: string;
@@ -27,38 +28,44 @@ export function AppointmentListCard({
   const getStatusColor = () => {
     switch (status) {
       case 'upcoming':
-        return '#10B981';
+        return Colors.statusUpcoming;
       case 'completed':
-        return '#6B7280';
+        return Colors.statusCompleted;
       case 'cancelled':
-        return '#EF4444';
+        return Colors.statusCancelled;
       default:
-        return '#6B7280';
+        return Colors.textSecondary;
     }
   };
 
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image source={{ uri: imageUrl }} style={styles.doctorImage} />
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.doctorName}>{doctorName}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
-            <Text style={styles.statusText}>{status}</Text>
+      <View style={styles.cardHeader}>
+        <Image source={{ uri: imageUrl }} style={styles.doctorImage} />
+        <View style={styles.doctorInfo}>
+          <View style={styles.nameRow}>
+            <Text style={styles.doctorName} numberOfLines={1}>{doctorName}</Text>
+            <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
+              <Text style={styles.statusText}>{status}</Text>
+            </View>
           </View>
+          <Text style={styles.specialty} numberOfLines={1}>{specialty}</Text>
         </View>
-        <Text style={styles.specialty}>{specialty}</Text>
+      </View>
+
+      <View style={styles.cardContent}>
         <View style={styles.infoRow}>
-          <MapPin size={14} color="#6B7280" />
-          <Text style={styles.infoText}>{clinic}</Text>
+          <MapPin size={14} color={Colors.textSecondary} />
+          <Text style={styles.infoText} numberOfLines={1}>{clinic}</Text>
         </View>
+        
         <View style={styles.timeRow}>
           <View style={styles.timeItem}>
-            <Calendar size={14} color="#6B7280" />
+            <Calendar size={14} color={Colors.primary} />
             <Text style={styles.timeText}>{date}</Text>
           </View>
           <View style={styles.timeItem}>
-            <Clock size={14} color="#6B7280" />
+            <Clock size={14} color={Colors.primary} />
             <Text style={styles.timeText}>{time}</Text>
           </View>
         </View>
@@ -69,77 +76,84 @@ export function AppointmentListCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    ...Shadows.md,
+  },
+  cardHeader: {
     flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    alignItems: 'center',
+    marginBottom: Spacing.md,
   },
   doctorImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 16,
+    width: 56,
+    height: 56,
+    borderRadius: BorderRadius.lg,
+    marginRight: Spacing.md,
   },
-  content: {
+  doctorInfo: {
     flex: 1,
   },
-  header: {
+  nameRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 4,
+    alignItems: 'center',
+    marginBottom: Spacing.xs,
   },
   doctorName: {
-    fontSize: 16,
+    fontSize: FontSizes.lg,
     fontFamily: 'Inter-SemiBold',
-    color: '#111827',
+    color: Colors.textPrimary,
     flex: 1,
+    marginRight: Spacing.sm,
   },
   statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.sm,
   },
   statusText: {
-    fontSize: 10,
+    fontSize: FontSizes.xs,
     fontFamily: 'Inter-SemiBold',
-    color: '#fff',
-    textTransform: 'uppercase',
+    color: Colors.surface,
+    textTransform: 'capitalize',
   },
   specialty: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
-    marginBottom: 8,
+    color: Colors.textSecondary,
+  },
+  cardContent: {
+    gap: Spacing.sm,
   },
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginBottom: 8,
+    gap: Spacing.xs,
   },
   infoText: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
+    color: Colors.textSecondary,
+    flex: 1,
   },
   timeRow: {
     flexDirection: 'row',
-    gap: 16,
+    justifyContent: 'space-between',
+    paddingTop: Spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: Colors.gray100,
   },
   timeItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: Spacing.xs,
+    flex: 1,
   },
   timeText: {
-    fontSize: 12,
-    fontFamily: 'Inter-Medium',
-    color: '#6B7280',
+    fontSize: FontSizes.sm,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.textPrimary,
   },
 });

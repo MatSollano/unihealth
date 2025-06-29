@@ -1,67 +1,98 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Colors, Spacing, FontSizes, BorderRadius } from '@/constants/theme';
 
 interface FilterTabsProps {
   options: string[];
   selectedOption: string;
   onSelect: (option: string) => void;
+  variant?: 'default' | 'compact';
 }
 
-export function FilterTabs({ options, selectedOption, onSelect }: FilterTabsProps) {
+export function FilterTabs({ options, selectedOption, onSelect, variant = 'default' }: FilterTabsProps) {
+  const isCompact = variant === 'compact';
+  
   return (
-    <ScrollView 
-      horizontal 
-      showsHorizontalScrollIndicator={false}
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
-      {options.map((option) => (
-        <TouchableOpacity
-          key={option}
-          style={[
-            styles.tab,
-            selectedOption === option && styles.selectedTab,
-          ]}
-          onPress={() => onSelect(option)}
-        >
-          <Text
+    <View style={[styles.container, isCompact && styles.compactContainer]}>
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={[styles.contentContainer, isCompact && styles.compactContentContainer]}
+      >
+        {options.map((option) => (
+          <TouchableOpacity
+            key={option}
             style={[
-              styles.tabText,
-              selectedOption === option && styles.selectedTabText,
+              styles.tab,
+              isCompact && styles.compactTab,
+              selectedOption === option && styles.selectedTab,
+              selectedOption === option && isCompact && styles.selectedCompactTab,
             ]}
+            onPress={() => onSelect(option)}
           >
-            {option}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+            <Text
+              style={[
+                styles.tabText,
+                isCompact && styles.compactTabText,
+                selectedOption === option && styles.selectedTabText,
+              ]}
+            >
+              {option}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    paddingVertical: 16,
+    backgroundColor: Colors.surface,
+    paddingVertical: Spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.gray100,
+  },
+  compactContainer: {
+    paddingVertical: Spacing.md,
   },
   contentContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.xl,
+    gap: Spacing.md,
+  },
+  compactContentContainer: {
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.sm,
   },
   tab: {
-    paddingHorizontal: 20,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#F3F4F6',
-    marginRight: 12,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+    borderRadius: BorderRadius.full,
+    backgroundColor: Colors.gray100,
+    minWidth: 80,
+    alignItems: 'center',
+  },
+  compactTab: {
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    minWidth: 60,
   },
   selectedTab: {
-    backgroundColor: '#004D80',
+    backgroundColor: Colors.primary,
+  },
+  selectedCompactTab: {
+    backgroundColor: Colors.primary,
   },
   tabText: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.textSecondary,
+  },
+  compactTabText: {
+    fontSize: FontSizes.xs,
     fontFamily: 'Inter-Medium',
-    color: '#6B7280',
   },
   selectedTabText: {
-    color: '#fff',
+    color: Colors.surface,
   },
 });

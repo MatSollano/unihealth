@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Pill, Clock, User } from 'lucide-react-native';
+import { Pill, Clock, User, Calendar } from 'lucide-react-native';
+import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
 
 interface PrescriptionListCardProps {
   id: string;
@@ -26,9 +27,9 @@ export function PrescriptionListCard({
   const isExpired = status === 'expired';
 
   const getStatusColor = () => {
-    if (isExpired) return '#EF4444';
-    if (isLowStock) return '#F59E0B';
-    return '#10B981';
+    if (isExpired) return Colors.statusExpired;
+    if (isLowStock) return Colors.statusLowStock;
+    return Colors.statusActive;
   };
 
   const getStatusText = () => {
@@ -37,35 +38,56 @@ export function PrescriptionListCard({
     return 'Active';
   };
 
+  const getIconColor = () => {
+    if (isExpired) return Colors.textSecondary;
+    return Colors.primary;
+  };
+
+  const getIconBackground = () => {
+    if (isExpired) return Colors.gray100;
+    return `${Colors.primary}15`;
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      <View style={styles.header}>
-        <View style={[styles.iconContainer, { backgroundColor: isExpired ? '#FEE2E2' : '#E8F0FE' }]}>
-          <Pill size={24} color={isExpired ? '#EF4444' : '#004D80'} />
+      <View style={styles.cardHeader}>
+        <View style={[styles.iconContainer, { backgroundColor: getIconBackground() }]}>
+          <Pill size={24} color={getIconColor()} />
         </View>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
-          <Text style={styles.statusText}>{getStatusText()}</Text>
-        </View>
-      </View>
-      
-      <Text style={styles.medicineName}>{medicineName}</Text>
-      <Text style={styles.dosage}>{dosage}</Text>
-      
-      <View style={styles.infoRow}>
-        <User size={14} color="#6B7280" />
-        <Text style={styles.infoText}>{doctorName}</Text>
-      </View>
-      
-      <View style={styles.footer}>
-        <Text style={styles.prescribedDate}>Prescribed: {prescribedDate}</Text>
-        {status === 'active' && (
-          <View style={styles.daysLeftContainer}>
-            <Clock size={14} color={isLowStock ? '#F59E0B' : '#6B7280'} />
-            <Text style={[styles.daysLeft, isLowStock && styles.lowStockText]}>
-              {daysLeft} days left
-            </Text>
+        <View style={styles.medicineInfo}>
+          <View style={styles.nameRow}>
+            <Text style={styles.medicineName} numberOfLines={1}>{medicineName}</Text>
+            <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
+              <Text style={styles.statusText}>{getStatusText()}</Text>
+            </View>
           </View>
-        )}
+          <Text style={styles.dosage} numberOfLines={1}>{dosage}</Text>
+        </View>
+      </View>
+      
+      <View style={styles.cardContent}>
+        <View style={styles.infoRow}>
+          <User size={14} color={Colors.textSecondary} />
+          <Text style={styles.infoText} numberOfLines={1}>{doctorName}</Text>
+        </View>
+        
+        <View style={styles.footerRow}>
+          <View style={styles.dateContainer}>
+            <Calendar size={14} color={Colors.textSecondary} />
+            <Text style={styles.dateText}>Prescribed: {prescribedDate}</Text>
+          </View>
+          {status === 'active' && (
+            <View style={styles.daysLeftContainer}>
+              <Clock size={14} color={isLowStock ? Colors.statusLowStock : Colors.textSecondary} />
+              <Text style={[
+                styles.daysLeftText,
+                isLowStock && styles.lowStockText
+              ]}>
+                {daysLeft} days left
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -73,83 +95,100 @@ export function PrescriptionListCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    ...Shadows.md,
   },
-  header: {
+  cardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 12,
+    alignItems: 'center',
+    marginBottom: Spacing.md,
   },
   iconContainer: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    borderRadius: BorderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: Spacing.md,
   },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+  medicineInfo: {
+    flex: 1,
   },
-  statusText: {
-    fontSize: 10,
-    fontFamily: 'Inter-SemiBold',
-    color: '#fff',
-    textTransform: 'uppercase',
+  nameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.xs,
   },
   medicineName: {
-    fontSize: 18,
+    fontSize: FontSizes.lg,
     fontFamily: 'Inter-SemiBold',
-    color: '#111827',
-    marginBottom: 4,
+    color: Colors.textPrimary,
+    flex: 1,
+    marginRight: Spacing.sm,
+  },
+  statusBadge: {
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.sm,
+  },
+  statusText: {
+    fontSize: FontSizes.xs,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.surface,
+    textTransform: 'capitalize',
   },
   dosage: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
-    marginBottom: 12,
+    color: Colors.textSecondary,
+  },
+  cardContent: {
+    gap: Spacing.sm,
   },
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginBottom: 12,
+    gap: Spacing.xs,
   },
   infoText: {
-    fontSize: 14,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
+    color: Colors.textSecondary,
+    flex: 1,
   },
-  footer: {
+  footerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: Spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: Colors.gray100,
   },
-  prescribedDate: {
-    fontSize: 12,
+  dateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs,
+    flex: 1,
+  },
+  dateText: {
+    fontSize: FontSizes.xs,
     fontFamily: 'Inter-Regular',
-    color: '#9CA3AF',
+    color: Colors.textSecondary,
   },
   daysLeftContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: Spacing.xs,
   },
-  daysLeft: {
-    fontSize: 12,
-    fontFamily: 'Inter-Medium',
-    color: '#6B7280',
+  daysLeftText: {
+    fontSize: FontSizes.xs,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.textSecondary,
   },
   lowStockText: {
-    color: '#F59E0B',
+    color: Colors.statusLowStock,
   },
 });

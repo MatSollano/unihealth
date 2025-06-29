@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Bell, Filter, RefreshCw } from 'lucide-react-native';
+import { Bell, Filter, RefreshCw, FileText } from 'lucide-react-native';
 import { PrescriptionListCard } from '@/components/prescriptions/PrescriptionListCard';
 import { FilterTabs } from '@/components/ui/FilterTabs';
 import { SearchBar } from '@/components/ui/SearchBar';
@@ -43,7 +43,7 @@ export default function PrescriptionsScreen() {
     }
   };
 
-  const handleRefresh = async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     await loadPrescriptions();
     setRefreshing(false);
@@ -62,7 +62,7 @@ export default function PrescriptionsScreen() {
     router.push(`/(tabs)/prescriptions/${prescriptionId}`);
   };
 
-  if (loading.prescriptions) {
+  if (loading.prescriptions && !refreshing) {
     return (
       <SafeAreaView style={styles.container}>
         <LoadingSpinner />
@@ -74,20 +74,25 @@ export default function PrescriptionsScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Prescriptions</Text>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Prescriptions</Text>
+          <Text style={styles.headerSubtitle}>
+            {filteredPrescriptions.length} {filteredPrescriptions.length === 1 ? 'prescription' : 'prescriptions'}
+          </Text>
+        </View>
         <View style={styles.headerActions}>
           <TouchableOpacity 
             style={styles.actionButton} 
-            onPress={handleRefresh}
+            onPress={onRefresh}
             disabled={refreshing}
           >
-            <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
+            <RefreshCw size={22} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Filter size={24} color={Colors.textSecondary} />
+            <Filter size={22} color={Colors.textSecondary} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Bell size={24} color={Colors.textSecondary} />
+            <Bell size={22} color={Colors.textSecondary} />
           </TouchableOpacity>
         </View>
       </View>
@@ -106,6 +111,7 @@ export default function PrescriptionsScreen() {
         options={filterOptions}
         selectedOption={selectedFilter}
         onSelect={setSelectedFilter}
+        variant="compact"
       />
 
       {/* Error State */}
@@ -116,7 +122,13 @@ export default function PrescriptionsScreen() {
       )}
 
       {/* Prescriptions List */}
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.prescriptionsList}>
           {filteredPrescriptions.length > 0 ? (
             filteredPrescriptions.map((prescription) => (
@@ -128,6 +140,7 @@ export default function PrescriptionsScreen() {
             ))
           ) : (
             <EmptyState
+              icon={<FileText size={48} color={Colors.textTertiary} />}
               title="No prescriptions found"
               description={
                 searchQuery 
@@ -136,6 +149,7 @@ export default function PrescriptionsScreen() {
               }
               actionText="Book Appointment"
               onAction={() => router.push('/(tabs)/appointments/book')}
+              variant="compact"
             />
           )}
         </View>
@@ -154,48 +168,58 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingTop: Spacing.lg,
+    paddingBottom: Spacing.md,
     backgroundColor: Colors.surface,
+  },
+  headerContent: {
+    flex: 1,
   },
   headerTitle: {
     fontSize: FontSizes.xxl,
     fontFamily: 'Inter-Bold',
     color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+  headerSubtitle: {
+    fontSize: FontSizes.sm,
+    fontFamily: 'Inter-Medium',
+    color: Colors.textSecondary,
   },
   headerActions: {
     flexDirection: 'row',
     gap: Spacing.sm,
   },
   actionButton: {
-    width: 44,
-    height: 44,
-    borderRadius: BorderRadius.full,
+    width: 40,
+    height: 40,
+    borderRadius: BorderRadius.md,
     backgroundColor: Colors.gray100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   searchContainer: {
     paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingVertical: Spacing.md,
     backgroundColor: Colors.surface,
   },
   scrollView: {
     flex: 1,
   },
   prescriptionsList: {
-    padding: Spacing.xl,
+    padding: Spacing.lg,
     gap: Spacing.md,
   },
   errorContainer: {
-    margin: Spacing.xl,
-    padding: Spacing.lg,
+    margin: Spacing.lg,
+    padding: Spacing.md,
     backgroundColor: Colors.surface,
     borderRadius: BorderRadius.md,
     borderLeftWidth: 4,
     borderLeftColor: Colors.error,
   },
   errorText: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.sm,
     fontFamily: 'Inter-Regular',
     color: Colors.error,
   },
