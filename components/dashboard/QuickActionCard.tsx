@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.xl,
     alignItems: 'center',
     ...Shadows.md,
-    marginBottom: Spacing.lg,
+    marginTop: Spacing.lg,
   },
   fullWidthCard: {
     flex: 0,
