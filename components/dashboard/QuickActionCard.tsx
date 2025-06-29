@@ -84,8 +84,6 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.md,
     fontFamily: 'Inter-SemiBold',
     color: Colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: Spacing.lg,
   },
   fullWidthTitle: {
     fontSize: FontSizes.lg,
