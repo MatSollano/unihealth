@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Pill, Clock } from 'lucide-react-native';
-import { Colors, Spacing, FontSizes, BorderRadius, Shadows } from '@/constants/theme';
+import { Colors, Spacing, FontSizes, BorderRadius } from '@/constants/theme';
 
 interface PrescriptionCardProps {
   medicineName: string;
@@ -39,10 +39,12 @@ export function PrescriptionCard({ medicineName, dosage, doctorName, daysLeft }:
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.surface,
     borderRadius: BorderRadius.xl,
     padding: Spacing.lg,
     width: 200,
+    borderWidth: 1,
+    borderColor: Colors.gray100,
   },
   iconContainer: {
     width: 48,

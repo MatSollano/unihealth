@@ -236,7 +236,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
           
-          <View style={styles.contentCardPrescription}>
+          <View style={styles.prescriptionsContainer}>
             {activePrescriptions.length > 0 ? (
               <ScrollView 
                 horizontal 
@@ -254,14 +254,16 @@ export default function HomeScreen() {
                 ))}
               </ScrollView>
             ) : (
-              <EmptyState
-                icon={<FileText size={40} color={Colors.textTertiary} />}
-                title="No active prescriptions"
-                description="Your prescriptions from doctors will appear here"
-                actionText="Book Appointment"
-                onAction={handleBookAppointment}
-                variant="compact"
-              />
+              <View style={styles.emptyStateContainer}>
+                <EmptyState
+                  icon={<FileText size={40} color={Colors.textTertiary} />}
+                  title="No active prescriptions"
+                  description="Your prescriptions from doctors will appear here"
+                  actionText="Book Appointment"
+                  onAction={handleBookAppointment}
+                  variant="compact"
+                />
+              </View>
             )}
           </View>
         </View>
@@ -358,13 +360,18 @@ const styles = StyleSheet.create({
     padding: Spacing.xl,
     ...Shadows.md,
   },
-  contentCardPrescription: {
-    borderRadius: BorderRadius.xl,
-    padding: Spacing.xl,
-    ...Shadows.md,
+  prescriptionsContainer: {
+    // No background or shadow - let individual cards handle their own styling
   },
   prescriptionsContent: {
     gap: Spacing.md,
+    paddingHorizontal: Spacing.xs, // Small padding to prevent cards from touching edges
+  },
+  emptyStateContainer: {
+    backgroundColor: Colors.surface,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.xl,
+    ...Shadows.md,
   },
   errorContainer: {
     backgroundColor: Colors.surface,
