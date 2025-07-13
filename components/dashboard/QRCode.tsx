@@ -295,6 +295,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   bottomSpacing: {
-    height: Spacing.xxxxl,
+    height: Spacing.xxl,
   },
 });
