@@ -100,10 +100,10 @@ export default function QRCodeScreen() {
         <View style={styles.instructionsCard}>
           <Text style={styles.instructionsTitle}>How to use this QR Code</Text>
           <View style={styles.instructionsList}>
-            <Text style={styles.instructionItem}>• Healthcare providers can scan this code to access your basic medical information</Text>
+            <Text style={styles.instructionItem}>• Healthcare providers can scan this code to access your medical records</Text>
             <Text style={styles.instructionItem}>• Emergency responders can quickly view your allergies and conditions</Text>
-            <Text style={styles.instructionItem}>• Share with family members for emergency situations</Text>
-            <Text style={styles.instructionItem}>• Keep a screenshot on your phone for offline access</Text>
+            <Text style={styles.instructionItem}>• Share with trusted family members for emergency situations</Text>
+            {/* <Text style={styles.instructionItem}>• Keep a screenshot on your phone for offline access</Text> */}
           </View>
         </View>
 
