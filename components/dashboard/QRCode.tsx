@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Share, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Share, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { ArrowLeft, Download, Share2, Copy, QrCode } from 'lucide-react-native';
@@ -79,7 +79,13 @@ export default function QRCodeScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
+      {/* Scrollable Content */}
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        bounces={true}
+      >
         {/* Patient Info */}
         <View style={styles.patientCard}>
           <Text style={styles.patientName}>{user?.displayName || 'Patient'}</Text>
@@ -121,7 +127,10 @@ export default function QRCodeScreen() {
             This QR code contains basic medical information only. Sensitive data is protected and requires proper authentication to access.
           </Text>
         </View>
-      </View>
+
+        {/* Additional spacing at bottom for better scroll experience */}
+        <View style={styles.bottomSpacing} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -162,9 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content: {
+  scrollView: {
     flex: 1,
+  },
+  scrollContent: {
     padding: Spacing.xl,
+    paddingBottom: Spacing.xxxxl, // Extra padding at bottom
   },
   patientCard: {
     backgroundColor: Colors.surface,
@@ -268,6 +280,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     borderLeftWidth: 4,
     borderLeftColor: Colors.success,
+    marginBottom: Spacing.xl,
   },
   securityTitle: {
     fontSize: FontSizes.md,
@@ -280,5 +293,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     color: Colors.textSecondary,
     lineHeight: 20,
+  },
+  bottomSpacing: {
+    height: Spacing.xxxxl,
   },
 });
