@@ -12,21 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { 
-  ArrowLeft, 
-  Camera, 
-  Save, 
-  User, 
-  Mail, 
-  Phone, 
-  Calendar, 
-  MapPin,
-  Heart,
-  Droplet,
-  AlertTriangle,
-  Users,
-  Edit3
-} from 'lucide-react-native';
+import { ArrowLeft, Camera, Save, User, Mail, Phone, Calendar, MapPin, Heart, Droplet, TriangleAlert as AlertTriangle, Users, CreditCard as Edit3 } from 'lucide-react-native';
 import { TextInput } from '@/components/ui/TextInput';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
