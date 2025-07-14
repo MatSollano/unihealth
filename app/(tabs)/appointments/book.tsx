@@ -181,6 +181,7 @@ export default function BookAppointmentScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
@@ -204,7 +205,9 @@ export default function BookAppointmentScreen() {
       </View>
 
       {renderStepContent()}
-    </SafeAreaView>
+    <View style={styles.bottomSpacing} />
+  </ScrollView>
+</SafeAreaView>
   );
 }
 
