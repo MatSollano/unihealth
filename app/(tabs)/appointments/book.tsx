@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { ArrowLeft, Calendar, Clock, Search } from 'lucide-react-native';
@@ -47,6 +47,7 @@ export default function BookAppointmentScreen() {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [appointmentNotes, setAppointmentNotes] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleBack = () => {
@@ -71,7 +72,7 @@ export default function BookAppointmentScreen() {
   const handleBookAppointment = () => {
     Alert.alert(
       'Appointment Booked',
-      `Your appointment with ${selectedDoctor.name} on ${selectedDate} at ${selectedTime} has been booked successfully.`,
+      `Your appointment with ${selectedDoctor.name} on ${selectedDate} at ${selectedTime} has been booked successfully.${appointmentNotes ? '\n\nNotes: ' + appointmentNotes : ''}`,
       [
         {
           text: 'OK',
@@ -128,21 +129,11 @@ export default function BookAppointmentScreen() {
       case 3:
         return (
           <View style={styles.stepContent}>
-            <Text style={styles.stepTitle}>Select Date & Time</Text>
-            <Text style={styles.stepSubtitle}>
-              Booking with {selectedDoctor.name}
-            </Text>
-            <TimeSlotPicker
-              doctorId={selectedDoctor.id}
-              onTimeSlotSelect={handleTimeSlotSelect}
-            />
-          </View>
-        );
-
-      case 4:
-        return (
-          <View style={styles.stepContent}>
             <Text style={styles.stepTitle}>Confirm Appointment</Text>
+            <Text style={styles.stepSubtitle}>
+              Review your appointment details
+            </Text>
+            
             <View style={styles.confirmationCard}>
               <Text style={styles.confirmationLabel}>Doctor</Text>
               <Text style={styles.confirmationValue}>{selectedDoctor.name}</Text>
@@ -154,6 +145,28 @@ export default function BookAppointmentScreen() {
               <Text style={styles.confirmationLabel}>Location</Text>
               <Text style={styles.confirmationValue}>{selectedDoctor.clinic}</Text>
             </View>
+
+            <View style={styles.notesSection}>
+              <Text style={styles.notesLabel}>Additional Notes (Optional)</Text>
+              <Text style={styles.notesSubtitle}>
+                Share any symptoms, concerns, or specific questions you'd like to discuss
+              </Text>
+              <TextInput
+                style={styles.notesInput}
+                placeholder="e.g., Experiencing chest pain for 2 days, need prescription refill, follow-up on blood test results..."
+                placeholderTextColor={Colors.textTertiary}
+                value={appointmentNotes}
+                onChangeText={setAppointmentNotes}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+                maxLength={500}
+              />
+              <Text style={styles.characterCount}>
+                {appointmentNotes.length}/500 characters
+              </Text>
+            </View>
+
             <Button
               title="Confirm Appointment"
               onPress={handleBookAppointment}
@@ -287,5 +300,40 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.md,
     fontFamily: 'Inter-Regular',
     color: Colors.textSecondary,
+  },
+  notesSection: {
+    marginBottom: Spacing.xl,
+  },
+  notesLabel: {
+    fontSize: FontSizes.lg,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+  notesSubtitle: {
+    fontSize: FontSizes.sm,
+    fontFamily: 'Inter-Regular',
+    color: Colors.textSecondary,
+    marginBottom: Spacing.lg,
+    lineHeight: 20,
+  },
+  notesInput: {
+    borderWidth: 1,
+    borderColor: Colors.gray200,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.lg,
+    fontSize: FontSizes.md,
+    fontFamily: 'Inter-Regular',
+    color: Colors.textPrimary,
+    backgroundColor: Colors.surface,
+    minHeight: 120,
+    maxHeight: 200,
+  },
+  characterCount: {
+    fontSize: FontSizes.xs,
+    fontFamily: 'Inter-Regular',
+    color: Colors.textTertiary,
+    textAlign: 'right',
+    marginTop: Spacing.xs,
   },
 });
