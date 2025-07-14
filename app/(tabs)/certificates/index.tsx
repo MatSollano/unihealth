@@ -79,14 +79,14 @@ export default function CertificatesScreen() {
         <View style={styles.headerActions}>
           <TouchableOpacity 
             style={styles.actionButton} 
-            onPress={handleRefresh}
+            onPress={handleRefresh} 
             disabled={refreshing}
           >
             <RefreshCw size={24} color={refreshing ? Colors.textTertiary : Colors.primary} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton} onPress={handleDownloadAll}>
+          {/* <TouchableOpacity style={styles.actionButton} onPress={handleDownloadAll}>
             <Download size={24} color={Colors.textSecondary} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.actionButton}>
             <Bell size={24} color={Colors.textSecondary} />
           </TouchableOpacity>
