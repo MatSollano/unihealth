@@ -71,7 +71,7 @@ export default function CertificatesScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Medical Certificates</Text>
+          <Text style={styles.headerTitle}>Medical Cert</Text>
           <Text style={styles.headerSubtitle}>
             {filteredCertificates.length} {filteredCertificates.length === 1 ? 'certificate' : 'certificates'}
           </Text>
