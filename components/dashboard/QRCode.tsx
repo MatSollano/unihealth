@@ -113,20 +113,20 @@ export default function QRCodeScreen() {
             <Download size={20} color={Colors.primary} />
             <Text style={styles.actionButtonText}>Download</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton} onPress={handleCopyData}>
+           
+          {/* <TouchableOpacity style={styles.actionButton} onPress={handleCopyData}>
             <Copy size={20} color={Colors.primary} />
             <Text style={styles.actionButtonText}>Copy Data</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Security Notice */}
-        <View style={styles.securityNotice}>
+        {/* <View style={styles.securityNotice}>
           <Text style={styles.securityTitle}>🔒 Privacy & Security</Text>
           <Text style={styles.securityText}>
             This QR code contains basic medical information only. Sensitive data is protected and requires proper authentication to access.
           </Text>
-        </View>
+        </View> */}
 
         {/* Additional spacing at bottom for better scroll experience */}
         <View style={styles.bottomSpacing} />
