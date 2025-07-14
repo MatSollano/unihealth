@@ -128,6 +128,20 @@ export default function BookAppointmentScreen() {
       case 3:
         return (
           <View style={styles.stepContent}>
+            <Text style={styles.stepTitle}>Select Date & Time</Text>
+            <Text style={styles.stepSubtitle}>
+              Booking with {selectedDoctor.name}
+            </Text>
+            <TimeSlotPicker
+              doctorId={selectedDoctor.id}
+              onTimeSlotSelect={handleTimeSlotSelect}
+            />
+          </View>
+        );
+
+      case 4:
+        return (
+          <View style={styles.stepContent}>
             <Text style={styles.stepTitle}>Confirm Appointment</Text>
             <View style={styles.confirmationCard}>
               <Text style={styles.confirmationLabel}>Doctor</Text>
